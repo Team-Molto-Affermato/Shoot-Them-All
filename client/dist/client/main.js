@@ -41,7 +41,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<header>\n  <h1>\n    Welcome to waww!\n  </h1>\n  <nav>\n    <ul>\n      <li><a [routerLink]=\"['/']\">Home</a></li>\n      <li><a [routerLink]=\"['/directory']\">Directory</a></li>\n    </ul>\n  </nav>\n</header>\n<section id=\"main\">\n  <router-outlet></router-outlet>\n</section>\n\n\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<section id=\"main\">\n  <router-outlet></router-outlet>\n</section>\n\n\n"
 
 /***/ }),
 
@@ -95,12 +95,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -122,6 +124,7 @@ var AppModule = /** @class */ (function () {
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
                 _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterModule"].forRoot(appRoutes),
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"]
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_2__["AppComponent"]]
@@ -152,7 +155,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<title>{{title}}</title>\n<h1>Funziaaa</h1>\n<button (click)=\"login()\">Login</button>\n"
+module.exports = "<title>{{title}}</title>\n<h1>{{title}}</h1>\n<button (click)=\"login()\">Login</button>\n<button >Register</button>\n"
 
 /***/ }),
 
