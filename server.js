@@ -8,6 +8,10 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+/* GET home page. */
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/client/src/index.html');
+});
 
 const usersRoutes = require('./routes/usersRoutes'); //importing route
 usersRoutes(app); //register the route
