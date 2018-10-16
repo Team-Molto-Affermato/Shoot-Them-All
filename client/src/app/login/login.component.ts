@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import {LoginService} from "../services/login.service";
 
 @Component({
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    alert("ooooooh chiiiiccoooo")
     this.loginService.fetchData();
   }
 

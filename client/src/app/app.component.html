@@ -1,7 +1,17 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<header>
   <h1>
-    Welcome to {{ title }}!
+    Welcome to waww!
   </h1>
-</div>
+  <nav>
+    <ul>
+      <li><a [routerLink]="['/']">Home</a></li>
+      <li><a [routerLink]="['/directory']">Directory</a></li>
+    </ul>
+  </nav>
+</header>
+<section id="main">
+  <!--<app-home [obj]="obj" (onYell)="yell($event)"></app-home>-->
+  <router-outlet></router-outlet>
+</section>
 
