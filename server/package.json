@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "The server of Shoot-Them-All",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Molto-Affermato/Shoot-Them-All.git"
+  },
+  "author": "Team-Molto-Affermato",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-Molto-Affermato/Shoot-Them-All/issues"
+  },
+  "homepage": "https://github.com/Team-Molto-Affermato/Shoot-Them-All#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
