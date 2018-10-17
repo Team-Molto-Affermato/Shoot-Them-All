@@ -34,11 +34,10 @@ export class RegisterComponent implements OnInit {
     // Make sure to create a deep copy of the form-model
     const user: User = Object.assign({}, this.registrationForm.value);
 
-    this.registerService.fetchData(user).subscribe(data => {
-      for (var i in data) {
-        alert(data[i]["name"]);
-      }
-    });
+    this.registerService.fetchData(user).subscribe(
+      (data: User) => alert(data),
+      error => alert(error)
+    );
   }
 
 }
