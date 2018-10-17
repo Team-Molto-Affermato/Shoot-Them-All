@@ -1,5 +1,5 @@
 var mongoose        = require('mongoose');
-var User            = require('./models/model.js');
+var User            = require('../models/user');
 
 exports.listUsers = (req, res) => {
     var query = User.find({});
@@ -13,6 +13,7 @@ exports.listUsers = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
+        console.log(req)
         // Creates a new User based on the Mongoose schema and the post bo.dy
         var newuser = new User(req.body);
 

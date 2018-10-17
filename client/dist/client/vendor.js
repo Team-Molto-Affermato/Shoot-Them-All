@@ -36878,7 +36878,7 @@ var NgZone = /** @class */ (function () {
      * Any future tasks or microtasks scheduled from within this function will continue executing from
      * outside of the Angular zone.
      *
-     * Use {@link #run} to reenter the Angular zone and do work that updates the application model.jsmodels.
+     * Use {@link #run} to reenter the Angular zone and do work that updates the application model.
      */
     NgZone.prototype.runOutsideAngular = function (fn) {
         return this._outer.run(fn);

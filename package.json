@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Team-Molto-Affermato/Shoot-Them-All#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mongoose": "^5.3.4"
   }
 }

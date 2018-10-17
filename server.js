@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+var mongoose        = require('mongoose');
 
 const app = express();
 const port = 3000;
@@ -9,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(express.static("client/dist/client"));
+mongoose.connect("mongodb://localhost/ShootThemAll");
 
 /* GET home page. */
 app.get('/', function(req, res) {
@@ -16,7 +18,9 @@ app.get('/', function(req, res) {
 });
 
 const usersRoutes = require('./routes/usersRoutes'); //importing route
-usersRoutes(app); //register the route
+const matchRoutes = require('./routes/matchesRoutes'); //importing route
 
+usersRoutes(app); //register the route
+matchRoutes(app);
 
 app.listen(port);
