@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(express.static("client/dist/client"));
-mongoose.connect("mongodb://localhost/ShootThemAll");
+mongoose.connect("mongodb://192.168.1.15/ShootThemAll");
 
 /* GET home page. */
 app.get('*', function(req, res) {
