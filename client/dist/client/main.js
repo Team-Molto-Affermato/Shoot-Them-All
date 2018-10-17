@@ -41,7 +41,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<section id=\"main\">\n  <router-outlet></router-outlet>\n</section>\n\n\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<section id=\"main\">\r\n  <router-outlet></router-outlet>\r\n</section>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -155,7 +155,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<title>{{title}}</title>\n<h1>{{title}}</h1>\n<button (click)=\"login()\">Login</button>\n<button >Register</button>\n"
+module.exports = "<title>{{title}}</title>\r\n<h1>{{title}}</h1>\r\n<button (click)=\"login()\">Login</button>\r\n<button >Register</button>\r\n"
 
 /***/ }),
 
@@ -311,7 +311,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Luca\Università\Magistrale\I Anno\Applicazioni e Servizi Web\Workspace\Shoot-Them-All\client\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! C:\Users\diego\Desktop\Shoot-Them-All\client\src\main.ts */"./src/main.ts");
 
 
 /***/ })

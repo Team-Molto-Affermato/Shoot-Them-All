@@ -5,7 +5,8 @@ module.exports = (app) => {
     app.route('/matches')
         .get(matchesController.listMatches)
         .post(matchesController.createMatch);
-
+    app.route('/matches/range')
+        .get(matchesController.listMatchesRange);
 
     app.route('/matches/:matchId')
         .get(matchesController.createMatch)
