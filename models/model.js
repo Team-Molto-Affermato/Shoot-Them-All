@@ -4,7 +4,7 @@ var Schema      = mongoose.Schema;
 
 // Creates a User Schema. This will be the basis of how user data is stored in the db
 var UserSchema = new Schema({
-    username: {type: String, required: true},
+    username: {type: String, required: true,unique: true},
     password: {type:String,required:true},
     gender: {type: String, required: false},
     score:Number,
@@ -54,11 +54,11 @@ UserSchema.pre('save', function(next){
     next();
 });
 
-// Indexes this schema in 2dsphere format (critical for running proximity searches)
-UserSchema.index({location: '2dsphere'});
+// // Indexes this schema in 2dsphere format (critical for running proximity searches)
+// UserSchema.index({location: '2dsphere'});
 
 // Exports the UserSchema for use elsewhere. Sets the MongoDB collection to be used as: "scotch-users"
 module.exports ={
-    Room:mongoose.model('scotch-room', RoomSchema),
-    User:mongoose.model('scotch-user',UserSchema)
+    Room:mongoose.model('room', RoomSchema),
+    User:mongoose.model('user',UserSchema)
 }
