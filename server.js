@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(express.static("client/dist/client"));
 
 /* GET home page. */
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
     res.sendFile(__dirname + '/client/src/index.html');
 });
 

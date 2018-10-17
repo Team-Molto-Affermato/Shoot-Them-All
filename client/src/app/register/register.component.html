@@ -1,0 +1,14 @@
+<form id="form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()" novalidate>
+  <label for="name">Name</label>
+  <input formControlName="name" id="name">
+  <label for="surname">Surname</label>
+  <input formControlName="surname" id="surname">
+  <label for="username">Username</label>
+  <input formControlName="username" id="username">
+  <label for="password">Password</label>
+  <input formControlName="password" id="password">
+  <label for="email">Email</label>
+  <input formControlName="email" id="email">
+
+  <button type="submit">Register</button>
+</form>
