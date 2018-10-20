@@ -2,11 +2,12 @@ var mongoose        = require('mongoose');
 var User            = require('../models/user');
 
 exports.listUsers = (req, res) => {
+console.log("Ciao")
     var query = User.find({});
     query.exec(function(err, users){
         if(err)
             res.send(err);
-
+        console.log(users)
         // If no errors are found, it responds with a JSON of all users
         res.json(users);
     });

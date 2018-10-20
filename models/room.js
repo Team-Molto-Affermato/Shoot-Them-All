@@ -15,7 +15,7 @@ const pointSchema = new mongoose.Schema({
 });
 
 var RoomSchema = new Schema({
-   roomName: {type: String,required:true},
+   roomName: {type: String,required:true,unique:true},
    location: {type: pointSchema,required: true},
    radius: {type: Number, required: true},
    state: {type: String},
@@ -38,13 +38,9 @@ var RoomSchema = new Schema({
 // Sets the created_at parameter equal to the current time
 RoomSchema.pre('save', function(next){
     now = new Date();
-    this.updated_at = now;
-    if(!this.created_at) {
-        this.created_at = now
-    }
+    this.created_at = now;
     next();
 });
-
 // // Indexes this schema in 2dsphere format (critical for running proximity searches)
 // UserSchema.index({location: '2dsphere'});
 

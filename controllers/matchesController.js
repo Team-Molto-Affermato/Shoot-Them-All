@@ -1,5 +1,6 @@
 var mongoose        = require('mongoose');
 var Room            = require('../models/room');
+var UserInMatch            = require('../models/userInMatch');
 
 exports.listMatches = (req, res) => {
     var query = Room.find({});
@@ -12,7 +13,7 @@ exports.listMatches = (req, res) => {
     });
 };
 exports.listMatchesRange = (req,res)=> {
-    var query = Room.where('location').within({ center: [-122.5,37.7], radius: 10, unique: true, spherical: true });
+    var query = Room.where('location').within({ center: req.query.location, radius: 10, unique: true, spherical: true });
     query.exec(function (err,rooms) {
         if(err) res.send(err)
         else  res.json(rooms)
@@ -20,7 +21,6 @@ exports.listMatchesRange = (req,res)=> {
 };
 
 exports.createMatch = (req, res) => {
-    console.log(req)
     var newMatch = new Room(req.body);
 
     newMatch.save(function(err){
@@ -43,3 +43,4 @@ exports.updateMatch = (req, res) => {
 exports.deleteMatch = (req, res) => {
 
 };
+
