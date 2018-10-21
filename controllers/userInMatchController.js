@@ -3,20 +3,26 @@ var UserInMatch            = require('../models/userInMatch');
 
 exports.listUserInMatch = (req, res) => {
     var query = UserInMatch.find({
-        roomName : req.query.roomName
+        roomName : req.params.roomName
     });
-    // console.log(req.roomName)
     query.exec(function(err, users){
         if(err)
             res.send(err);
-
-        // If no errors are found, it responds with a JSON of all users
-        res.json(users);
+        else
+            res.json(users);
     });
 };
+exports.addUser = (req,res) =>{
+    var qu
+}
+
 exports.listUserInMatchRange = (req,res)=> {
-    var query = UserInMatch.
-        where('location').within({ center: req.query.location, radius: 10, unique: true, spherical: true });
+    var lat =    Number(req.query.lat);
+    var lon =    Number(req.query.lon);
+    console.log(lat,lon);
+    var query = UserInMatch
+        .where({roomName: req.params.roomName})
+        .where('location').within({ center: [lon,lat], radius: 1, unique: true, spherical: true });
     query.exec(function (err,users) {
         if(err) res.send(err)
         else  res.json(users)
@@ -28,11 +34,39 @@ exports.listUserInMatchRange = (req,res)=> {
 exports.readMatch = (req, res) => {
 
 };
+exports.userScore = (req,res) =>{
+    var query = UserInMatch.find({
+        name: req.params.username,
+        roomName: req.params.roomName
+    });
+    console.log(req.params.username)
+    console.log(req.params.roomName)
+
+    query.exec(function(err, user){
+        if(err)
+            res.send(err);
+        else
+            res.json(user);
+    });
+}
+exports.updateUserScore = (req, res) => {
+    var query = {
+        name: req.params.username,
+        roomName: req.params.roomName
+    };
+    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:true}, function (err,user) {
+        if (err) {
+            return res.send(err)
+        } else {
+            res.json(user)
+        }
+    });
+};
 
 exports.updateUserPos = (req, res) => {
     var query = {
-        name: req.body.name,
-        roomName: req.body.roomName
+        name: req.params.username,
+        roomName: req.params.roomName
     };
     UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:true}, function (err,user) {
         if (err) {

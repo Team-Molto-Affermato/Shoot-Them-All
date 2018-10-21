@@ -2,7 +2,6 @@ var mongoose        = require('mongoose');
 var User            = require('../models/user');
 
 exports.listUsers = (req, res) => {
-console.log("Ciao")
     var query = User.find({});
     query.exec(function(err, users){
         if(err)
@@ -14,7 +13,6 @@ console.log("Ciao")
 };
 
 exports.createUser = (req, res) => {
-        console.log(req)
         // Creates a new User based on the Mongoose schema and the post bo.dy
         var newuser = new User(req.body);
 
@@ -29,13 +27,76 @@ exports.createUser = (req, res) => {
 };
 
 exports.readUser = (req, res) => {
-
+    var query = User.findOne({
+        username: req.params.userId
+    });
+    query.exec(function(err, user){
+        if(err)
+            res.send(err);
+        console.log(user)
+        // If no errors are found, it responds with a JSON of all users
+        res.json(user);
+    });
 };
 
+exports.checkUser = (req,res) => {
+    var query = User.countDocuments({
+        username: req.params.userId,
+        password: req.body.password
+    })
+    query.exec(function (err,count) {
+        if(err){
+            res.send(err);
+        }
+        else {
+            console.log(count);
+            res.json({
+                logged: count==1?true:false
+            });
+        }
+    });
+}
 exports.updateUser = (req, res) => {
 
 };
 
-exports.deleteUser = (req, res) => {
+exports.userScore = (req,res) =>{
+    var query = User.find({
+        username: req.params.userId
+    });
 
+    query.exec(function(err, user){
+        if(err)
+            res.send(err);
+        else{
+            res.json({
+                score: user[0].score
+            });
+        }
+
+    });
+}
+exports.updateUserScore = (req, res) => {
+    var query = {
+        username: req.params.userId,
+    };
+    User.findOneAndUpdate(query, { $inc: {score: req.body.score} }, function (err,user) {
+        if (err) {
+            return res.send(err)
+        } else {
+            res.json(user)
+        }
+    });
+};
+
+exports.deleteUser = (req, res) => {
+    var query = User.deleteOne({
+        username: req.params.userId
+    })
+    query.exec(function (err,raw) {
+       if(err)
+           res.send(err)
+        else
+            res.send(raw)
+    });
 };
