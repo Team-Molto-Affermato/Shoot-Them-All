@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {UserData} from "../models/userData";
-import {ErrorsHandlerService} from "./errors-handler.service";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {User} from "../models/user";
+import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {ErrorsHandlerService} from "./errors-handler.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class RegistrationService {
 
   constructor(private http: HttpClient,
               private errorsHandlerService: ErrorsHandlerService) { }
 
-  fetchData(userData: UserData): Observable<UserData> {
+  fetchData(user: User): Observable<User> {
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -22,9 +22,10 @@ export class LoginService {
       })
     };
 
-    return this.http.post<UserData>("/userData", userData, httpOptions)
+    return this.http.post<User>("/users", user, httpOptions)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );
   }
+
 }

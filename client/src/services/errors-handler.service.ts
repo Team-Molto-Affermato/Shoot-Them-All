@@ -1,33 +1,15 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {User} from "../models/register";
-import {Observable, throwError} from "rxjs";
-import {catchError} from "rxjs/operators";
+import {HttpErrorResponse} from "@angular/common/http";
+import {throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterService {
+export class ErrorsHandlerService {
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
-  fetchData(user: User): Observable<User> {
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
-
-    return this.http.post<User>("/users", user, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-
-  private handleError(error: HttpErrorResponse) {
+  public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
@@ -42,5 +24,4 @@ export class RegisterService {
     return throwError(
       'Something bad happened; please try again later.');
   };
-
 }

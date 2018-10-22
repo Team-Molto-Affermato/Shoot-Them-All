@@ -4,22 +4,31 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 import {RouterModule, Routes} from "@angular/router";
 import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { MatchConfigurationComponent } from './match-configuration/match-configuration.component';
+import { MatchInfoComponent } from './match-info/match-info.component';
 
 const appRoutes: Routes = [
   {path: "", component: LoginComponent},
   {path: "login", component: LoginComponent},
-  {path: "register", component: RegisterComponent}
+  {path: "registration", component: RegistrationComponent},
+  {path: "home", component: HomeComponent},
+  {path: "matchConfiguration", component: MatchConfigurationComponent},
+  {path: "matchInfo", component: MatchInfoComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegistrationComponent,
+    HomeComponent,
+    MatchConfigurationComponent,
+    MatchInfoComponent
   ],
   imports: [
     BrowserModule,

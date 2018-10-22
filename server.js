@@ -17,10 +17,12 @@ app.get('*', function(req, res) {
     res.sendFile(__dirname + '/client/src/index.html');
 });
 
-const usersRoutes = require('./routes/usersRoutes'); //importing route
-const matchRoutes = require('./routes/matchesRoutes'); //importing route
+const usersRoutes = require('./routes/usersRoutes');
+const matchRoutes = require('./routes/matchesRoutes');
+const userDataRoutes = require('./routes/userDataRoutes');
 
-usersRoutes(app); //register the route
+usersRoutes(app); //registration the route
 matchRoutes(app);
+userDataRoutes(app);
 
 app.listen(port);

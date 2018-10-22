@@ -1,0 +1,17 @@
+<form id="form" [formGroup]="newMatchForm" (ngSubmit)="createNewMatch()" novalidate>
+  <label for="access">Access</label>
+  <select (change)="switchAccess()" id="access">
+    <option>Public</option>
+    <option>Private</option>
+  </select>
+  <label for="password" *ngIf="passwordVisible">Password</label>
+  <input formControlName="password" id="password" *ngIf="passwordVisible">
+  <label for="duration">Duration</label>
+  <input formControlName="duration" id="duration">
+  <label for="areaRadius">Area Radius</label>
+  <input formControlName="areaRadius" id="areaRadius">
+  <label for="maxPlayerNumber">Max Player Number</label>
+  <input formControlName="maxPlayerNumber" id="maxPlayerNumber">
+
+  <button type="submit">Create</button>
+</form>

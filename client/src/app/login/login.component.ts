@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {RegistrationService} from "../../services/registration.service";
+import {User} from "../../models/user";
+import {UserData} from "../../models/userData";
 
 @Component({
   selector: 'app-login',
@@ -11,14 +15,37 @@ export class LoginComponent implements OnInit {
 
   title = "Shoot Them All";
 
-  constructor(private loginService: LoginService) { }
+  loginForm: FormGroup;
+
+  constructor(private router: Router,
+              private formBuilder: FormBuilder,
+              private loginService: LoginService) {
+    this.loginForm = this.createFormGroup();
+  }
+
 
   ngOnInit() {
   }
 
+  createFormGroup() {
+    return this.formBuilder.group({
+      username: '',
+      password: ''
+    });
+  }
+
   login() {
-    alert("ooooooh chiiiiccoooo")
-    this.loginService.fetchData();
+    const userData: UserData = Object.assign({}, this.loginForm.value);
+
+    this.loginService.fetchData(userData).subscribe(
+      (data: User) => {
+        alert(data);
+        // this.router.navigate(["/home"])
+      },
+      // error => alert(error)
+    );
+
+    this.router.navigate(["/home"])
   }
 
 }

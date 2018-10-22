@@ -1,4 +1,13 @@
 <title>{{title}}</title>
 <h1>{{title}}</h1>
-<button (click)="login()">Login</button>
-<a [routerLink]="['/register']"><button>Register</button></a>
+
+<form id="form" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+  <label for="username">Username</label>
+  <input formControlName="username" id="username">
+  <label for="password">Password</label>
+  <input formControlName="password" id="password">
+
+  <button type="submit">Login</button>
+</form>
+
+<a [routerLink]="['/registration']"><button>Register</button></a>
