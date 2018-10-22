@@ -22,5 +22,4 @@ export interface TokenResponse {
 export interface TokenPayload {
   username: string;
   password: string;
-  name?: string;
 }

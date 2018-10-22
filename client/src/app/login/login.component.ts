@@ -3,8 +3,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {RegistrationService} from "../../services/registration.service";
-import {User} from "../../models/user";
+import {TokenPayload, User} from "../../models/user";
 import {UserData} from "../../models/userData";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
-              private loginService: LoginService) {
+              private auth: AuthenticationService) {
     this.loginForm = this.createFormGroup();
   }
 
@@ -35,18 +36,24 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const userData: UserData = Object.assign({}, this.loginForm.value);
+    const userData: TokenPayload = Object.assign({}, this.loginForm.value);
 
-    this.loginService.fetchData(userData).subscribe(
-      (data: boolean) => {
-        alert(data);
-        if(data) {
-          this.router.navigate(["/home"])
-        }
+    this.auth.login(userData).subscribe(() => {
+      this.router.navigateByUrl('/home');
+    }, (err) => {
+      console.error(err);
+    });
 
-      },
-       error => alert(error)
-    );
+    // this.loginService.fetchData(userData).subscribe(
+    //   (data: boolean) => {
+    //     alert(data);
+    //     if(data) {
+    //       this.router.navigate(["/home"])
+    //     }
+    //
+    //   },
+    //    error => alert(error)
+    // );
 
   }
 
