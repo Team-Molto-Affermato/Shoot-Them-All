@@ -11,5 +11,10 @@ module.exports = (app) => {
         .get(usersController.readUser)
         .put(usersController.updateUser)
         .delete(usersController.deleteUser);
+    app.route('/users/:userId/score')
+        .get(usersController.userScore)
+        .post(usersController.updateUserScore);
 
+    app.route('/users/:userId/login')
+        .post(usersController.checkUser);
 };
