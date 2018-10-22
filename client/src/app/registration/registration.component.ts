@@ -40,12 +40,15 @@ export class RegistrationComponent implements OnInit {
   }
 
   register() {
+    alert("Register called");
     // Make sure to create a deep copy of the form-model
     const user: User = Object.assign({}, this.registrationForm.value);
 
     this.auth.register(this.credentials).subscribe(() => {
+      alert("Navi called");
       this.router.navigateByUrl('/home');
     }, (err) => {
+      alert(err);
       console.error(err);
     });
 
