@@ -22,6 +22,8 @@ export class LoginService {
       })
     };
 
+    alert("chicco");
+
     return this.http.post<boolean>("/users/"+ userData.username + "/login", userData.password, httpOptions)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
