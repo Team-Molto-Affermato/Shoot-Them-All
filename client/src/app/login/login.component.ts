@@ -38,14 +38,16 @@ export class LoginComponent implements OnInit {
     const userData: UserData = Object.assign({}, this.loginForm.value);
 
     this.loginService.fetchData(userData).subscribe(
-      (data: User) => {
+      (data: boolean) => {
         alert(data);
-        // this.router.navigate(["/home"])
+        if(data) {
+          this.router.navigate(["/home"])
+        }
+
       },
-      // error => alert(error)
+       error => alert(error)
     );
 
-    this.router.navigate(["/home"])
   }
 
 }

@@ -14,7 +14,7 @@ export class LoginService {
   constructor(private http: HttpClient,
               private errorsHandlerService: ErrorsHandlerService) { }
 
-  fetchData(userData: UserData): Observable<UserData> {
+  fetchData(userData: UserData): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export class LoginService {
       })
     };
 
-    return this.http.post<UserData>("/userData", userData, httpOptions)
+    return this.http.post<boolean>("/users/"+ userData.username + "/login", userData.password, httpOptions)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );
