@@ -1,5 +1,5 @@
 var mongoose        = require('mongoose');
-var User            = require('../models/user');
+var User            = require('../models/users');
 
 exports.listUsers = (req, res) => {
     var query = User.find({});
