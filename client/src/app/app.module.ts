@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { MatchConfigurationComponent } from './match-configuration/match-configuration.component';
 import { MatchInfoComponent } from './match-info/match-info.component';
+import {AuthenticationService} from "../services/authentication.service";
 
 const appRoutes: Routes = [
   {path: "", component: LoginComponent},
@@ -36,7 +37,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
