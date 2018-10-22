@@ -12,11 +12,6 @@ import {AuthenticationService} from "../../services/authentication.service";
 })
 export class RegistrationComponent implements OnInit {
 
-  credentials: TokenPayload = {
-    username: '',
-    name: '',
-    password: ''
-  };
 
   registrationForm: FormGroup;
 
@@ -42,9 +37,11 @@ export class RegistrationComponent implements OnInit {
   register() {
     alert("Register called");
     // Make sure to create a deep copy of the form-model
-    const user: User = Object.assign({}, this.registrationForm.value);
+    const user: TokenPayload = Object.assign({}, this.registrationForm.value);
 
-    this.auth.register(this.credentials).subscribe(() => {
+    alert(user.username);
+
+    this.auth.register(user).subscribe(() => {
       alert("Navi called");
       this.router.navigateByUrl('/home');
     }, (err) => {
