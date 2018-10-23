@@ -17,7 +17,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
-              private auth: AuthenticationService) {
+              private registrationService: RegistrationService) {
     this.registrationForm = this.createFormGroup();
   }
 
@@ -37,11 +37,11 @@ export class RegistrationComponent implements OnInit {
   register() {
     alert("Register called");
     // Make sure to create a deep copy of the form-model
-    const user: TokenPayload = Object.assign({}, this.registrationForm.value);
+    const user: User = Object.assign({}, this.registrationForm.value);
 
     alert(user.username);
 
-    this.auth.register(user).subscribe(() => {
+    this.registrationService.register(user).subscribe(() => {
       alert("Navi called");
       this.router.navigateByUrl('/home');
     }, (err) => {
