@@ -1,4 +1,10 @@
 module.exports = (app) => {
+    var jwt = require('express-jwt');
+
+    var auth = jwt({
+        secret: 'MY_SECRET',
+        userProperty: 'payload'
+    });
 
     const matchesController = require('../controllers/matchesController');
     const userInMatchController = require('../controllers/userInMatchController');
