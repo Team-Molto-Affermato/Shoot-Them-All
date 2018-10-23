@@ -18,7 +18,7 @@ export class LoginService {
 
   login(userData: UserData): Observable<any> {
 
-    return this.authenticationService.request('post', "/users/"+ userData.username + "/login", userData)
+    return this.authenticationService.request('post', "/login", userData)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );
