@@ -14,11 +14,11 @@ const port = 3000;
 app.use(express.static("client/dist/client"));
 mongoose.connect("mongodb://localhost/ShootThemAll");
 
-require('./config/passport');
+require('./api/config/passport');
 
 
 
-var routesApi = require('./routes/index');
+var routesApi = require('./api/routes/index');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -33,7 +33,10 @@ app.use(passport.initialize());
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/client/src/index.html');
 });
-app.use('/', routesApi);
+app.get('/home', function(req, res) {
+    res.sendFile(__dirname + '/client/src/index.html');
+});
+app.use('/api', routesApi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

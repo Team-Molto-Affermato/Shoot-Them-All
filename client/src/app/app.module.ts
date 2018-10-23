@@ -14,10 +14,10 @@ import { MatchInfoComponent } from './match-info/match-info.component';
 import {AuthenticationService} from "../services/authentication.service";
 
 const appRoutes: Routes = [
-  {path: "", component: LoginComponent},
+  {path: "", component: LoginComponent, runGuardsAndResolvers: 'always'},
   {path: "login", component: LoginComponent},
   {path: "registration", component: RegistrationComponent},
-  {path: "home", component: HomeComponent},
+  {path: "home", component: HomeComponent, runGuardsAndResolvers: 'always'},
   {path: "matchConfiguration", component: MatchConfigurationComponent},
   {path: "matchInfo", component: MatchInfoComponent}
 ];
@@ -33,7 +33,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
     HttpClientModule,
     ReactiveFormsModule
   ],

@@ -21,14 +21,15 @@ exports.listMatchesRange = (req,res)=> {
     });
 };
 exports.addUserToMatch = (req,res)=>{
+        console.log("Ciao");
         var query = {
-            roomName: req.body.roomName
+            roomName: req.params.roomName
         };
-        Room.findOneAndUpdate(query, { $push: {users: req.body.username} }, function (err,user) {
+        Room.findOneAndUpdate(query, { $push: {users: req.body.username} }, function (err,room) {
             if (err) {
                 return res.send(err)
             } else {
-                res.json(user)
+                res.json(room)
             }
         });
 }

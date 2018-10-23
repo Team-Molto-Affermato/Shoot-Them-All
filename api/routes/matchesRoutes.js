@@ -15,7 +15,7 @@ module.exports = (app) => {
 
     app.route('/matches/:roomName/users/')
         .get(userInMatchController.listUserInMatch)
-        .post(userInMatchController.updateUserPos);
+        .post(matchesController.addUserToMatch);
 
     app.route('/matches/:roomName/:username/score')
         .get(userInMatchController.userScore)
