@@ -4,6 +4,8 @@ import {User} from "../models/user";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {ErrorsHandlerService} from "./errors-handler.service";
+import {AuthenticationService} from "./authentication.service";
+import {UserData} from "../models/userData";
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +13,12 @@ import {ErrorsHandlerService} from "./errors-handler.service";
 export class RegistrationService {
 
   constructor(private http: HttpClient,
+              private authenticationService: AuthenticationService,
               private errorsHandlerService: ErrorsHandlerService) { }
 
-  fetchData(user: User): Observable<User> {
+  register(user: User): Observable<User> {
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
-
-    return this.http.post<User>("/users", user, httpOptions)
+    return this.authenticationService.request<User>('post', "/users/"+ user.username + "/login", user)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );
