@@ -20,7 +20,18 @@ exports.listMatchesRange = (req,res)=> {
         else  res.json(rooms)
     });
 };
-
+exports.addUserToMatch = (req,res)=>{
+        var query = {
+            roomName: req.body.roomName
+        };
+        Room.findOneAndUpdate(query, { $push: {users: req.body.username} }, function (err,user) {
+            if (err) {
+                return res.send(err)
+            } else {
+                res.json(user)
+            }
+        });
+}
 exports.createMatch = (req, res) => {
     var newMatch = new Room(req.body);
     newMatch.save(function(err){

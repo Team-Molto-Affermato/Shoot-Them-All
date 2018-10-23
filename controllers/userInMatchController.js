@@ -12,9 +12,7 @@ exports.listUserInMatch = (req, res) => {
             res.json(users);
     });
 };
-exports.addUser = (req,res) =>{
-    var qu
-}
+
 
 exports.listUserInMatchRange = (req,res)=> {
     var lat =    Number(req.query.lat);
