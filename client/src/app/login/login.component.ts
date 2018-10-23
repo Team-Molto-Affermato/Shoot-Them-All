@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
-              private auth: AuthenticationService) {
+              private loginService: LoginService) {
     this.loginForm = this.createFormGroup();
   }
 
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   login() {
     const userData: TokenPayload = Object.assign({}, this.loginForm.value);
 
-    this.auth.login(userData).subscribe(() => {
+    this.loginService.login(userData).subscribe(() => {
       this.router.navigateByUrl('/home');
     }, (err) => {
       console.error(err);

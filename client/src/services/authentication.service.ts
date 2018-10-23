@@ -52,16 +52,18 @@ export class AuthenticationService {
     }
   }
 
-  private request(method: 'post'|'get', type: 'login'|'register'|'profile', user?: TokenPayload): Observable<any> {
-    let base;
+  public request<T>(method: 'post'|'get'|'put'|'delete', url: string, body?: any): Observable<T> {
+    var base;
+
+    const httpHeader = { headers: { Authorization: `Bearer ${this.getToken()}` }};
 
     if (method === 'post') {
-      base = this.http.post(`/${type}`, user);
-    } else {
-      base = this.http.get(`/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      base = this.http.post(url, body, httpHeader);
+    } else if (method === 'get') {
+      base = this.http.get(url, httpHeader);
     }
 
-    const request = base.pipe(
+    const request: Observable<T> = base.pipe(
       map((data: TokenResponse) => {
         if (data.token) {
           this.saveToken(data.token);
@@ -71,19 +73,6 @@ export class AuthenticationService {
     );
 
     return request;
-  }
-
-
-  public register(user: TokenPayload): Observable<any> {
-    return this.request('post', 'register', user);
-  }
-
-  public login(user: TokenPayload): Observable<any> {
-    return this.request('post', 'login', user);
-  }
-
-  public profile(): Observable<any> {
-    return this.request('get', 'profile');
   }
 
 

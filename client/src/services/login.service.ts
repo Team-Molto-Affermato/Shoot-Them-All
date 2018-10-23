@@ -5,6 +5,7 @@ import {UserData} from "../models/userData";
 import {ErrorsHandlerService} from "./errors-handler.service";
 import {User} from "../models/user";
 import {catchError} from "rxjs/operators";
+import {AuthenticationService} from "./authentication.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,12 @@ import {catchError} from "rxjs/operators";
 export class LoginService {
 
   constructor(private http: HttpClient,
+              private authenticationService: AuthenticationService,
               private errorsHandlerService: ErrorsHandlerService) { }
 
-  fetchData(userData: UserData): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
+  login(userData: UserData): Observable<UserData> {
 
-    alert("chicco");
-
-    return this.http.post<boolean>("/users/"+ userData.username + "/login", userData.password, httpOptions)
+    return this.authenticationService.request<UserData>('post', "/users/"+ userData.username + "/login", userData)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );
