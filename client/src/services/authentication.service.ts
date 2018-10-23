@@ -52,7 +52,7 @@ export class AuthenticationService {
     }
   }
 
-  public request<T>(method: 'post'|'get'|'put'|'delete', url: string, body?: any): Observable<T> {
+  public request(method: 'post'|'get'|'put'|'delete', url: string, body?: any): Observable<any> {
     var base;
 
     const httpHeader = { headers: { Authorization: `Bearer ${this.getToken()}` }};
@@ -63,7 +63,7 @@ export class AuthenticationService {
       base = this.http.get(url, httpHeader);
     }
 
-    const request: Observable<T> = base.pipe(
+    const request = base.pipe(
       map((data: TokenResponse) => {
         if (data.token) {
           this.saveToken(data.token);

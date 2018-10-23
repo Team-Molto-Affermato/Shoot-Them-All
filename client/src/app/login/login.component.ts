@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const userData: TokenPayload = Object.assign({}, this.loginForm.value);
+    const userData: UserData = Object.assign({}, this.loginForm.value);
 
     this.loginService.login(userData).subscribe(() => {
       this.router.navigateByUrl('/home');
