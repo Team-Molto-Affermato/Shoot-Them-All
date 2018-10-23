@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {TokenPayload, TokenResponse, UserDetails} from "../models/user";
+import { TokenResponse, UserDetails} from "../models/user";
 
 // Interfaces here
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {TokenPayload, User} from "../../models/user";
+import { User} from "../../models/user";
 import {RegistrationService} from "../../services/registration.service";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
