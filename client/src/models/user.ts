@@ -6,6 +6,11 @@ export class User {
   email: String;
 }
 
+export class UserData {
+  username: String;
+  password: String;
+}
+
 
 export interface UserDetails {
   _id: string;
@@ -17,9 +22,4 @@ export interface UserDetails {
 
 export interface TokenResponse {
   token: string;
-}
-
-export interface TokenPayload {
-  username: string;
-  password: string;
 }

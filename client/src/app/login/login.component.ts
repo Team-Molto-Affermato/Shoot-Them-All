@@ -3,8 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {RegistrationService} from "../../services/registration.service";
-import {TokenPayload, User} from "../../models/user";
-import {UserData} from "../../models/userData";
+import {UserData} from "../../models/user";
 import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({

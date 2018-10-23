@@ -5,7 +5,6 @@ import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {ErrorsHandlerService} from "./errors-handler.service";
 import {AuthenticationService} from "./authentication.service";
-import {UserData} from "../models/userData";
 
 @Injectable({
   providedIn: 'root'

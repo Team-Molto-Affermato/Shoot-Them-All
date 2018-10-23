@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {UserData} from "../models/userData";
 import {ErrorsHandlerService} from "./errors-handler.service";
-import {User} from "../models/user";
+import {User, UserData} from "../models/user";
 import {catchError} from "rxjs/operators";
 import {AuthenticationService} from "./authentication.service";
 
