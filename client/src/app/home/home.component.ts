@@ -14,10 +14,12 @@ export class HomeComponent implements OnInit {
 
   constructor(private homeService: HomeService,
               private matchInfoService: MatchInfoService) {
+    alert("ciao");
     this.updateMatches();
   }
 
   ngOnInit() {
+    alert("On Init");
   }
 
   updateMatches() {

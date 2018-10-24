@@ -17,6 +17,8 @@ const pointSchema = new mongoose.Schema({
 var RoomSchema = new Schema({
    roomName: {type: String,required:true,unique:true},
    location: {type: pointSchema,required: true},
+   max_user: {type: Number, required: true},
+   duration: {type:Number, required: true},
    radius: {type: Number, required: true},
    state: {type: String},
    users:[String],
