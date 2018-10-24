@@ -20,7 +20,10 @@ var RoomSchema = new Schema({
    max_user: {type: Number, required: true},
    duration: {type:Number, required: true},
    radius: {type: Number, required: true},
-   state: {type: String},
+   state: {
+       type: String,
+       default : 'SETTING_UP'
+   },
    users:[String],
    visibility:{type:String,required: true},
    password:{type:String,required: false},
