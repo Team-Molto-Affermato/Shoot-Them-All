@@ -25,25 +25,9 @@ export class HomeService {
 
           const matches: Array<Match> = data.map(m => {
 
-            var access: MatchAccess;
-            if (m.visibility === "PUBLIC") {
-              access = MatchAccess.PUBLIC;
-            } else {
-              access = MatchAccess.PRIVATE;
-            }
-
-            var state: MatchState;
-            if (m.state === "SETTING_UP") {
-              state = MatchState.SETTING_UP;
-            } else if(m.state === "STARTED") {
-              state = MatchState.STARTED;
-            } else {
-              state = MatchState.ENDED;
-            }
-
             return new Match(
               m.roomName,
-              access,
+              MatchAccess[<string>m.visibility],
               new Point(m.location.coordinates[0], m.location.coordinates[1]),
               m.radius,
               m.starting_time,
@@ -51,7 +35,7 @@ export class HomeService {
               m.max_user,
               m.password,
               m.users,
-              state)
+              MatchState[<string>m.state])
           });
 
           return matches;
