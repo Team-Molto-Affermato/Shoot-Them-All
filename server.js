@@ -35,6 +35,7 @@ app.use(passport.initialize());
 app.use('/home', express.static(path.join(__dirname, 'client/dist/client')));
 app.use('/registration', express.static(path.join(__dirname, 'client/dist/client')));
 app.use('/login', express.static(path.join(__dirname, 'client/dist/client')));
+app.use('/matchConfiguration', express.static(path.join(__dirname, 'client/dist/client')));
 
 app.use('/api', routesApi);
 

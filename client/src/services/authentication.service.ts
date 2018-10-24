@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { TokenResponse, UserDetails} from "../models/user";
+import {TokenResponse, UserData, UserDetails} from "../models/user";
 
 // Interfaces here
 
@@ -52,7 +52,7 @@ export class AuthenticationService {
     }
   }
 
-  public request(method: 'post'|'get'|'put'|'delete', url: string, body?: any): Observable<any> {
+  private request(method: 'post'|'get'|'put'|'delete', url: string, body?: any): Observable<any> {
     var base;
 
     const httpHeader = { headers: { Authorization: `Bearer ${this.getToken()}` }};
@@ -73,6 +73,10 @@ export class AuthenticationService {
     );
 
     return request;
+  }
+
+  login(userData: UserData): Observable<any>  {
+    return this.request('post', "/api/login", userData);
   }
 
 
