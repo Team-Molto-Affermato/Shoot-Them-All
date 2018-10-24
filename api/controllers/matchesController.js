@@ -20,6 +20,34 @@ exports.listMatchesRange = (req,res)=> {
         else  res.json(rooms)
     });
 };
+
+exports.matchState = (req,res) =>{
+        var query = Room.findOne({
+            roomName : req.params.roomName
+        });
+        query.exec(function(err, state){
+            if(err)
+                res.send(err);
+            else
+                res.json({
+                    state: state.state
+                });
+        });
+}
+
+exports.setMatchState = (req, res) => {
+    var query = {
+        roomName: req.params.roomName
+    };
+    Room.findOneAndUpdate(query, { state: req.body.state }, {upsert:true}, function (err,user) {
+        if (err) {
+            return res.send(err)
+        } else {
+            res.json(req.body)
+        }
+    });
+};
+
 exports.addUserToMatch = (req,res)=>{
         console.log("Ciao");
         var query = {

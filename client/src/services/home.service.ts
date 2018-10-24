@@ -17,7 +17,7 @@ export class HomeService {
 
   getMatches(): Observable<Array<Match>> {
 
-    return this.http.get<Array<Match>>("/matches")
+    return this.http.get<Array<Match>>("/api/matches")
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );

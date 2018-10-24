@@ -18,10 +18,12 @@ export class HomeComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private homeService: HomeService,
               private matchInfoService: MatchInfoService) {
+    alert("ciao");
     this.updateMatches();
   }
 
   ngOnInit() {
+    alert("On Init");
   }
 
   updateMatches() {
