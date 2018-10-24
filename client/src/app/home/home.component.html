@@ -2,6 +2,14 @@
 <button (click)="logout()">Logout</button>
 <ul>
   <li *ngFor="let match of matches">
-    {{match}}
+    {{match.id}}
+    {{match.centerPoint}}
+    {{match.maxUser}}
+    {{match.duration}}
+    {{match.radius}}
+    {{match.state}}
+    {{match.users}}
+    {{match.access}}
+    {{match.password}}
   </li>
 </ul>
