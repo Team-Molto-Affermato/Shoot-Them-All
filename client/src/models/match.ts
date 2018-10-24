@@ -3,8 +3,8 @@ import {User} from "./user";
 
 export class Match {
 
-  constructor(public id: string,
-              public access: string,
+  constructor(public name: string,
+              public access: MatchAccess,
               public centerPoint: Point,
               public radius: number,
               public startingTime: Date,
@@ -12,7 +12,7 @@ export class Match {
               public maxUser: number,
               public password: string,
               public users: Array<string>,
-              public state: string) {}
+              public state: MatchState) {}
 }
 
 export enum MatchAccess {
@@ -21,7 +21,7 @@ export enum MatchAccess {
 }
 
 export enum MatchState {
-  WAITING,
+  SETTING_UP,
   STARTED,
   ENDED
 }

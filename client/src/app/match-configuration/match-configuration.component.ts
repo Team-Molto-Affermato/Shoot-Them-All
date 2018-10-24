@@ -31,6 +31,7 @@ export class MatchConfigurationComponent implements OnInit {
 
   createFormGroup() {
     return this.formBuilder.group({
+      name: '',
       access: this.access,
       password: '',
       duration: '',
@@ -51,19 +52,19 @@ export class MatchConfigurationComponent implements OnInit {
 
   createNewMatch() {
     const formValues = this.newMatchForm.value;
-    // const matchBaseInfo: MatchBaseInfo = new MatchBaseInfo(this.access, new Point(0, 0), formValues.areaRadius,
-    //   0, formValues.duration, formValues.maxPlayerNumber, formValues.password);
-    //
-    // const match: Match = new Match("0", matchBaseInfo, [], MatchState.WAITING);
 
-    // this.matchConfigurationService.createNewMatch(match).subscribe(
-    //   (data: Match) => {
-    //     alert(data);
-    //     this.matchInfoService.setCurrentMatchId(data.id);
-    //   },
-    //   error => alert(error)
-    // );
-    // this.router.navigate(["/matchInfo"])
+    const match: Match = new Match(
+      formValues.name, this.access, new Point(0, 0), formValues.areaRadius,
+      new Date(), formValues.duration, formValues.maxPlayerNumber, formValues.password, [], MatchState.SETTING_UP);
+
+    this.matchConfigurationService.createNewMatch(match).subscribe(
+      (data: Match) => {
+        alert(data);
+        this.matchInfoService.setCurrentMatchId(data.name);
+      },
+      error => alert(error)
+    );
+    this.router.navigate(["/matchInfo"])
   }
 
 }

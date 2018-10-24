@@ -28,7 +28,7 @@ export var MatchAccess;
 })(MatchAccess || (MatchAccess = {}));
 export var MatchState;
 (function (MatchState) {
-    MatchState[MatchState["WAITING"] = 0] = "WAITING";
+    MatchState[MatchState["SETTING_UP"] = 0] = "SETTING_UP";
     MatchState[MatchState["STARTED"] = 1] = "STARTED";
     MatchState[MatchState["ENDED"] = 2] = "ENDED";
 })(MatchState || (MatchState = {}));
