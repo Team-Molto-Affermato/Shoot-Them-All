@@ -59,12 +59,13 @@ export class MatchConfigurationComponent implements OnInit {
 
     this.matchConfigurationService.createNewMatch(match).subscribe(
       (data: Match) => {
-        alert(data);
         this.matchInfoService.setCurrentMatchId(data.name);
+        this.router.navigate(["/matchInfo"]);
       },
-      error => alert(error)
+      error =>
+        alert(error)
     );
-    this.router.navigate(["/matchInfo"])
+
   }
 
 }

@@ -1,4 +1,6 @@
 <form id="form" [formGroup]="newMatchForm" (ngSubmit)="createNewMatch()" novalidate>
+  <label for="name">Name</label>
+  <input formControlName="name" id="name">
   <label for="access">Access</label>
   <select (change)="switchAccess()" id="access">
     <option>Public</option>
