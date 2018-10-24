@@ -16,12 +16,12 @@ export class Match {
 }
 
 export enum MatchAccess {
-  PUBLIC,
-  PRIVATE
+  PUBLIC = "PUBLIC",
+  PRIVATE = "PRIVATE"
 }
 
 export enum MatchState {
-  SETTING_UP,
-  STARTED,
-  ENDED
+  SETTING_UP = "SETTING_UP",
+  STARTED = "STARTED",
+  ENDED = "ENDED"
 }

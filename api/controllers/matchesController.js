@@ -63,16 +63,7 @@ exports.addUserToMatch = (req,res)=>{
 }
 exports.createMatch = (req, res) => {
     console.log(req.body)
-    var newMatch = new Room({
-        roomName: req.body.id,
-        location: {
-            type: "Point",
-            coordinates: [req.body.centerPoint.x,req.body.centerPoint.y]
-        },
-        radius: req.body.radius,
-        duration: req.body.duration,
-        visibility: req.body.access,
-    });
+    var newMatch = new Room(req.body);
 
     newMatch.save(function(err){
         if(err)
