@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {HomeService} from "../../services/home.service";
 import {Match} from "../../models/match";
 import {MatchInfoService} from "../../services/match-info.service";
+import {AuthenticationService} from "../../services/authentication.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,9 @@ export class HomeComponent implements OnInit {
 
   matches: Array<Match> = [];
 
-  constructor(private homeService: HomeService,
+  constructor(private router: Router,
+              private authenticationService: AuthenticationService,
+              private homeService: HomeService,
               private matchInfoService: MatchInfoService) {
     this.updateMatches();
   }
@@ -27,6 +31,10 @@ export class HomeComponent implements OnInit {
       },
       error => alert(error)
     );
+  }
+
+  logout() {
+    this.authenticationService.logout();
   }
 
 }
