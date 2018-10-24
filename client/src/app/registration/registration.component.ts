@@ -18,7 +18,6 @@ export class RegistrationComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private registrationService: RegistrationService) {
-    alert("Registration");
     this.registrationForm = this.createFormGroup();
   }
 
@@ -36,14 +35,10 @@ export class RegistrationComponent implements OnInit {
   }
 
   register() {
-    alert("Register called");
     // Make sure to create a deep copy of the form-model
     const user: User = Object.assign({}, this.registrationForm.value);
 
-    alert(user.username);
-
     this.registrationService.register(user).subscribe(() => {
-      alert("Navi called");
       this.router.navigateByUrl('/home');
     }, (err) => {
       alert(err);

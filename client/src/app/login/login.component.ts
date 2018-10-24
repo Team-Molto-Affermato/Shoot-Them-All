@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private loginService: LoginService) {
-    this.loginForm = this.createFormGroup();
+     this.loginForm = this.createFormGroup();
   }
 
 
