@@ -24,7 +24,8 @@ var RoomSchema = new Schema({
    users:[String],
    visibility:{type:String,required: true},
    password:{type:String,required: false},
-   created_at: {type: Date, default: Date.now}
+   created_at: {type: Date, default: Date.now},
+   starting_time: {type: Date, default: Date.now}
 });
 
 // const UserInRoomSchema = new mongoose.Schema({
