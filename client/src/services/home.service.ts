@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ErrorsHandlerService} from "./errors-handler.service";
 import {Observable} from "rxjs";
 import {catchError, map} from "rxjs/operators";
-import {Match} from "../models/match";
-import {TokenResponse} from "../models/user";
+import {Match, MatchAccess, MatchState} from "../models/match";
 import {Point} from "../models/point";
 
 @Injectable({
@@ -25,9 +24,26 @@ export class HomeService {
         map((data: Array<any>) => {
 
           const matches: Array<Match> = data.map(m => {
+
+            var access: MatchAccess;
+            if (m.visibility === "PUBLIC") {
+              access = MatchAccess.PUBLIC;
+            } else {
+              access = MatchAccess.PRIVATE;
+            }
+
+            var state: MatchState;
+            if (m.state === "SETTING_UP") {
+              state = MatchState.SETTING_UP;
+            } else if(m.state === "STARTED") {
+              state = MatchState.STARTED;
+            } else {
+              state = MatchState.ENDED;
+            }
+
             return new Match(
               m.roomName,
-              m.visibility,
+              access,
               new Point(m.location.coordinates[0], m.location.coordinates[1]),
               m.radius,
               m.starting_time,
@@ -35,7 +51,7 @@ export class HomeService {
               m.max_user,
               m.password,
               m.users,
-              m.state)
+              state)
           });
 
           return matches;
