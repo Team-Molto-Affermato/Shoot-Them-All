@@ -11,7 +11,9 @@ var cors = require('cors');
 const app = express();
 const port = 3000;
 
-app.use(express.static("client/dist/client"));
+// app.use(express.static("client/dist"));
+app.use(express.static(path.join(__dirname, 'client/dist/client')));
+
 mongoose.connect("mongodb://localhost/ShootThemAll");
 
 require('./api/config/passport');
@@ -30,13 +32,13 @@ app.use(passport.initialize());
 
 
 /* GET home page. */
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/client/src/index.html');
-});
-app.get('/home', function(req, res) {
-    res.sendFile(__dirname + '/client/src/index.html');
-});
+app.use('/home', express.static(path.join(__dirname, 'client/dist/client')));
+app.use('/registration', express.static(path.join(__dirname, 'client/dist/client')));
+app.use('/login', express.static(path.join(__dirname, 'client/dist/client')));
+
 app.use('/api', routesApi);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -18,6 +18,7 @@ export class RegistrationComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private registrationService: RegistrationService) {
+    alert("Registration");
     this.registrationForm = this.createFormGroup();
   }
 

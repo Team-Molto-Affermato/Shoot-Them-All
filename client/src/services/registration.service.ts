@@ -16,8 +16,7 @@ export class RegistrationService {
               private errorsHandlerService: ErrorsHandlerService) { }
 
   register(user: User): Observable<any> {
-
-    return this.authenticationService.request('post', "/api/register", user)
+    return this.authenticationService.request('post', "/api/registration", user)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );

@@ -12,15 +12,18 @@ import { HomeComponent } from './home/home.component';
 import { MatchConfigurationComponent } from './match-configuration/match-configuration.component';
 import { MatchInfoComponent } from './match-info/match-info.component';
 import {AuthenticationService} from "../services/authentication.service";
+import {AuthGuardService as AuthGuard} from "../services/auth-guard.service";
 
 const appRoutes: Routes = [
-  {path: "", component: LoginComponent, runGuardsAndResolvers: 'always'},
+  {path: "", redirectTo: '/home', pathMatch: 'full'},
   {path: "login", component: LoginComponent},
   {path: "registration", component: RegistrationComponent},
-  {path: "home", component: HomeComponent, runGuardsAndResolvers: 'always'},
-  {path: "matchConfiguration", component: MatchConfigurationComponent},
-  {path: "matchInfo", component: MatchInfoComponent}
+  {path: "home", component: HomeComponent, canActivate: [AuthGuard]},
+  {path: "matchConfiguration", component: MatchConfigurationComponent, canActivate: [AuthGuard]},
+  {path: "matchInfo", component: MatchInfoComponent, canActivate: [AuthGuard]}
 ];
+
+
 
 @NgModule({
   declarations: [
@@ -33,7 +36,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
+    RouterModule.forRoot(appRoutes),
     HttpClientModule,
     ReactiveFormsModule
   ],
