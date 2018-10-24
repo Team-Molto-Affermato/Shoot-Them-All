@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Match, MatchAccess, MatchBaseInfo, MatchState} from "../../models/match";
+import {Match, MatchAccess, MatchState} from "../../models/match";
 import {Point} from "../../models/point";
 import {MatchConfigurationService} from "../../services/match-configuration.service";
 import {User} from "../../models/user";
@@ -51,19 +51,19 @@ export class MatchConfigurationComponent implements OnInit {
 
   createNewMatch() {
     const formValues = this.newMatchForm.value;
-    const matchBaseInfo: MatchBaseInfo = new MatchBaseInfo(this.access, new Point(0, 0), formValues.areaRadius,
-      0, formValues.duration, formValues.maxPlayerNumber, formValues.password);
+    // const matchBaseInfo: MatchBaseInfo = new MatchBaseInfo(this.access, new Point(0, 0), formValues.areaRadius,
+    //   0, formValues.duration, formValues.maxPlayerNumber, formValues.password);
+    //
+    // const match: Match = new Match("0", matchBaseInfo, [], MatchState.WAITING);
 
-    const match: Match = new Match("0", matchBaseInfo, [], MatchState.WAITING);
-
-    this.matchConfigurationService.createNewMatch(match).subscribe(
-      (data: Match) => {
-        alert(data);
-        this.matchInfoService.setCurrentMatchId(data.id);
-      },
-      error => alert(error)
-    );
-    this.router.navigate(["/matchInfo"])
+    // this.matchConfigurationService.createNewMatch(match).subscribe(
+    //   (data: Match) => {
+    //     alert(data);
+    //     this.matchInfoService.setCurrentMatchId(data.id);
+    //   },
+    //   error => alert(error)
+    // );
+    // this.router.navigate(["/matchInfo"])
   }
 
 }
