@@ -17,14 +17,7 @@ export class MatchConfigurationService {
 
   createNewMatch(match: Match): Observable<Match> {
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
-
-    return this.http.post<Match>("/api/matches", match, httpOptions)
+    return this.http.post<Match>("/api/matches", match)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );
