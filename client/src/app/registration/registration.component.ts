@@ -42,16 +42,7 @@ export class RegistrationComponent implements OnInit {
       this.router.navigateByUrl('/home');
     }, (err) => {
       alert(err);
-      console.error(err);
     });
-
-    // this.registerService.fetchData(user).subscribe(
-    //   (data: User) => {
-    //     alert(data);
-    //     this.router.navigate(["/home"])
-    //   },
-    //   error => alert(error)
-    // );
   }
 
 }

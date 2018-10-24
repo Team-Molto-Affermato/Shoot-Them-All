@@ -3,21 +3,16 @@ import {User} from "./user";
 
 export class Match {
 
-  constructor(public id: String,
-              public matchBaseInfo: MatchBaseInfo,
-              public players: Array<User>,
-              public matchState: MatchState) {}
-}
-
-export class MatchBaseInfo {
-
-  constructor(public access: MatchAccess,
+  constructor(public id: string,
+              public access: string,
               public centerPoint: Point,
               public radius: number,
-              public startingTime: number,
+              public startingTime: Date,
               public duration: number,
-              public maxPlayerNumber: number,
-              public password: string) {}
+              public maxUser: number,
+              public password: string,
+              public users: Array<string>,
+              public state: string) {}
 }
 
 export enum MatchAccess {

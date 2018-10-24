@@ -8,7 +8,6 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.register = function(req, res) {
-    console.log("Alloraaaaaaaaa");
     var user = new User();
 
     user.name = req.body.name;
@@ -19,9 +18,11 @@ module.exports.register = function(req, res) {
     user.setPassword(req.body.password);
 
     user.save(function(err) {
-        if(err)
-            res.send(err);
-        else{
+        if(err) {
+            res.status(400).json({
+                "message": "User already existing"
+            });
+        } else {
             var token;
             token = user.generateJwt();
             res.status(200);
