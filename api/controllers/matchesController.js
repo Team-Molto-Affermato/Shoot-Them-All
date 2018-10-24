@@ -14,7 +14,7 @@ exports.listMatches = (req, res) => {
 exports.listMatchesRange = (req,res)=> {
     var lat =    Number(req.query.lat);
     var lon =    Number(req.query.lon);
-    var query = Room.where('location').within({ center: [lon,lat], radius: 10, unique: true, spherical: true });
+    var query = Room.where('location').within({ center: [lon,lat], radius: req.query.radius, unique: true, spherical: true });
     query.exec(function (err,rooms) {
         if(err) res.send(err)
         else  res.json(rooms)
