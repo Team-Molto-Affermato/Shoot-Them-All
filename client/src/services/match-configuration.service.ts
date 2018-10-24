@@ -24,7 +24,7 @@ export class MatchConfigurationService {
       })
     };
 
-    return this.http.post<Match>("/matches", match, httpOptions)
+    return this.http.post<Match>("/api/matches", match, httpOptions)
       .pipe(
         catchError(this.errorsHandlerService.handleError)
       );

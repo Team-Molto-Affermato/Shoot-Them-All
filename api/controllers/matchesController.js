@@ -62,6 +62,7 @@ exports.addUserToMatch = (req,res)=>{
         });
 }
 exports.createMatch = (req, res) => {
+    console.log(req.body)
     var newMatch = new Room(req.body);
     newMatch.save(function(err){
         if(err)
