@@ -6,6 +6,7 @@ import {Point} from "../../models/point";
 import {MatchConfigurationService} from "../../services/match-configuration.service";
 import {User} from "../../models/user";
 import {MatchInfoService} from "../../services/match-info.service";
+import {MatchConverterService} from "../../services/match-converter.service";
 
 @Component({
   selector: 'app-match-configuration',
@@ -22,7 +23,8 @@ export class MatchConfigurationComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private matchConfigurationService: MatchConfigurationService,
-              private matchInfoService: MatchInfoService) {
+              private matchInfoService: MatchInfoService,
+              private matchConverterService: MatchConverterService) {
     this.newMatchForm = this.createFormGroup();
   }
 
@@ -58,8 +60,8 @@ export class MatchConfigurationComponent implements OnInit {
       new Date(), formValues.duration, formValues.maxPlayerNumber, formValues.password, [], MatchState.SETTING_UP);
 
     this.matchConfigurationService.createNewMatch(match).subscribe(
-      (data: Match) => {
-        this.matchInfoService.setCurrentMatchId(data.name);
+      (data) => {
+        this.matchInfoService.setCurrentMatch(this.matchConverterService.jsonToClass(data));
         this.router.navigate(["/matchInfo"]);
       },
       error =>

@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {Match, MatchAccess, MatchState} from "../models/match";
 import {Point} from "../models/point";
+import {MatchConverterService} from "./match-converter.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ import {Point} from "../models/point";
 export class HomeService {
 
   constructor(private http: HttpClient,
-              private errorsHandlerService: ErrorsHandlerService) {
+              private errorsHandlerService: ErrorsHandlerService,
+              private matchCOnverterService: MatchConverterService) {
 
   }
 
@@ -25,17 +27,7 @@ export class HomeService {
 
           const matches: Array<Match> = data.map(m => {
 
-            return new Match(
-              m.roomName,
-              MatchAccess[<string>m.visibility],
-              new Point(m.location.coordinates[0], m.location.coordinates[1]),
-              m.radius,
-              m.starting_time,
-              m.duration,
-              m.max_user,
-              m.password,
-              m.users,
-              MatchState[<string>m.state])
+            return this.matchCOnverterService.jsonToClass(m);
           });
 
           return matches;

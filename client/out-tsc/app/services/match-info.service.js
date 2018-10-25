@@ -20,7 +20,7 @@ var MatchInfoService = /** @class */ (function () {
         this.currentMatchId = matchId;
     };
     MatchInfoService.prototype.getCurrentMatchId = function () {
-        return this.currentMatchId;
+        return this.currentMatch;
     };
     MatchInfoService = __decorate([
         Injectable({

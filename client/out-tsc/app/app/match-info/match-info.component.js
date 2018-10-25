@@ -14,7 +14,7 @@ var MatchInfoComponent = /** @class */ (function () {
     function MatchInfoComponent(router, matchInfoService) {
         this.router = router;
         this.matchInfoService = matchInfoService;
-        this.matchId = matchInfoService.getCurrentMatchId();
+        this.matchId = matchInfoService.getCurrentMatch();
     }
     MatchInfoComponent.prototype.ngOnInit = function () {
     };

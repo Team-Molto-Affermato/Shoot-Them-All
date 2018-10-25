@@ -1,11 +1,9 @@
-<label for="access">Access</label>
-<p id="access"></p>
-<label for="areaRadius">Area Radius</label>
-<p id="areaRadius"></p>
-<label for="remainingTime">Remaining Time</label>
-<p id="remainingTime"></p>
-<label for="players">Players</label>
-<ul id="players">
-
+<label for="name">Name</label>
+<p id="name">{{match.name}}</p>
+<label for="users">Players</label>
+<ul id="users">
+  <li *ngFor="let user of match.users">
+    {{user.username}}
+  </li>
 </ul>
 

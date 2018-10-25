@@ -1,7 +1,7 @@
 <a [routerLink]="['/matchConfiguration']"><button>New Match</button></a>
 <button (click)="logout()">Logout</button>
 <ul>
-  <li *ngFor="let match of matches">
+  <li *ngFor="let match of matches"><a (click)="showInfo(match)">
     {{match.name}}
     {{match.centerPoint}}
     {{match.maxUser}}
@@ -12,5 +12,5 @@
     {{match.access}}
     {{match.password}}
     {{match.startingTime}}
-  </li>
+  </a></li>
 </ul>

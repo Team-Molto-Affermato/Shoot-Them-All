@@ -8,7 +8,7 @@ import {Match} from "../models/match";
 })
 export class MatchInfoService {
 
-  currentMatchId: String = null;
+  currentMatch: Match = null;
 
   constructor(private http: HttpClient,
               private errorsHandlerService: ErrorsHandlerService) {
@@ -16,11 +16,11 @@ export class MatchInfoService {
   }
 
 
-  setCurrentMatchId(matchId: String) {
-    this.currentMatchId = matchId;
+  setCurrentMatch(match: Match) {
+    this.currentMatch = match;
   }
 
-  getCurrentMatchId(): String {
-    return this.currentMatchId;
+  getCurrentMatch(): Match {
+    return this.currentMatch;
   }
 }

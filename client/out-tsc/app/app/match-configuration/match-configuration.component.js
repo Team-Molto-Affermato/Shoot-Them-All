@@ -52,7 +52,7 @@ var MatchConfigurationComponent = /** @class */ (function () {
         var match = new Match("0", matchBaseInfo, [], MatchState.WAITING);
         this.matchConfigurationService.createNewMatch(match).subscribe(function (data) {
             alert(data);
-            _this.matchInfoService.setCurrentMatchId(data.id);
+            _this.matchInfoService.setCurrentMatch(data.id);
         }, function (error) { return alert(error); });
         this.router.navigate(["/matchInfo"]);
     };

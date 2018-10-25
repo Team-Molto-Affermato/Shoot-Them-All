@@ -36,4 +36,9 @@ export class HomeComponent implements OnInit {
     this.authenticationService.logout();
   }
 
+  showInfo(match: Match) {
+    this.matchInfoService.setCurrentMatch(match);
+    this.router.navigateByUrl("matchInfo");
+  }
+
 }

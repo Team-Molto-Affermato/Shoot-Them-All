@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {MatchInfoService} from "../../services/match-info.service";
+import {Match} from "../../models/match";
 
 @Component({
   selector: 'app-match-info',
@@ -9,11 +10,11 @@ import {MatchInfoService} from "../../services/match-info.service";
 })
 export class MatchInfoComponent implements OnInit {
 
-  matchId: String;
+  match: Match;
 
   constructor(private router: Router,
               private matchInfoService: MatchInfoService) {
-    this.matchId = matchInfoService.getCurrentMatchId();
+    this.match = matchInfoService.getCurrentMatch();
   }
 
   ngOnInit() {
