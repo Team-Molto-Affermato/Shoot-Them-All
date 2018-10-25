@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {TokenResponse, UserData, UserDetails} from "../models/user";
+import {TokenResponse, User, UserData, UserDetails} from "../models/user";
 
 // Interfaces here
 
@@ -77,6 +77,10 @@ export class AuthenticationService {
 
   login(userData: UserData): Observable<any>  {
     return this.request('post', "/api/login", userData);
+  }
+
+  register(user: User): Observable<any> {
+    return this.request('post', "/api/registration", user)
   }
 
 

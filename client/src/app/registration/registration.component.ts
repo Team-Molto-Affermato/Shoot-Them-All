@@ -39,7 +39,7 @@ export class RegistrationComponent implements OnInit {
     const user: User = Object.assign({}, this.registrationForm.value);
 
     this.registrationService.register(user).subscribe(() => {
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('home');
     }, (err) => {
       alert(err);
     });
