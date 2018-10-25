@@ -14,7 +14,7 @@ const port = 3000;
 // app.use(express.static("client/dist"));
 app.use(express.static(path.join(__dirname, 'client/dist/client')));
 
-mongoose.connect("mongodb://localhost/ShootThemAll",{useNewUrlParser: true});
+mongoose.connect("mongodb://mistabuga:dcn400@ds255970.mlab.com:55970/shoot-them-all",{useNewUrlParser: true});
 
 require('./api/config/passport');
 
