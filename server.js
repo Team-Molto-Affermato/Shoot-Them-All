@@ -38,8 +38,12 @@ app.use('/login', express.static(path.join(__dirname, 'client/dist/client')));
 app.use('/matchConfiguration', express.static(path.join(__dirname, 'client/dist/client')));
 
 app.use('/api', routesApi);
-
-
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
+//
+// io.on('connection', function(socket){
+//     console.log('a user connected');
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

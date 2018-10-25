@@ -27,7 +27,7 @@ exports.matchState = (req,res) =>{
         });
         query.exec(function(err, state){
             if(err)
-                res.send(err);
+                res.status(400).send(err);
             else
                 res.json({
                     state: state.state
@@ -67,9 +67,9 @@ exports.createMatch = (req, res) => {
 
     newMatch.save(function(err){
         if(err)
-            res.send(err);
+            res.status(400).send(err);
         else
-            res.json(req.body);
+            res.json(newMatch);
     });
 };
 
