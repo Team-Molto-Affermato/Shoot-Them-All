@@ -1,4 +1,5 @@
 const express = require("express");
+
 const bodyParser = require("body-parser");
 var mongoose        = require('mongoose');
 var path = require('path');
@@ -8,9 +9,55 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var cors = require('cors');
 
-const app = express();
-const port = 3000;
+const app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io')(server);
 
+const port = 3000;
+let timerId = null,
+    sockets = new Set();
+io.on('connection', socket => {
+
+    sockets.add(socket);
+    console.log(`Socket ${socket.id} added`);
+
+    if (!timerId) {
+        startTimer();
+    }
+
+    socket.on('clientdata', data => {
+        console.log(data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log(`Deleting socket: ${socket.id}`);
+        sockets.delete(socket);
+        console.log(`Remaining sockets: ${sockets.size}`);
+    });
+
+});
+
+function startTimer() {
+    //Simulate stock data received by the server that needs
+    //to be pushed to clients
+    timerId = setInterval(() => {
+        if (!sockets.size) {
+            clearInterval(timerId);
+            timerId = null;
+            console.log(`Timer stopped`);
+        }
+        let value = ((Math.random() * 50) + 1).toFixed(2);
+        //See comment above about using a "room" to emit to an entire
+        //group of sockets if appropriate for your scenario
+        //This example tracks each socket and emits to each one
+        for (const s of sockets) {
+            console.log(`Emitting value: ${value}`);
+            s.emit('data', { data: value });
+        }
+
+    }, 2000);
+}
+// var ws = require('./ws');
 // app.use(express.static("client/dist"));
 app.use(express.static(path.join(__dirname, 'client/dist/client')));
 
@@ -93,4 +140,4 @@ app.use(function(err, req, res, next) {
 // userDataRoutes(app);
 
 // userInMatchRoutes(app);
-app.listen(port);
+server.listen(port);
