@@ -9,25 +9,40 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var cors = require('cors');
 
-const app = express(),
-    server = require('http').createServer(app),
-    io = require('socket.io')(server);
+const app = express();
+const server = require('http').createServer(app);
+io = require('socket.io')(server);
+
+var redis = require('socket.io-redis');
+//
+io.adapter(redis({ host: 'localhost', port: 6379 }));
 
 const port = 3000;
 let timerId = null,
     sockets = new Set();
 io.on('connection', socket => {
+    socket.on('room',function (room) {
+        console.log(`Socket ${socket.id} added to room ${room.room}`);
+        socket.join(room.room);
+        // io.sockets.in(room).emit('users',{username:room.user});
+    });
 
-    sockets.add(socket);
+    socket.on('leave',function (room) {
+        socket.leave(room);
+    })
+    // sockets.add(socket);
     console.log(`Socket ${socket.id} added`);
-
-    if (!timerId) {
-        startTimer();
-    }
+    //
+    // if (!timerId) {
+    //     startTimer();
+    // }
 
     socket.on('clientdata', data => {
         console.log(data);
     });
+    socket.on('message',data => {
+        console.log(data.message);
+    })
 
     socket.on('disconnect', () => {
         console.log(`Deleting socket: ${socket.id}`);

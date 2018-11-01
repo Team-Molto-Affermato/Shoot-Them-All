@@ -4,6 +4,7 @@ import {Match} from "../../models/match";
 import {MatchInfoService} from "../../services/match-info.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-home',
@@ -17,11 +18,14 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
               private authenticationService: AuthenticationService,
               private homeService: HomeService,
+              private dataService: DataService,
               private matchInfoService: MatchInfoService) {
     this.updateMatches();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.dataService.sendMessage();
+  }
 
   updateMatches() {
     this.homeService.getMatches().subscribe(
