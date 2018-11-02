@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -13,6 +14,9 @@ import { MatchConfigurationComponent } from './match-configuration/match-configu
 import { MatchInfoComponent } from './match-info/match-info.component';
 import {AuthenticationService} from "../services/authentication.service";
 import {AuthGuardService as AuthGuard} from "../services/auth-guard.service";
+import { NavbarComponent } from './navbar/navbar.component';
+import { MatchComponent } from './match/match.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const appRoutes: Routes = [
   {path: "", redirectTo: 'home', pathMatch: 'full'},
@@ -20,7 +24,8 @@ const appRoutes: Routes = [
   {path: "registration", component: RegistrationComponent},
   {path: "home", component: HomeComponent, canActivate: [AuthGuard]},
   {path: "matchConfiguration", component: MatchConfigurationComponent, canActivate: [AuthGuard]},
-  {path: "matchInfo", component: MatchInfoComponent, canActivate: [AuthGuard]}
+  {path: "matchInfo", component: MatchInfoComponent, canActivate: [AuthGuard]},
+  {path: "match", component: MatchComponent, canActivate: [AuthGuard]}
 ];
 
 
@@ -32,13 +37,17 @@ const appRoutes: Routes = [
     RegistrationComponent,
     HomeComponent,
     MatchConfigurationComponent,
-    MatchInfoComponent
+    MatchInfoComponent,
+    NavbarComponent,
+    MatchComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartsModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
