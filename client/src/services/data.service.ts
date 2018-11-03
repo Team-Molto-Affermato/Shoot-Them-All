@@ -15,18 +15,26 @@ export class DataService {
 
   socket: Socket;
   observer: Observer<number>;
-  userObserver: Observer<string[]>;
+  userObserver: Observer<Array<String>>;
+  timeoutObserver: Observer<String>;
 
+  getTimeouts():Observable<String>{
+    this.socket.on('timeout', (res) => {
+      this.timeoutObserver.next(res.message);
+    });
+    return this.createTimeoutObservable();
+  }
   joinRoom(roomName,username):any{
     this.socket.emit('room',{
       room:roomName,
       user: username
     });
   }
+
   leaveRoom(roomName):any{
     this.socket.emit('leave',roomName);
   }
-  getUsers() :Observable<string[]> {
+  getUsers() :Observable<Array<String>> {
     this.socket.on('users', (res) => {
       this.userObserver.next(res);
     });
@@ -48,8 +56,13 @@ export class DataService {
       message:"Ciao Diego"
     })
   }
-  createUserObservable() : Observable<string[]> {
-    return new Observable<string[]>(observer => {
+  createTimeoutObservable() : Observable<String> {
+    return new Observable<String>(observer => {
+      this.timeoutObserver = observer;
+    });
+  }
+  createUserObservable() : Observable<Array<String>> {
+    return new Observable<Array<String>>(observer => {
       this.userObserver = observer;
     });
   }

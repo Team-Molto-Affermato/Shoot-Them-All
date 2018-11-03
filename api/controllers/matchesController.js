@@ -15,25 +15,12 @@ exports.listMatches = (req, res) => {
 
 };
 
-function startTimer() {
+function startTimer(roomName) {
     //Simulate stock data received by the server that needs
     //to be pushed to clients
-    timerId = setInterval(() => {
-        if (!sockets.size) {
-            clearInterval(timerId);
-            timerId = null;
-            console.log(`Timer stopped`);
-        }
-        let value = ((Math.random() * 50) + 1).toFixed(2);
-        //See comment above about using a "room" to emit to an entire
-        //group of sockets if appropriate for your scenario
-        //This example tracks each socket and emits to each one
-        for (const s of sockets) {
-            console.log(`Emitting value: ${value}`);
-            s.emit('data', { data: value });
-        }
-
-    }, 2000);
+    setTimeout(() => {
+        io.to(roomName).emit('timeout',{message:"The game is starting"});
+    }, 10000);
 }
 exports.listMatchesRange = (req,res)=> {
     var lat =    Number(req.query.lat);
@@ -96,12 +83,21 @@ exports.createMatch = (req, res) => {
         if(err)
             res.status(400).send(err);
         else
+            startTimer(req.body.roomName);
             res.json(newMatch);
     });
 };
 
 exports.readMatch = (req, res) => {
-
+    var query = Room.findOne({
+        roomName : req.params.matchId
+    });
+    query.exec(function(err, match){
+        if(err)
+            res.status(400).send(err);
+        else
+            res.send(match);
+    });
 };
 
 exports.updateMatch = (req, res) => {
@@ -109,6 +105,14 @@ exports.updateMatch = (req, res) => {
 };
 
 exports.deleteMatch = (req, res) => {
-
+    var query = Room.deleteOne({
+        roomName : req.params.matchId
+    })
+    query.exec(function (err,raw) {
+        if(err)
+            res.send(err)
+        else
+            res.send(raw)
+    });
 };
 

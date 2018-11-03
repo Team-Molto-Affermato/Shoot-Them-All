@@ -14,7 +14,8 @@ export class MatchInfoComponent implements OnInit {
 
   match: Match;
   usersSub: Subscription;
-  users: String[] = [];
+  timeoutSub: Subscription;
+  users: Array<String> = new Array<String>();
   constructor(private router: Router,
               private matchInfoService: MatchInfoService,
               private dataService: DataService) {
@@ -25,10 +26,16 @@ export class MatchInfoComponent implements OnInit {
     this.dataService.joinRoom(this.match.name,"Diego"+Math.random())
     this.usersSub = this.dataService
       .getUsers()
-      .subscribe(users => {
-        this.users = users
+      .subscribe(userList => {
+        this.users = userList;
+        console.log(this.users[0]);
         console.log(this.users);
       });
+    this.timeoutSub = this.dataService
+      .getTimeouts()
+      .subscribe( timeouts =>{
+          console.log(timeouts)
+        });
   }
   
 }

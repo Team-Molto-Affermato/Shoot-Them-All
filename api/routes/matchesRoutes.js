@@ -34,8 +34,8 @@ module.exports = (app) => {
         .get(matchesController.listMatchesRange);
 
     app.route('/matches/:matchId')
-        .get(matchesController.createMatch)
-        .put(matchesController.createMatch)
-        .delete(matchesController.createMatch);
+        .get(matchesController.readMatch)
+        .put(matchesController.updateMatch)
+        .delete(matchesController.deleteMatch);
 
 };
