@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {MatchInfoService} from "../../services/match-info.service";
 import {Match} from "../../models/match";
 import { DataService } from '../../services/data.service';
 import {Subscription} from "rxjs";
@@ -18,12 +17,11 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   timeoutSub: Subscription;
   users: Array<String> = new Array<String>();
   constructor(private router: Router,
-              private matchInfoService: MatchInfoService,
               private dataService: DataService) {
-    this.match = matchInfoService.getCurrentMatch();
   }
 
   ngOnInit() {
+    this.match = LocalStorageHelper.getItem(StorageKey.MACTH);
     this.dataService.joinRoom(this.match.name,"Diego"+Math.random())
     this.usersSub = this.dataService
       .getUsers()
@@ -37,7 +35,6 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       .subscribe( timeouts =>{
           console.log(timeouts)
         });
-    this.match = LocalStorageHelper.getItem(StorageKey.MACTH);
   }
 
   ngOnDestroy() {

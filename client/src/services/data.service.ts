@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import * as socketIo from 'socket.io-client';
 
 import { Socket } from '../shared/interfaces';
+import {UserPosition} from "../models/point";
 
 declare var io : {
   connect(url: string): Socket;
@@ -17,6 +18,14 @@ export class DataService {
   observer: Observer<number>;
   userObserver: Observer<Array<String>>;
   timeoutObserver: Observer<String>;
+  positionObserver: Observer<UserPosition>;
+
+  getPositions():Observable<UserPosition>{
+    this.socket.on('users-pos', (res) => {
+      this.positionObserver.next(res);
+    });
+    return this.createUserPosObservable();
+  }
 
   getTimeouts():Observable<String>{
     this.socket.on('timeout', (res) => {
@@ -56,6 +65,12 @@ export class DataService {
       message:"Ciao Diego"
     })
   }
+  createUserPosObservable() : Observable<UserPosition> {
+    return new Observable<UserPosition>(observer => {
+      this.positionObserver = observer;
+    });
+  }
+
   createTimeoutObservable() : Observable<String> {
     return new Observable<String>(observer => {
       this.timeoutObserver = observer;

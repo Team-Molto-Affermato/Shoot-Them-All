@@ -19,7 +19,9 @@ function startTimer(roomName) {
     //Simulate stock data received by the server that needs
     //to be pushed to clients
     setTimeout(() => {
+        updateMatchState(roomName,"STARTED");
         io.to(roomName).emit('timeout',{message:"The game is starting"});
+
     }, 10000);
 }
 exports.listMatchesRange = (req,res)=> {
@@ -45,7 +47,22 @@ exports.matchState = (req,res) =>{
                 });
         });
 }
+function updateMatchState(roomName,state){
+    var query = {
+        roomName: roomName
+    };
+    Room.findOneAndUpdate(query, { state:state }, {upsert:true,new:true}, function (err,room) {
+        if(err){
 
+        }else{
+            setTimeout(() => {
+                updateMatchState(roomName,"CLOSED");
+                io.to(roomName).emit('timeout',{message:"End of the Match"});
+            }, room.duration*60000);
+        }
+    });
+
+}
 exports.setMatchState = (req, res) => {
     var query = {
         roomName: req.params.roomName

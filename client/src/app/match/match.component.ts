@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Coordinate, CoordinatesHelper} from "../../utilities/CoordinatesHelper";
 import {AngleHelper} from "../../utilities/AngleHelper";
+import {DataService} from "../../services/data.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-match',
@@ -33,16 +35,27 @@ export class MatchComponent implements OnInit {
   deg: number = 0;
   radius: number = 100;
   ratio: number;
+  usersSub: Subscription;
 
   radar: HTMLElement;
 
-  constructor() {
+  constructor(
+    private dataService: DataService
+  ) {
   }
 
   ngOnInit() {
     this.radar = document.getElementById("rad");
     const radarRadius = this.radar.offsetWidth/2;
     this.ratio = radarRadius/this.radius;
+    this.usersSub = this.dataService
+      .getPositions()
+      .subscribe(pos =>{
+        console.log(pos);
+        let newPos = {coordinate: new Coordinate(pos.position.x, pos.position.y), active: false};
+        this.points.push(newPos);
+        console.log(this.points);
+      });
 
     window.addEventListener("deviceorientationabsolute", (event) => this.handleOrientation(event), true)
 
@@ -102,6 +115,4 @@ export class MatchComponent implements OnInit {
 
   shoot() {
   }
-
-
 }

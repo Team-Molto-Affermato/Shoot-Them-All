@@ -1,5 +1,6 @@
 var mongoose        = require('mongoose');
 var UserInMatch            = require('../models/userInMatch');
+var io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
 
 exports.listUserInMatch = (req, res) => {
     var query = UserInMatch.find({
@@ -52,25 +53,39 @@ exports.updateUserScore = (req, res) => {
         name: req.params.username,
         roomName: req.params.roomName
     };
-    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:true}, function (err,user) {
+    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:true}, function (err,users) {
         if (err) {
             return res.send(err)
         } else {
-            res.json(user)
+            io.to(req.params.roomName).emit('users-score',{users:users});
+            res.json(users);
         }
     });
 };
+function mapToPosition(item, index) {
+    var position = item.location.coordinates
+    return {
+        username: item.name,
+        position: {
+            x:position[0],
+            y:position[1]
+        }
+    };
+}
 
 exports.updateUserPos = (req, res) => {
+
     var query = {
         name: req.params.username,
         roomName: req.params.roomName
     };
-    UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:true}, function (err,user) {
+    UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:true,new:true}, function (err,user) {
         if (err) {
             return res.send(err)
         } else {
-            res.json(req.body)
+            let userPosition = mapToPosition(user);
+            io.to(req.params.roomName).emit('users-pos',userPosition);
+            res.json(userPosition);
         }
     });
 };
