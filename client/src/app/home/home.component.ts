@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HomeService} from "../../services/home.service";
 import {Match} from "../../models/match";
 import {MatchInfoService} from "../../services/match-info.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
 import { DataService } from '../../services/data.service';
+import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 
 @Component({
   selector: 'app-home',
@@ -36,13 +37,10 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  logout() {
-    this.authenticationService.logout();
-  }
-
   showInfo(match: Match) {
-    this.matchInfoService.setCurrentMatch(match);
-    this.router.navigateByUrl("matchInfo");
+    // this.matchInfoService.setCurrentMatch(match);
+    LocalStorageHelper.setItem(StorageKey.MACTH, match);
+    this.router.navigateByUrl("/matchInfo");
   }
 
 }

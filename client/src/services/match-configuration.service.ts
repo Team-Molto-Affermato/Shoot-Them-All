@@ -3,7 +3,9 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ErrorsHandlerService} from "./errors-handler.service";
 import {Observable} from "rxjs";
 import {Match, MatchAccess} from "../models/match";
-import {catchError} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
+import {MatchConverterService} from "./match-converter.service";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ import {catchError} from "rxjs/operators";
 export class MatchConfigurationService {
 
   constructor(private http: HttpClient,
+              private matchConverterService: MatchConverterService,
               private errorsHandlerService: ErrorsHandlerService) {
 
   }
@@ -33,8 +36,8 @@ export class MatchConfigurationService {
 
     };
 
-    return this.http.post<Match>("/api/matches", m)
-      .pipe(
+    return this.http.post<any>("/api/matches", m)
+      .pipe(map(m => this.matchConverterService.jsonToClass(m)),
         catchError(this.errorsHandlerService.handleError)
       );
   }

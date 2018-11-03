@@ -1,0 +1,11 @@
+<div id="radar">
+  <div id="container">
+    <div id="rad"></div>
+    <div *ngFor="let point of points">
+      <div class="point" [ngStyle]="calculatePosition(point)" [@switch]="point.active ? 'active' : 'inactive'" ></div>
+    </div>
+  </div>
+
+</div>
+
+<button (click)="shoot()">Shoot</button>

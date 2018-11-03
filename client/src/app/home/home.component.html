@@ -1,5 +1,5 @@
-<a [routerLink]="['/matchConfiguration']"><button>New Match</button></a>
-<button (click)="logout()">Logout</button>
+<app-navbar></app-navbar>
+<a routerLink="/matchConfiguration"><button>New Match</button></a>
 <ul>
   <li *ngFor="let match of matches"><a (click)="showInfo(match)">
     {{match.name}}

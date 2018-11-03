@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {MatchInfoService} from "../../services/match-info.service";
 import {Match} from "../../models/match";
 import { DataService } from '../../services/data.service';
 import {Subscription} from "rxjs";
+import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 
 @Component({
   selector: 'app-match-info',
   templateUrl: './match-info.component.html',
   styleUrls: ['./match-info.component.css']
 })
-export class MatchInfoComponent implements OnInit {
+export class MatchInfoComponent implements OnInit, OnDestroy {
 
   match: Match;
   usersSub: Subscription;
@@ -36,6 +37,15 @@ export class MatchInfoComponent implements OnInit {
       .subscribe( timeouts =>{
           console.log(timeouts)
         });
+    this.match = LocalStorageHelper.getItem(StorageKey.MACTH);
+  }
+
+  ngOnDestroy() {
+    LocalStorageHelper.removeItem(StorageKey.MACTH)
+  }
+
+  join() {
+    this.router.navigateByUrl("match")
   }
   
 }
