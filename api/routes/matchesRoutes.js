@@ -17,6 +17,12 @@ module.exports = (app) => {
         .get(userInMatchController.listUserInMatch)
         .post(matchesController.addUserToMatch);
 
+    app.route('/matches/:roomName/users/score')
+        .get(userInMatchController.leaderboard);
+
+    app.route('/matches/:roomName/users/:username')
+        .delete(matchesController.deleteUserInMatch);
+
     app.route('/matches/:roomName/state')
         .get(matchesController.matchState)
         .put(matchesController.setMatchState);

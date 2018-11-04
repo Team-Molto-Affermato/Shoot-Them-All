@@ -16,13 +16,64 @@ exports.listMatches = (req, res) => {
     });
 
 };
-
+function mapToPosition(item, index) {
+    var position = item.location.coordinates
+    return {
+        username: item.name,
+        position: {
+            x:position[0],
+            y:position[1]
+        }
+    };
+}
+exports.deleteUserInMatch= (req,res)=>{
+    var query1 = {
+        roomName: req.params.roomName
+    };
+    Room.findOneAndUpdate(query1, { $pull: {users: req.params.username} },{new:true}, function (err,room) {
+        if(err){
+            return res.send(err);
+        }else{
+            console.log(room.users);
+            io.to(req.params.roomName).emit('users',{users:room.users});
+        }
+    });
+    //Notificare
+    var query = UserInMatch.deleteOne({
+        roomName : req.params.matchId,
+        name: req.params.username
+    });
+    query.exec(function (err,raw) {
+        if(err)
+            res.send(err)
+        else{
+            UserInMatch
+                .find({
+                    roomName : req.params.roomName,
+                    location: { $ne: null }
+                })
+                .where()
+                .exec(function(error, users){
+                    if(error)
+                        res.send(error);
+                    else{
+                        var positions = [];
+                        users.forEach(user =>{
+                            positions.push(mapToPosition(user));
+                        });
+                        io.to(req.params.roomName).emit('users-pos',positions);
+                        res.json(positions);
+                    }
+                });
+        }
+    });
+};
 function startTimer(roomName) {
     //Simulate stock data received by the server that needs
     //to be pushed to clients
     setTimeout(() => {
         updateMatchState(roomName,"STARTED");
-        io.to(roomName).emit('timeout',{message:"The game is starting"});
+        io.to(roomName).emit('timeout',{message:"MATCH_START"});
 
     }, 10000);
 }
@@ -83,7 +134,7 @@ function updateMatchState(roomName,state){
             }else{
                 setTimeout(() => {
                     updateMatchState(roomName,"CLOSED");
-                    io.to(roomName).emit('timeout',{message:"End of the Match"});
+                    io.to(roomName).emit('timeout',{message:"MATCH_END"});
                 }, room.duration*60000);
             }
         }
@@ -128,8 +179,19 @@ exports.addUserToMatch = (req,res)=>{
                     if (err) {
                         return res.send(err)
                     } else {
+                        console.log(room.users);
                         io.to(req.params.roomName).emit('users',{users:room.users});
                         res.json(room)
+                        var query1 = {
+                            name: req.body.username,
+                            roomName: req.params.roomName
+                        };
+                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location }, {upsert:true,new:true}, function (err,user) {
+                            if (err) {
+
+                            } else {
+                            }
+                        });
                     }
                 });
             }
@@ -137,6 +199,7 @@ exports.addUserToMatch = (req,res)=>{
 
 
 }
+
 exports.createMatch = (req, res) => {
     console.log(req.body)
     var newMatch = new Room(req.body);

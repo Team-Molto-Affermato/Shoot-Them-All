@@ -50,11 +50,14 @@ export class MatchComponent implements OnInit {
     this.ratio = radarRadius/this.radius;
     this.usersSub = this.dataService
       .getPositions()
-      .subscribe(pos =>{
-        console.log(pos);
-        let newPos = {coordinate: new Coordinate(pos.position.x, pos.position.y), active: false};
-        this.points.push(newPos);
-        console.log(this.points);
+      .subscribe(positions =>{
+        console.log(positions);
+        //Sarebbe da fare clear
+        positions.forEach(pos=>{
+          let newPos = {coordinate: new Coordinate(pos.position.x, pos.position.y), active: false};
+          this.points.push(newPos);
+          console.log(this.points);
+        });
       });
     this.userScoreSub = this.dataService
       .getScores()

@@ -14,6 +14,20 @@ exports.listUserInMatch = (req, res) => {
     });
 };
 
+exports.leaderboard = (req, res) => {
+    var find = UserInMatch
+        .find({
+            roomName : req.params.roomName
+        })
+        .sort({score: -1})
+        .select({name:1,score:1})
+        .exec(function(err, users){
+            if(err)
+                res.send(err);
+            else
+                res.json(users);
+        });
+};
 
 exports.listUserInMatchRange = (req,res)=> {
     var lat =    Number(req.query.lat);
@@ -87,15 +101,33 @@ exports.updateUserPos = (req, res) => {
         name: req.params.username,
         roomName: req.params.roomName
     };
-    UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:true,new:true}, function (err,user) {
+    UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:true,new:true}, function (err,userPos) {
         if (err) {
             return res.send(err)
         } else {
-            let userPosition = mapToPosition(user);
-            io.to(req.params.roomName).emit('users-pos',userPosition);
-            res.json(userPosition);
+
+            UserInMatch
+                .find({
+                    roomName : req.params.roomName,
+                    location: { $ne: null }
+                })
+                .where()
+                .exec(function(error, users){
+                    if(error)
+                        res.send(error);
+                    else{
+                        var positions = [];
+                        users.forEach(user =>{
+                            positions.push(mapToPosition(user));
+                        });
+                        io.to(req.params.roomName).emit('users-pos',positions);
+                        res.json(positions);
+                    }
+                });
         }
     });
+
+
 };
 
 exports.deleteMatch = (req, res) => {

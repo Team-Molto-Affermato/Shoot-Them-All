@@ -19,7 +19,7 @@ export class DataService {
   observer: Observer<number>;
   userObserver: Observer<Array<String>>;
   timeoutObserver: Observer<String>;
-  positionObserver: Observer<UserPosition>;
+  positionObserver: Observer<Array<UserPosition>>;
   scoreObserver: Observer<UserScore>;
 
   getScores():Observable<UserScore>{
@@ -29,7 +29,7 @@ export class DataService {
     return this.createUserScoreObservable();
   }
 
-  getPositions():Observable<UserPosition>{
+  getPositions():Observable<Array<UserPosition>>{
     this.socket.on('users-pos', (res) => {
       this.positionObserver.next(res);
     });
@@ -54,7 +54,7 @@ export class DataService {
   }
   getUsers() :Observable<Array<String>> {
     this.socket.on('users', (res) => {
-      this.userObserver.next(res);
+      this.userObserver.next(res.users);
     });
     return this.createUserObservable();
   }
@@ -81,8 +81,8 @@ export class DataService {
     });
   }
 
-  createUserPosObservable() : Observable<UserPosition> {
-    return new Observable<UserPosition>(observer => {
+  createUserPosObservable() : Observable<Array<UserPosition>> {
+    return new Observable<Array<UserPosition>>(observer => {
       this.positionObserver = observer;
     });
   }

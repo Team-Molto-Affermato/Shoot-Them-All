@@ -15,17 +15,19 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   match: Match;
   usersSub: Subscription;
   timeoutSub: Subscription;
-  users: Array<String> = new Array<String>();
+  users: Array<String> = [];
   constructor(private router: Router,
               private dataService: DataService) {
   }
 
   ngOnInit() {
     this.match = LocalStorageHelper.getItem(StorageKey.MACTH);
-    this.dataService.joinRoom(this.match.name,"Diego"+Math.random())
+    this.dataService.joinRoom(this.match.name,"Diego"+Math.random());
+    this.users = this.match.users;
     this.usersSub = this.dataService
       .getUsers()
       .subscribe(userList => {
+        console.log(userList);
         this.users = userList;
         console.log(this.users[0]);
         console.log(this.users);
@@ -33,7 +35,10 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     this.timeoutSub = this.dataService
       .getTimeouts()
       .subscribe( timeouts =>{
-          console.log(timeouts)
+          if(timeouts==="MATCH_START"){
+            this.router.navigateByUrl("match");
+            console.log(timeouts);
+          }
         });
   }
 
