@@ -1,5 +1,7 @@
 var mongoose        = require('mongoose');
 var Room            = require('../models/room');
+var User            = require('../models/users');
+
 var UserInMatch            = require('../models/userInMatch');
 // const io = require('../../server').io;
 var io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
@@ -47,6 +49,26 @@ exports.matchState = (req,res) =>{
                 });
         });
 }
+
+function updateLeaderBoard(roomName) {
+    var query = UserInMatch.find({
+        roomName : roomName
+    });
+    query.exec(function(err, users){
+        if(err){
+
+        }else{
+            users.forEach(user=>{
+                var query = {
+                    username: user.name
+                };
+                User.findOneAndUpdate(query, { $inc: {score: user.score} }, function (err,upUser) {
+                });
+            });
+        }
+    });
+}
+
 function updateMatchState(roomName,state){
     var query = {
         roomName: roomName
@@ -55,10 +77,15 @@ function updateMatchState(roomName,state){
         if(err){
 
         }else{
-            setTimeout(() => {
-                updateMatchState(roomName,"CLOSED");
-                io.to(roomName).emit('timeout',{message:"End of the Match"});
-            }, room.duration*60000);
+            if(state==="CLOSED"){
+                console.log("Ciao Closed");
+                updateLeaderBoard(roomName);
+            }else{
+                setTimeout(() => {
+                    updateMatchState(roomName,"CLOSED");
+                    io.to(roomName).emit('timeout',{message:"End of the Match"});
+                }, room.duration*60000);
+            }
         }
     });
 
@@ -78,19 +105,37 @@ exports.setMatchState = (req, res) => {
 
 exports.addUserToMatch = (req,res)=>{
 
-        console.log("Ciao");
         var query = {
             roomName: req.params.roomName
         };
-        var options = {new: true};
-        Room.findOneAndUpdate(query, { $push: {users: req.body.username} },options, function (err,room) {
-            if (err) {
-                return res.send(err)
-            } else {
-                io.to(req.params.roomName).emit('users',{users:room.users});
-                res.json(room)
+        Room.findOne(query,function (err,room) {
+            if(err){
+                return res.send(err);
+            }else{
+                if(room.state==='CLOSED'){
+                    return res.status(406).send({error:"The match is closed"});
+                }
+                if(room.visibility==='Private'){
+                    if(room.password!==req.body.password){
+                        return res.status(401).send({error:"Wrong Match Password"});
+                    }
+                }
+                if(room.users.length >= room.max_user){
+                    return res.status(406).send({error:"The Room is full"});
+                }
+                var options = {new: true};
+                Room.findOneAndUpdate(query, { $push: {users: req.body.username} },options, function (err,room) {
+                    if (err) {
+                        return res.send(err)
+                    } else {
+                        io.to(req.params.roomName).emit('users',{users:room.users});
+                        res.json(room)
+                    }
+                });
             }
         });
+
+
 }
 exports.createMatch = (req, res) => {
     console.log(req.body)

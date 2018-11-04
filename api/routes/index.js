@@ -20,4 +20,7 @@ router.post('/login', ctrlAuth.login);
 const matchRoutes = require('./matchesRoutes');
 
 matchRoutes(router);
+const usersRoutes = require('./usersRoutes');
+
+usersRoutes(router); //register the route
 module.exports = router;

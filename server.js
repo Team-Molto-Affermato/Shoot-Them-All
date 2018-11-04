@@ -22,6 +22,12 @@ let timerId = null,
     sockets = new Set();
 io.on('connection', socket => {
     socket.on('room',function (room) {
+        for(oldRoom in socket.rooms){
+            if(socket.id !== oldRoom){
+                console.log("Leave old Room ",oldRoom);
+                socket.leave(oldRoom);
+            }
+        }
         console.log(`Socket ${socket.id} added to room ${room.room}`);
         socket.join(room.room);
         // io.sockets.in(room).emit('users',{username:room.user});
@@ -152,6 +158,8 @@ app.use(function(err, req, res, next) {
 // const matchRoutes = require('./routes/matchesRoutes');
 // const userDataRoutes = require('./routes/userDataRoutes');
 //
+// const usersRoutes = require('./routes/usersRoutes');
+
 // usersRoutes(app); //register the route
 // matchRoutes(app);
 // userDataRoutes(app);

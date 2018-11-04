@@ -36,7 +36,7 @@ export class MatchComponent implements OnInit {
   radius: number = 100;
   ratio: number;
   usersSub: Subscription;
-
+  userScoreSub: Subscription;
   radar: HTMLElement;
 
   constructor(
@@ -55,6 +55,11 @@ export class MatchComponent implements OnInit {
         let newPos = {coordinate: new Coordinate(pos.position.x, pos.position.y), active: false};
         this.points.push(newPos);
         console.log(this.points);
+      });
+    this.userScoreSub = this.dataService
+      .getScores()
+      .subscribe(score=>{
+        console.log(score);
       });
 
     window.addEventListener("deviceorientationabsolute", (event) => this.handleOrientation(event), true)

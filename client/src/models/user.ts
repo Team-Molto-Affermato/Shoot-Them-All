@@ -5,7 +5,10 @@ export class User {
   password: String;
   email: String;
 }
-
+export class UserScore {
+  username:String;
+  score: Number;
+}
 export class UserData {
   username: String;
   password: String;

@@ -53,15 +53,23 @@ exports.updateUserScore = (req, res) => {
         name: req.params.username,
         roomName: req.params.roomName
     };
-    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:true}, function (err,users) {
+    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:true,new:true}, function (err,users) {
         if (err) {
             return res.send(err)
         } else {
-            io.to(req.params.roomName).emit('users-score',{users:users});
-            res.json(users);
+            res.json(mapToScore(users));
+            io.to(req.params.roomName).emit('users-score',mapToScore(users));
         }
     });
 };
+function mapToScore(item, index) {
+    var score = item.score
+    return {
+        username: item.name,
+        score: score
+    };
+}
+
 function mapToPosition(item, index) {
     var position = item.location.coordinates
     return {

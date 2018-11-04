@@ -22,7 +22,7 @@ module.exports = (app) => {
         .put(matchesController.setMatchState);
     app.route('/matches/:roomName/:username/score')
         .get(userInMatchController.userScore)
-        .post(userInMatchController.updateUserScore);
+        .put(userInMatchController.updateUserScore);
 
     app.route('/matches/:roomName/users/range')
         .get(userInMatchController.listUserInMatchRange);

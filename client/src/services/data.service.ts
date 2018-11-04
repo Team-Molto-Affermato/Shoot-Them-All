@@ -6,6 +6,7 @@ import * as socketIo from 'socket.io-client';
 
 import { Socket } from '../shared/interfaces';
 import {UserPosition} from "../models/point";
+import {UserScore} from "../models/user";
 
 declare var io : {
   connect(url: string): Socket;
@@ -19,6 +20,14 @@ export class DataService {
   userObserver: Observer<Array<String>>;
   timeoutObserver: Observer<String>;
   positionObserver: Observer<UserPosition>;
+  scoreObserver: Observer<UserScore>;
+
+  getScores():Observable<UserScore>{
+    this.socket.on('users-score', (res) => {
+      this.scoreObserver.next(res);
+    });
+    return this.createUserScoreObservable();
+  }
 
   getPositions():Observable<UserPosition>{
     this.socket.on('users-pos', (res) => {
@@ -65,6 +74,13 @@ export class DataService {
       message:"Ciao Diego"
     })
   }
+
+  createUserScoreObservable() : Observable<UserScore> {
+    return new Observable<UserScore>(observer => {
+      this.scoreObserver = observer;
+    });
+  }
+
   createUserPosObservable() : Observable<UserPosition> {
     return new Observable<UserPosition>(observer => {
       this.positionObserver = observer;
