@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Coordinate, CoordinatesHelper} from "../../utilities/CoordinatesHelper";
 import {AngleHelper} from "../../utilities/AngleHelper";
+import {MotionSensors} from "../../assets/motion-sensors.js"
+import {createSensor} from "../../assets/device-orientation-sensor.js"
 
 @Component({
   selector: 'app-match',
@@ -30,6 +32,10 @@ export class MatchComponent implements OnInit {
 
   points = [{coordinate: new Coordinate(43.688632, 12.953757), active: false},
             {coordinate: new Coordinate(43.688841, 12.955377), active: false}];
+
+  sensor = null;
+  orientationAngle: number = 0;
+
   deg: number = 0;
   radius: number = 100;
   ratio: number;
@@ -44,10 +50,56 @@ export class MatchComponent implements OnInit {
     const radarRadius = this.radar.offsetWidth/2;
     this.ratio = radarRadius/this.radius;
 
-    window.addEventListener("deviceorientationabsolute", (event) => this.handleOrientation(event), true)
+    // window.addEventListener("deviceorientationabsolute", (e) => this.handleOrientation(e));
+
+    createSensor((q) => this.updateOrientation(q), (e) => {this.handleError(e)})
 
     setInterval(() => this.rotate(), 25);
 
+  }
+
+  updateOrientation(q) {
+
+    // // roll (x-axis rotation)
+    const sinr_cosp = +2.0 * (q.w * q.x + q.y * q.z);
+    const cosr_cosp = +1.0 - 2.0 * (q.x * q.x + q.y * q.y);
+    var roll = Math.atan2(sinr_cosp, cosr_cosp);
+    //
+    // pitch (y-axis rotation)
+    const sinp = 2.0 * (q.w * q.y - q.z * q.x);
+    var pitch;
+    if (Math.abs(sinp) >= 1)
+        pitch = (Math.PI / 2) * Math.sign(sinp); // use 90 degrees if out of range
+    else
+        pitch = Math.asin(sinp);
+
+    // yaw (z-axis rotation)
+    const siny_cosp = 2.0 * (q.w * q.z + q.x * q.y);
+    const cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z);
+    var yaw = Math.atan2(siny_cosp, cosy_cosp);
+
+    roll = roll*180/Math.PI;
+    pitch = pitch*180/Math.PI;
+    yaw = yaw*180/Math.PI;
+    if (yaw < 0) {
+      yaw = yaw + 360;
+    }
+
+    roll = Math.round(roll);
+    pitch = Math.round(pitch);
+    yaw = Math.round(yaw);
+
+    this.orientationAngle = yaw;
+
+    if (roll>90 || roll<-90) {
+      this.orientationAngle=Math.abs(yaw+180)%360;
+    }
+
+    document.getElementById('container').style.transform = 'rotate(' + this.orientationAngle + 'deg)';
+  }
+
+  handleError(e) {
+    alert(e)
   }
 
   rotate() {
@@ -69,7 +121,7 @@ export class MatchComponent implements OnInit {
   }
 
   calculatePosition(point) {
-    const radarRadius = this.radar.offsetWidth/2;
+
     return {
       left: (this.longitudeDistanceFromCenter(point.coordinate.longitude) + this.radius) * this.ratio + 'px',
       top: (this.latitudeDistanceFromCenter(point.coordinate.latitude) + this.radius) * this.ratio + 'px'
@@ -85,20 +137,22 @@ export class MatchComponent implements OnInit {
     return CoordinatesHelper.latitudeDistanceInMeters(this.centerCoordinate.latitude, latitude)
   }
 
-  private handleOrientation(event) {
-    var absolute: boolean = event.absolute;
-    var alpha: number    = event.alpha;
-    var beta: number     = event.beta;
-    var gamma: number    = event.gamma;
-
-    if (beta>90 || beta<-90) {
-      alpha=Math.abs(alpha+180)%360;
-    }
-
-    alpha = Math.round(alpha);
-
-    document.getElementById('container').style.transform = 'rotate(' + -alpha + 'deg)';
-  }
+  // private handleOrientation(event) {
+  //   var absolute: boolean = event.absolute;
+  //   var alpha: number    = event.alpha;
+  //   var beta: number     = event.beta;
+  //   var gamma: number    = event.gamma;
+  //
+  //   if (beta>90 || beta<-90) {
+  //     alpha=Math.abs(alpha+180)%360;
+  //   }
+  //
+  //   alpha = Math.round(alpha);
+  //
+  //   this.orientationAngle = alpha;
+  //
+  //   document.getElementById('container').style.transform = 'rotate(' + alpha + 'deg)';
+  // }
 
   shoot() {
   }
