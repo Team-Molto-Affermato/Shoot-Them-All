@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../services/authentication.service";
+import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +15,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
+    LocalStorageHelper.removeItem(StorageKey.USERNAME);
     this.authenticationService.logout();
   }
 

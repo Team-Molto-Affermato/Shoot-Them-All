@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {RegistrationService} from "../../services/registration.service";
 import {UserData} from "../../models/user";
-import {AuthenticationService} from "../../services/authentication.service";
+import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 
 @Component({
   selector: 'app-login',
@@ -38,6 +37,7 @@ export class LoginComponent implements OnInit {
     const userData: UserData = Object.assign({}, this.loginForm.value);
 
     this.loginService.login(userData).subscribe(() => {
+      LocalStorageHelper.setItem(StorageKey.USERNAME, userData.username);
       this.router.navigateByUrl('/home');
     }, (err) => {
       alert(err);

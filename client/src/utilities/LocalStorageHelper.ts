@@ -16,5 +16,6 @@ export class LocalStorageHelper {
 }
 
 export enum StorageKey {
+  USERNAME = "username",
   MACTH =  "match"
 }

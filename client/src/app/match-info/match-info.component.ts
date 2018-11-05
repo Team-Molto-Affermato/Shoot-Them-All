@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Match} from "../../models/match";
-import { DataService } from '../../services/data.service';
+import {DataService} from '../../services/data.service';
 import {Subscription} from "rxjs";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-match-info',
@@ -17,6 +18,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   timeoutSub: Subscription;
   users: Array<String> = [];
   constructor(private router: Router,
+              private http: HttpClient,
               private dataService: DataService) {
   }
 
@@ -47,7 +49,20 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   join() {
-    this.router.navigateByUrl("match")
+    // this.router.navigateByUrl("match")
+
+    const body = {
+      username: LocalStorageHelper.getItem(StorageKey.USERNAME),
+      password: ""
+    };
+
+    this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
+      data => {
+        console.log(data)
+      }, error => {
+        console.log(error)
+      }
+    )
   }
   
 }

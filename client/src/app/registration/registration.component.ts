@@ -4,6 +4,7 @@ import { User} from "../../models/user";
 import {RegistrationService} from "../../services/registration.service";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
+import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 
 @Component({
   selector: 'app-registration',
@@ -39,6 +40,7 @@ export class RegistrationComponent implements OnInit {
     const user: User = Object.assign({}, this.registrationForm.value);
 
     this.registrationService.register(user).subscribe(() => {
+      LocalStorageHelper.setItem(StorageKey.USERNAME, user.username);
       this.router.navigateByUrl('/home');
     }, (err) => {
       alert(err);
