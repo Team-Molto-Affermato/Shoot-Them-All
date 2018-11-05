@@ -7,6 +7,7 @@ import * as socketIo from 'socket.io-client';
 import { Socket } from '../shared/interfaces';
 import {UserPosition} from "../models/point";
 import {UserScore} from "../models/user";
+import {HttpClient} from "@angular/common/http";
 
 declare var io : {
   connect(url: string): Socket;
@@ -21,7 +22,9 @@ export class DataService {
   timeoutObserver: Observer<String>;
   positionObserver: Observer<Array<UserPosition>>;
   scoreObserver: Observer<UserScore>;
+  constructor(private http:HttpClient){
 
+  }
   getScores():Observable<UserScore>{
     this.socket.on('users-score', (res) => {
       this.scoreObserver.next(res);
@@ -59,7 +62,16 @@ export class DataService {
     return this.createUserObservable();
   }
   getQuotes() : Observable<number> {
-    this.socket = socketIo('http://192.168.43.212:3000');
+    var address;
+    this.http.get("../../../configuration.json")
+      .subscribe((data:any) => {
+        address = data.json().address+":3000"
+      },
+      error => {
+        address ='http://192.168.43.212:3000'
+      });
+
+    // this.socket = socketIo('http://192.168.43.212:3000');
 
     this.socket.on('data', (res) => {
       this.observer.next(res.data);

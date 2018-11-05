@@ -4,7 +4,9 @@ var User            = require('../models/users');
 
 var UserInMatch            = require('../models/userInMatch');
 // const io = require('../../server').io;
-var io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
+var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
+
+var io = require('socket.io-emitter')({ host: configuration.address, port: 6379 });
 
 exports.listMatches = (req, res) => {
     var query = Room.find({});

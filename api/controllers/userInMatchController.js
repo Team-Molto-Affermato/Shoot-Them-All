@@ -1,7 +1,8 @@
 var mongoose        = require('mongoose');
 var UserInMatch            = require('../models/userInMatch');
-var io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
+var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
 
+var io = require('socket.io-emitter')({ host: configuration.address, port: 6379 });
 exports.listUserInMatch = (req, res) => {
     var query = UserInMatch.find({
         roomName : req.params.roomName
