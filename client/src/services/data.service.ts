@@ -59,7 +59,7 @@ export class DataService {
     return this.createUserObservable();
   }
   getQuotes() : Observable<number> {
-    this.socket = socketIo('http://localhost:3000');
+    this.socket = socketIo('http://192.168.43.212:3000');
 
     this.socket.on('data', (res) => {
       this.observer.next(res.data);

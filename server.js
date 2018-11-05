@@ -15,7 +15,7 @@ io = require('socket.io')(server);
 
 var redis = require('socket.io-redis');
 //
-io.adapter(redis({ host: 'localhost', port: 6379 }));
+io.adapter(redis({ host: '192.168.43.212', port: 6379 }));
 
 const port = 3000;
 let timerId = null,
