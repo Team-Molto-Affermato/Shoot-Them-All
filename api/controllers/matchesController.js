@@ -130,12 +130,12 @@ function updateMatchState(roomName,state){
         if(err){
 
         }else{
-            if(state==="CLOSED"){
+            if(state==="MATCH_END"){
                 console.log("Ciao Closed");
                 updateLeaderBoard(roomName);
             }else{
                 setTimeout(() => {
-                    updateMatchState(roomName,"CLOSED");
+                    updateMatchState(roomName,"MATCH_END");
                     io.to(roomName).emit('timeout',{message:"MATCH_END"});
                 }, room.duration*60000);
             }
