@@ -212,9 +212,11 @@ exports.createMatch = (req, res) => {
     newMatch.save(function(err){
         if(err)
             res.status(400).send(err);
-        else
+        else {
             startTimer(req.body.roomName);
             res.json(newMatch);
+        }
+
     });
 };
 

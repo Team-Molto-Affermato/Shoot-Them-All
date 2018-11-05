@@ -3,14 +3,7 @@
 <ul>
   <li *ngFor="let match of matches"><a (click)="showInfo(match)">
     {{match.name}}
-    {{match.centerPoint}}
-    {{match.maxUser}}
-    {{match.duration}}
-    {{match.radius}}
     {{match.state}}
-    {{match.users}}
     {{match.access}}
-    {{match.password}}
-    {{match.startingTime}}
   </a></li>
 </ul>

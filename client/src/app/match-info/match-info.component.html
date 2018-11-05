@@ -1,5 +1,17 @@
 <label for="name">Name</label>
 <p id="name">{{match.name}}</p>
+<label for="state">State</label>
+<p id="state">{{match.state}}</p>
+<label for="access">Access</label>
+<p id="access">{{match.access}}</p>
+<label for="password" *ngIf="showPassword()">Password</label>
+<input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>
+<label for="radius">Radius</label>
+<p id="radius">{{match.radius}}</p>
+<label for="centerPoint">Center Point</label>
+<p id="centerPoint">{{match.centerPoint.x}}, {{match.centerPoint.y}}</p>
+<label for="remainingTime">Remaining Time</label>
+<p id="remainingTime">{{match.startingTime}}</p>
 <label for="users">Players</label>
 <ul id="users">
   <li *ngFor="let user of users">

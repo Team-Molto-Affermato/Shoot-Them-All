@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from './core/core.module';
 import { ChartsModule } from 'ng2-charts';
+import {FormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -49,7 +50,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     CoreModule,
     ChartsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]

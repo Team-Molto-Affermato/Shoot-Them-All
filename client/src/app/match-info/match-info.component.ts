@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {Match} from "../../models/match";
+import {Match, MatchAccess, MatchState} from "../../models/match";
 import {DataService} from '../../services/data.service';
 import {Subscription} from "rxjs";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
@@ -17,6 +17,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   usersSub: Subscription;
   timeoutSub: Subscription;
   users: Array<String> = [];
+  matchState: MatchState;
+  password;
+
   constructor(private router: Router,
               private http: HttpClient,
               private dataService: DataService) {
@@ -24,8 +27,12 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.match = LocalStorageHelper.getItem(StorageKey.MACTH);
+    this.matchState = this.match.state;
     this.dataService.joinRoom(this.match.name,"Diego"+Math.random());
     this.users = this.match.users;
+
+    this.checkUserInside();
+
     this.usersSub = this.dataService
       .getUsers()
       .subscribe(userList => {
@@ -37,9 +44,16 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     this.timeoutSub = this.dataService
       .getTimeouts()
       .subscribe( timeouts =>{
-          if(timeouts==="MATCH_START"){
-            this.router.navigateByUrl("match");
-            console.log(timeouts);
+          switch (timeouts) {
+            case "MATCH_START":
+              this.matchState = MatchState.STARTED;
+              if(this.users.includes(LocalStorageHelper.getItem(StorageKey.USERNAME))) {
+                this.router.navigateByUrl("match");
+              }
+              break;
+            case "MATCH_END":
+              this.matchState = MatchState.ENDED;
+              break;
           }
         });
   }
@@ -48,17 +62,28 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     LocalStorageHelper.removeItem(StorageKey.MACTH)
   }
 
+  checkUserInside() {
+    if (this.matchState === MatchState.STARTED) {
+      if(this.users.includes(LocalStorageHelper.getItem(StorageKey.USERNAME))) {
+        this.router.navigateByUrl("match");
+      }
+    }
+  }
+
+  showPassword() {
+    return this.match.access===MatchAccess.PRIVATE
+  }
+
   join() {
-    // this.router.navigateByUrl("match")
 
     const body = {
       username: LocalStorageHelper.getItem(StorageKey.USERNAME),
-      password: ""
+      password: this.password
     };
 
     this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
       data => {
-        console.log(data)
+        this.checkUserInside()
       }, error => {
         console.log(error)
       }
