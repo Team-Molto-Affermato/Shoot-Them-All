@@ -57,6 +57,7 @@ export class DataService {
   }
   getUsers() :Observable<Array<String>> {
     this.socket.on('users', (res) => {
+      console.log("Ciaoooo");
       this.userObserver.next(res.users);
     });
     return this.createUserObservable();
@@ -71,7 +72,7 @@ export class DataService {
         address ='http://192.168.43.212:3000'
       });
 
-    // this.socket = socketIo('http://192.168.43.212:3000');
+    this.socket = socketIo(address);
 
     this.socket.on('data', (res) => {
       this.observer.next(res.data);
