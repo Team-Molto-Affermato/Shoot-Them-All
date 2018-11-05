@@ -165,6 +165,9 @@ exports.addUserToMatch = (req,res)=>{
             if(err){
                 return res.send(err);
             }else{
+                if(room.users.includes(req.body.username)){
+                    return res.status(401).send({error:"User already registred"});
+                }
                 if(room.state==='CLOSED'){
                     return res.status(406).send({error:"The match is closed"});
                 }
