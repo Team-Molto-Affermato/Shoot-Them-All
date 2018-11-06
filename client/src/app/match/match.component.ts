@@ -6,7 +6,7 @@ import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
 import {MotionSensors} from "../../assets/motion-sensors.js"
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
-import {Match} from "../../models/match";
+import {Match, MatchState} from "../../models/match";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 
@@ -43,7 +43,7 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   sensor = null;
   orientationAngle: number = 0;
-
+  timeoutSub: Subscription;
   deg: number = 0;
   radius: number = 100;
   ratio: number;
@@ -82,6 +82,16 @@ export class MatchComponent implements OnInit, OnDestroy {
       .getScores()
       .subscribe(score=>{
         console.log(score);
+      });
+    this.timeoutSub = this.dataService
+      .getTimeouts()
+      .subscribe( timeouts =>{
+        switch (timeouts) {
+          case "ENDED":
+            console.log("Ended")
+            this.router.navigateByUrl("/match");
+            break;
+        }
       });
 
     window.addEventListener("deviceorientationabsolute", (e) => this.handleOrientation(e));
