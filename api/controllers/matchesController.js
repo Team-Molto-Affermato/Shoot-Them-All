@@ -206,8 +206,18 @@ exports.addUserToMatch = (req,res)=>{
 }
 
 exports.createMatch = (req, res) => {
-    console.log(req.body)
-    var newMatch = new Room(req.body);
+    console.log(req.body);
+
+    const MS_PER_MINUTE = 60000;
+
+    var b = req.body;
+
+    var d = new Date();
+    const correct_date = new Date(d - d.getTimezoneOffset()*MS_PER_MINUTE);
+    b.created_at = correct_date;
+    b.starting_time = correct_date;
+
+    var newMatch = new Room(b);
 
     newMatch.save(function(err){
         if(err)
