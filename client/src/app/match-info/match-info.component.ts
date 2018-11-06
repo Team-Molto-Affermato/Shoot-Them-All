@@ -14,11 +14,11 @@ import {DateHelper} from "../../utilities/DateHelper";
 })
 export class MatchInfoComponent implements OnInit, OnDestroy {
 
+  username: string;
   match: Match;
   usersSub: Subscription;
   timeoutSub: Subscription;
   users: Array<String> = [];
-  matchState: MatchState;
   password;
   remainingTime;
 
@@ -30,8 +30,8 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.match = LocalStorageHelper.getItem(StorageKey.MACTH);
-    this.matchState = this.match.state;
+    this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
+    this.match = LocalStorageHelper.getCurrentMatch();
     this.dataService.joinRoom(this.match.name,"Diego"+Math.random());
     this.users = this.match.users;
 
@@ -49,6 +49,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       .subscribe(userList => {
         console.log(userList);
         this.users = userList;
+        this.checkUserInside();
         console.log(this.users[0]);
         console.log(this.users);
       });
@@ -58,54 +59,48 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
           switch (timeouts) {
             case "STARTED":
               console.log("Started")
-              this.matchState = MatchState.STARTED;
-              if(this.users.includes(LocalStorageHelper.getItem(StorageKey.USERNAME))) {
-                this.router.navigateByUrl("match");
-              }
+              this.match.state = MatchState.STARTED;
+              this.checkUserInside()
               break;
             case "ENDED":
               console.log("Ended")
-              this.matchState = MatchState.ENDED;
+              this.match.state = MatchState.ENDED;
               break;
           }
         });
   }
 
   ngOnDestroy() {
-    LocalStorageHelper.removeItem(StorageKey.MACTH)
+    // LocalStorageHelper.removeItem(StorageKey.MACTH)
   }
 
   checkUserInside() {
-    if (this.matchState === MatchState.STARTED) {
-      if(this.users.includes(LocalStorageHelper.getItem(StorageKey.USERNAME))) {
-        this.router.navigateByUrl("match");
+    if (this.match.state === MatchState.STARTED) {
+      if(this.userJoined()) {
+        this.router.navigateByUrl("/match");
       }
     }
   }
 
   updateCountdown() {
 
-    const startingTime = new Date(this.match.startingTime);
     const now = new Date();
+    var difference: number;
 
-    var date: Date;
-    if (this.matchState === MatchState.SETTING_UP) {
-      date = DateHelper.dateDifference(startingTime, now);
+    if (this.match.state === MatchState.SETTING_UP) {
+      difference = DateHelper.dateDifference(this.match.startingTime, now);
 
-      if (date && date.getSeconds() > 0) {
-        this.remainingTime = date.getMinutes() + ":" + date.getSeconds();
-      } else {
-        this.remainingTime = "00:00"
+      if (difference) {
+        this.remainingTime = this.outputTime(difference, false);
       }
 
-    } else if (this.matchState === MatchState.STARTED) {
-      const newDate = new Date(startingTime.getTime()+this.match.duration*60000);
-      date = DateHelper.dateDifference(newDate, now);
+    } else if (this.match.state === MatchState.STARTED) {
+      const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
+      difference = DateHelper.dateDifference(endingDate, now);
 
-      if (date && date.getSeconds() > 0) {
-        this.remainingTime = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      if (difference && difference > 0) {
+        this.remainingTime = this.outputTime(difference, true);
       } else {
-        this.remainingTime = "00:00:00"
         clearInterval(this.intervalId);
       }
 
@@ -113,8 +108,10 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       clearInterval(this.intervalId);
     }
 
+  }
 
-
+  userJoined(): boolean {
+    return this.users.includes(this.username);
   }
 
   showPassword() {
@@ -125,20 +122,65 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     return this.match.state !== MatchState.ENDED;
   }
 
-  join() {
+  showJoin() {
+    return this.match.state !== MatchState.ENDED;
+  }
 
-    const body = {
-      username: LocalStorageHelper.getItem(StorageKey.USERNAME),
-      password: this.password
-    };
+  partecipationButtonText() {
+    if (this.userJoined()) {
+      return "Exit"
+    } else {
+      return "Join"
+    }
+  }
 
-    this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
-      data => {
-        this.checkUserInside()
-      }, error => {
-        console.log(error)
+  switchPartecipation() {
+
+    if (!this.userJoined()) {
+      const body = {
+        username: this.username,
+        password: this.password
+      };
+
+      this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
+        data => {
+        }, error => {
+          console.log(error)
+        }
+      )
+    } else {
+      this.http.delete("/api/matches/" + this.match.name + "/users/" + this.username).subscribe(
+        data => {
+
+        }, error => {
+          console.log(error)
+        }
+      )
+    }
+
+  }
+
+
+  outputTime(time: number, withHour: boolean): string {
+
+    if (withHour) {
+      var h = DateHelper.hoursFromTime(time)+"";
+      if (h.length < 2) {
+        h = "0" + h;
       }
-    )
+    }
+
+    var m = DateHelper.minutesFromTime(time)+"";
+    if (m.length < 2) {
+      m = "0" + m;
+    }
+
+    var s = DateHelper.secondsFromTime(time)+"";
+    if (s.length < 2) {
+      s = "0" + s;
+    }
+
+    return (withHour?(h + ":"):"") + m + ":" + s;
   }
   
 }

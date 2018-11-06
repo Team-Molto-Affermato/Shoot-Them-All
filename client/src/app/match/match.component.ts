@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Coordinate, CoordinatesHelper} from "../../utilities/CoordinatesHelper";
 import {AngleHelper} from "../../utilities/AngleHelper";
 import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
 import {MotionSensors} from "../../assets/motion-sensors.js"
-import {createSensor} from "../../assets/device-orientation-sensor.js"
+import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
+import {Match} from "../../models/match";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-match',
@@ -28,7 +31,10 @@ import {createSensor} from "../../assets/device-orientation-sensor.js"
     ])
   ]
 })
-export class MatchComponent implements OnInit {
+export class MatchComponent implements OnInit, OnDestroy {
+
+  username: string;
+  match: Match;
 
   centerCoordinate = new Coordinate(43.688756, 12.954835);
 
@@ -46,11 +52,16 @@ export class MatchComponent implements OnInit {
   radar: HTMLElement;
 
   constructor(
+    private router: Router,
+    private http: HttpClient,
     private dataService: DataService
   ) {
   }
 
   ngOnInit() {
+    this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
+    this.match = LocalStorageHelper.getCurrentMatch();
+
     this.radar = document.getElementById("rad");
     const radarRadius = this.radar.offsetWidth/2;
     this.ratio = radarRadius/this.radius;
@@ -77,6 +88,10 @@ export class MatchComponent implements OnInit {
 
     setInterval(() => this.rotate(), 25);
 
+  }
+
+  ngOnDestroy(): void {
+    this.dataService.leaveRoom(this.match.name);
   }
 
   updateOrientation(q) {
@@ -177,4 +192,15 @@ export class MatchComponent implements OnInit {
 
   shoot() {
   }
+
+  exit() {
+    this.http.delete("/api/matches/" + this.match.name + "/users/" + this.username).subscribe(
+      data => {
+        this.router.navigateByUrl("/home");
+      }, error => {
+        console.log(error)
+      }
+    )
+  }
+
 }

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {HomeService} from "../../services/home.service";
-import {Match} from "../../models/match";
+import {Match, MatchState} from "../../models/match";
 import {MatchInfoService} from "../../services/match-info.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
-import { DataService } from '../../services/data.service';
+import {DataService} from '../../services/data.service';
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 
 @Component({
@@ -14,17 +14,18 @@ import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper
 })
 export class HomeComponent implements OnInit {
 
+  username;
   matches: Array<Match> = [];
 
   constructor(private router: Router,
               private authenticationService: AuthenticationService,
               private homeService: HomeService,
-              private dataService: DataService,
-              private matchInfoService: MatchInfoService) {
+              private dataService: DataService) {
     this.updateMatches();
   }
 
   ngOnInit() {
+    this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.dataService.sendMessage();
   }
 
@@ -38,9 +39,18 @@ export class HomeComponent implements OnInit {
   }
 
   showInfo(match: Match) {
-    // this.matchInfoService.setCurrentMatch(match);
     LocalStorageHelper.setItem(StorageKey.MACTH, match);
-    this.router.navigateByUrl("/matchInfo");
+
+    if (this.userJoined(match)) {
+      this.router.navigateByUrl("/match");
+    } else {
+      this.router.navigateByUrl("/matchInfo");
+    }
+  }
+
+  userJoined(match: Match): boolean {
+    return (match.state === MatchState.STARTED) &&
+      match.users.includes(this.username)
   }
 
 }

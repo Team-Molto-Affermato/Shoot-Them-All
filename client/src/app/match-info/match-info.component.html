@@ -1,7 +1,7 @@
 <label for="name">Name</label>
 <p id="name">{{match.name}}</p>
 <label for="state">State</label>
-<p id="state">{{matchState}}</p>
+<p id="state">{{match.state}}</p>
 <label for="access">Access</label>
 <p id="access">{{match.access}}</p>
 <label for="password" *ngIf="showPassword()">Password</label>
@@ -19,5 +19,5 @@
     {{user}}
   </li>
 </ul>
-<button (click)="join()">Join</button>
+<button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
 
