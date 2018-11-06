@@ -22,6 +22,8 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   password;
   remainingTime;
 
+  intervalId;
+
   constructor(private router: Router,
               private http: HttpClient,
               private dataService: DataService) {
@@ -33,18 +35,12 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     this.dataService.joinRoom(this.match.name,"Diego"+Math.random());
     this.users = this.match.users;
 
-    const startingTime = new Date(this.match.startingTime);
-    const now = new Date();
+    this.intervalId = setInterval(()=> {
+      this.updateCountdown();
+      },
+      1000);
 
-    var date: Date;
-    if (this.match.state === MatchState.SETTING_UP) {
-      date = DateHelper.dateDifference(startingTime, now)
-    } else if (this.match.state === MatchState.STARTED) {
-      const newDate = new Date(startingTime.getTime()+this.match.duration*60000);
-      date = DateHelper.dateDifference(newDate, now);
-    }
-
-    this.remainingTime = date.getSeconds();
+    this.updateCountdown();
 
     this.checkUserInside();
 
@@ -61,12 +57,14 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       .subscribe( timeouts =>{
           switch (timeouts) {
             case "STARTED":
+              console.log("Started")
               this.matchState = MatchState.STARTED;
               if(this.users.includes(LocalStorageHelper.getItem(StorageKey.USERNAME))) {
                 this.router.navigateByUrl("match");
               }
               break;
             case "ENDED":
+              console.log("Ended")
               this.matchState = MatchState.ENDED;
               break;
           }
@@ -83,6 +81,40 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl("match");
       }
     }
+  }
+
+  updateCountdown() {
+
+    const startingTime = new Date(this.match.startingTime);
+    const now = new Date();
+
+    var date: Date;
+    if (this.matchState === MatchState.SETTING_UP) {
+      date = DateHelper.dateDifference(startingTime, now);
+
+      if (date && date.getSeconds() > 0) {
+        this.remainingTime = date.getMinutes() + ":" + date.getSeconds();
+      } else {
+        this.remainingTime = "00:00"
+      }
+
+    } else if (this.matchState === MatchState.STARTED) {
+      const newDate = new Date(startingTime.getTime()+this.match.duration*60000);
+      date = DateHelper.dateDifference(newDate, now);
+
+      if (date && date.getSeconds() > 0) {
+        this.remainingTime = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      } else {
+        this.remainingTime = "00:00:00"
+        clearInterval(this.intervalId);
+      }
+
+    } else {
+      clearInterval(this.intervalId);
+    }
+
+
+
   }
 
   showPassword() {
