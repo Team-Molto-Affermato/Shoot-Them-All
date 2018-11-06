@@ -15,6 +15,7 @@ export class MatchConverterService {
       MatchAccess[<string>m.visibility],
       new Point(m.location.coordinates[0], m.location.coordinates[1]),
       m.radius,
+      m.created_at,
       m.starting_time,
       m.duration,
       m.max_user,

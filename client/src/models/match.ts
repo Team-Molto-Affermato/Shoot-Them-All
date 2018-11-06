@@ -7,6 +7,7 @@ export class Match {
               public access: MatchAccess,
               public centerPoint: Point,
               public radius: number,
+              public createdAt: Date,
               public startingTime: Date,
               public duration: number,
               public maxUser: number,

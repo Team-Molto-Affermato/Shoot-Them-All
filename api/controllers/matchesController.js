@@ -75,9 +75,8 @@ function startTimer(roomName) {
     //to be pushed to clients
     setTimeout(() => {
         updateMatchState(roomName,"STARTED");
-        io.to(roomName).emit('timeout',{message:"MATCH_START"});
-
-    }, 10000);
+        io.to(roomName).emit('timeout',{message:"STARTED"});
+    }, 60000);
 }
 exports.listMatchesRange = (req,res)=> {
     var lat =    Number(req.query.lat);
@@ -130,13 +129,13 @@ function updateMatchState(roomName,state){
         if(err){
 
         }else{
-            if(state==="MATCH_END"){
+            if(state==="ENDED"){
                 console.log("Ciao Closed");
                 updateLeaderBoard(roomName);
             }else{
                 setTimeout(() => {
-                    updateMatchState(roomName,"MATCH_END");
-                    io.to(roomName).emit('timeout',{message:"MATCH_END"});
+                    updateMatchState(roomName,"ENDED");
+                    io.to(roomName).emit('timeout',{message:"ENDED"});
                 }, room.duration*60000);
             }
         }
@@ -208,14 +207,12 @@ exports.addUserToMatch = (req,res)=>{
 exports.createMatch = (req, res) => {
     console.log(req.body);
 
-    const MS_PER_MINUTE = 60000;
-
     var b = req.body;
 
-    var d = new Date();
-    const correct_date = new Date(d - d.getTimezoneOffset()*MS_PER_MINUTE);
-    b.created_at = correct_date;
-    b.starting_time = correct_date;
+    const date = new Date();
+
+    b.created_at = date;
+    b.starting_time = new Date(date.getTime() + 60000);
 
     var newMatch = new Room(b);
 

@@ -5,6 +5,7 @@ import {DataService} from '../../services/data.service';
 import {Subscription} from "rxjs";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {HttpClient} from "@angular/common/http";
+import {DateHelper} from "../../utilities/DateHelper";
 
 @Component({
   selector: 'app-match-info',
@@ -19,6 +20,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   users: Array<String> = [];
   matchState: MatchState;
   password;
+  remainingTime;
 
   constructor(private router: Router,
               private http: HttpClient,
@@ -30,6 +32,19 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     this.matchState = this.match.state;
     this.dataService.joinRoom(this.match.name,"Diego"+Math.random());
     this.users = this.match.users;
+
+    const startingTime = new Date(this.match.startingTime);
+    const now = new Date();
+
+    var date: Date;
+    if (this.match.state === MatchState.SETTING_UP) {
+      date = DateHelper.dateDifference(startingTime, now)
+    } else if (this.match.state === MatchState.STARTED) {
+      const newDate = new Date(startingTime.getTime()+this.match.duration*60000);
+      date = DateHelper.dateDifference(newDate, now);
+    }
+
+    this.remainingTime = date.getSeconds();
 
     this.checkUserInside();
 
@@ -45,13 +60,13 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       .getTimeouts()
       .subscribe( timeouts =>{
           switch (timeouts) {
-            case "MATCH_START":
+            case "STARTED":
               this.matchState = MatchState.STARTED;
               if(this.users.includes(LocalStorageHelper.getItem(StorageKey.USERNAME))) {
                 this.router.navigateByUrl("match");
               }
               break;
-            case "MATCH_END":
+            case "ENDED":
               this.matchState = MatchState.ENDED;
               break;
           }
@@ -71,7 +86,11 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   showPassword() {
-    return this.match.access===MatchAccess.PRIVATE
+    return this.match.access===MatchAccess.PRIVATE;
+  }
+
+  showRemainingTime() {
+    return this.match.state !== MatchState.ENDED;
   }
 
   join() {

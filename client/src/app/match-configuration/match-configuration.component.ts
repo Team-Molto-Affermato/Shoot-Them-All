@@ -53,7 +53,7 @@ export class MatchConfigurationComponent implements OnInit {
 
     const match: Match = new Match(
       formValues.name, this.access, new Point(0, 0), formValues.areaRadius,
-      new Date(), formValues.duration, formValues.maxPlayerNumber, formValues.password, [], MatchState.SETTING_UP);
+      new Date(), new Date(), formValues.duration, formValues.maxPlayerNumber, formValues.password, [], MatchState.SETTING_UP);
 
     this.matchConfigurationService.createNewMatch(match).subscribe(
       (data) => {

@@ -10,8 +10,9 @@
 <p id="radius">{{match.radius}}</p>
 <label for="centerPoint">Center Point</label>
 <p id="centerPoint">{{match.centerPoint.x}}, {{match.centerPoint.y}}</p>
-<label for="remainingTime">Remaining Time</label>
-<p id="remainingTime">{{match.startingTime}}</p>
+<label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>
+<p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>
+
 <label for="users">Players</label>
 <ul id="users">
   <li *ngFor="let user of users">
