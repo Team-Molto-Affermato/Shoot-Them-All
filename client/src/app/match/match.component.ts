@@ -62,6 +62,8 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
 
+    this.dataService.joinRoom(this.match.name,this.username);
+
     this.radar = document.getElementById("rad");
     const radarRadius = this.radar.offsetWidth/2;
     this.ratio = radarRadius/this.radius;

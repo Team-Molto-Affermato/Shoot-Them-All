@@ -32,7 +32,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
-    this.dataService.joinRoom(this.match.name,"Diego"+Math.random());
+    this.dataService.joinRoom(this.match.name,this.username);
     this.users = this.match.users;
 
     this.intervalId = setInterval(()=> {
@@ -71,7 +71,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // LocalStorageHelper.removeItem(StorageKey.MACTH)
+    this.dataService.leaveRoom(this.match.name);
   }
 
   checkUserInside() {
