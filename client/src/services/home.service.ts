@@ -26,7 +26,7 @@ export class HomeService {
         map((data: Array<any>) => {
 
           const matches: Array<Match> = data.map(m => {
-
+            console.log(m);
             return this.matchCOnverterService.jsonToClass(m);
           });
 

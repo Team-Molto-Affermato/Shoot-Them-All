@@ -71,9 +71,9 @@ export class MatchComponent implements OnInit {
         console.log(score);
       });
 
-    // window.addEventListener("deviceorientationabsolute", (e) => this.handleOrientation(e));
+    window.addEventListener("deviceorientationabsolute", (e) => this.handleOrientation(e));
 
-    createSensor((q) => this.updateOrientation(q), (e) => {this.handleError(e)})
+    // createSensor((q) => this.updateOrientation(q), (e) => {this.handleError(e)})
 
     setInterval(() => this.rotate(), 25);
 
@@ -158,22 +158,22 @@ export class MatchComponent implements OnInit {
     return CoordinatesHelper.latitudeDistanceInMeters(this.centerCoordinate.latitude, latitude)
   }
 
-  // private handleOrientation(event) {
-  //   var absolute: boolean = event.absolute;
-  //   var alpha: number    = event.alpha;
-  //   var beta: number     = event.beta;
-  //   var gamma: number    = event.gamma;
-  //
-  //   if (beta>90 || beta<-90) {
-  //     alpha=Math.abs(alpha+180)%360;
-  //   }
-  //
-  //   alpha = Math.round(alpha);
-  //
-  //   this.orientationAngle = alpha;
-  //
-  //   document.getElementById('container').style.transform = 'rotate(' + alpha + 'deg)';
-  // }
+  private handleOrientation(event) {
+    var absolute: boolean = event.absolute;
+    var alpha: number    = event.alpha;
+    var beta: number     = event.beta;
+    var gamma: number    = event.gamma;
+
+    if (beta>90 || beta<-90) {
+      alpha=Math.abs(alpha+180)%360;
+    }
+
+    alpha = Math.round(alpha);
+
+    this.orientationAngle = alpha;
+
+    document.getElementById('container').style.transform = 'rotate(' + alpha + 'deg)';
+  }
 
   shoot() {
   }
