@@ -89,7 +89,7 @@ export class MatchComponent implements OnInit, OnDestroy {
         switch (timeouts) {
           case "ENDED":
             console.log("Ended")
-            this.router.navigateByUrl("/match");
+            this.router.navigateByUrl("/home");
             break;
         }
       });
