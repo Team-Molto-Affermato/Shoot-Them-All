@@ -9,9 +9,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var cors = require('cors');
+var fs = require('fs');
 
 const app = express();
-const server = require('http').createServer(app);
+var options = {
+    key: fs.readFileSync('privateKey.key'),
+    cert: fs.readFileSync('certificate.crt')
+};
+const server = require('https').createServer(options,app);
 io = require('socket.io')(server);
 
 var redis = require('socket.io-redis');
