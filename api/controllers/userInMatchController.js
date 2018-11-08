@@ -102,7 +102,7 @@ exports.updateUserPos = (req, res) => {
         name: req.params.username,
         roomName: req.params.roomName
     };
-    console.log(req.body.location);
+    // console.log(req.body.location);
     UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:true,new:true}, function (err,userPos) {
         if (err) {
             return res.send(err)

@@ -36,41 +36,45 @@ exports.deleteUserInMatch= (req,res)=>{
         if(err){
             return res.send(err);
         }else{
-            console.log(room.users);
+            // console.log(room.users);
             io.to(req.params.roomName).emit('users',{users:room.users});
         }
     });
     //Notificare
-    var query = UserInMatch.deleteOne({
-        roomName : req.params.matchId,
+    var query = UserInMatch.deleteMany({
+        roomName : req.params.roomName,
         name: req.params.username
     });
-    query.exec(function (err,raw) {
+    query.exec({new:true},function (err,raw) {
         if(err)
             res.send(err)
         else{
-            UserInMatch
-                .find({
-                    roomName : req.params.roomName,
-                    location: { $ne: null }
-                })
-                .where({
-                        name: req.params.username
+            console.log(raw);
+            var usersQuery = UserInMatch.find({
+                roomName : req.params.roomName
+                // location:{
+                //     type: 'Point',
+                //     coordinates:  { $ne: null }
+                // }
+            });
+            usersQuery.exec(
+                function (error,usersR) {
+                    if(error){
+                        res.send(error);
+
+                    }else{
+                        // console.log("Ciao");
+                        // console.log(usersR);
+                        var positions = [];
+                        usersR.forEach(user =>{
+                            positions.push(mapToPosition(user));
+                        });
+                        // console.log(positions)
+                        io.to(req.params.roomName).emit('users-pos',positions);
+                        res.json(positions);
                     }
-                )
-                .exec({new:true},function(error, users){
-                        if(error)
-                            res.send(error);
-                        else{
-                            var positions = [];
-                            users.forEach(user =>{
-                                positions.push(mapToPosition(user));
-                            });
-                            io.to(req.params.roomName).emit('users-pos',positions);
-                            res.json(positions);
-                        }
-                    }
-                });
+                }
+            );
         }
     });
 };
