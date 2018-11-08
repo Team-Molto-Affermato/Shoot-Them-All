@@ -420,8 +420,8 @@ class Gyroscope extends DeviceOrientationMixin(Sensor, "devicemotion") {
 
       this[slot].timestamp = performance.now();
 
-      this[slot].x = event.rotationRate.alpha;
-      this[slot].y = event.rotationRate.beta;
+      this[slot].longitude = event.rotationRate.alpha;
+      this[slot].latitude = event.rotationRate.beta;
       this[slot].z = event.rotationRate.gamma;
 
       this[slot].hasReading = true;
@@ -437,8 +437,8 @@ class Gyroscope extends DeviceOrientationMixin(Sensor, "devicemotion") {
 
   stop() {
     super.stop();
-    this[slot].x = null;
-    this[slot].y = null;
+    this[slot].longitude = null;
+    this[slot].latitude = null;
     this[slot].z = null;
   }
 }
@@ -460,8 +460,8 @@ class Accelerometer extends DeviceOrientationMixin(Sensor, "devicemotion") {
 
       this[slot].timestamp = performance.now();
 
-      this[slot].x = event.accelerationIncludingGravity.x;
-      this[slot].y = event.accelerationIncludingGravity.y;
+      this[slot].longitude = event.accelerationIncludingGravity.x;
+      this[slot].latitude = event.accelerationIncludingGravity.y;
       this[slot].z = event.accelerationIncludingGravity.z;
 
       this[slot].hasReading = true;
@@ -477,8 +477,8 @@ class Accelerometer extends DeviceOrientationMixin(Sensor, "devicemotion") {
 
   stop() {
     super.stop();
-    this[slot].x = null;
-    this[slot].y = null;
+    this[slot].longitude = null;
+    this[slot].latitude = null;
     this[slot].z = null;
   }
 }
@@ -500,8 +500,8 @@ class LinearAccelerationSensor extends DeviceOrientationMixin(Sensor, "devicemot
 
       this[slot].timestamp = performance.now();
 
-      this[slot].x = event.acceleration.x;
-      this[slot].y = event.acceleration.y;
+      this[slot].longitude = event.acceleration.x;
+      this[slot].latitude = event.acceleration.y;
       this[slot].z = event.acceleration.z;
 
       this[slot].hasReading = true;
@@ -517,8 +517,8 @@ class LinearAccelerationSensor extends DeviceOrientationMixin(Sensor, "devicemot
 
   stop() {
     super.stop();
-    this[slot].x = null;
-    this[slot].y = null;
+    this[slot].longitude = null;
+    this[slot].latitude = null;
     this[slot].z = null;
   }
 }
@@ -540,8 +540,8 @@ export const GravitySensor = window.GravitySensor ||
 
       this[slot].timestamp = performance.now();
 
-      this[slot].x = event.accelerationIncludingGravity.x - event.acceleration.x;
-      this[slot].y = event.accelerationIncludingGravity.y - event.acceleration.y;
+      this[slot].longitude = event.accelerationIncludingGravity.x - event.acceleration.x;
+      this[slot].latitude = event.accelerationIncludingGravity.y - event.acceleration.y;
       this[slot].z = event.accelerationIncludingGravity.z - event.acceleration.z;
 
       this[slot].hasReading = true;
@@ -557,8 +557,8 @@ export const GravitySensor = window.GravitySensor ||
 
   stop() {
     super.stop();
-    this[slot].x = null;
-    this[slot].y = null;
+    this[slot].longitude = null;
+    this[slot].latitude = null;
     this[slot].z = null;
   }
 }

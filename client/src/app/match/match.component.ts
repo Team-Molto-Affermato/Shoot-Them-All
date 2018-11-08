@@ -129,12 +129,12 @@ export class MatchComponent implements OnInit, OnDestroy {
   updatePosition(position) {
 
 
-    this.position = new Point(position.coords.longitude, position.coords.latitude);
+    this.position = new Point(position.coords.latitude, position.coords.longitude);
 
     const body = {
       location: {
         type: "Point",
-        coordinates: [this.position.x, this.position.y]
+        coordinates: [this.position.latitude, this.position.longitude]
       },
     };
 
@@ -150,12 +150,12 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   updateOrientation(q) {
 
-    // // roll (x-axis rotation)
+    // // roll (longitude-axis rotation)
     const sinr_cosp = +2.0 * (q.w * q.x + q.y * q.z);
     const cosr_cosp = +1.0 - 2.0 * (q.x * q.x + q.y * q.y);
     var roll = Math.atan2(sinr_cosp, cosr_cosp);
     //
-    // pitch (y-axis rotation)
+    // pitch (latitude-axis rotation)
     const sinp = 2.0 * (q.w * q.y - q.z * q.x);
     var pitch;
     if (Math.abs(sinp) >= 1)
@@ -199,8 +199,8 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     this.players.forEach(p => {
 
-      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.userPosition.position.x))*this.ratio,
-        (this.latitudeDistanceFromCenter(p.userPosition.position.y))*this.ratio);
+      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.userPosition.position.longitude))*this.ratio,
+        (this.latitudeDistanceFromCenter(p.userPosition.position.latitude))*this.ratio);
       const deg = (AngleHelper.radiusToDegrees(-atan)+180) | 0;
 
 
@@ -213,18 +213,18 @@ export class MatchComponent implements OnInit, OnDestroy {
   calculatePosition(position) {
 
     return {
-      left: (this.longitudeDistanceFromCenter(position.x) + this.radius) * this.ratio + 'px',
-      top: (this.latitudeDistanceFromCenter(position.y) + this.radius) * this.ratio + 'px'
+      left: (this.longitudeDistanceFromCenter(position.longitude) + this.radius) * this.ratio + 'px',
+      top: (this.latitudeDistanceFromCenter(position.latitude) + this.radius) * this.ratio + 'px'
     }
   }
 
   private longitudeDistanceFromCenter(longitude) {
-    return CoordinatesHelper.longitudeDistanceInMeters(this.position.x, longitude,
-      this.position.y)
+    return CoordinatesHelper.longitudeDistanceInMeters(this.position.longitude, longitude,
+      this.position.latitude)
   }
 
   private latitudeDistanceFromCenter(latitude) {
-    return CoordinatesHelper.latitudeDistanceInMeters(this.position.y, latitude)
+    return CoordinatesHelper.latitudeDistanceInMeters(this.position.latitude, latitude)
   }
 
   private handleOrientation(event) {

@@ -2,8 +2,8 @@ import {AngleHelper} from "./AngleHelper";
 
 export class CoordinatesHelper {
 
-  private static unitDegreeLatitudeLength = 111320;
-  private static unitDegreeLongitudeLength = (latitude) => {
+  public static unitDegreeLatitudeLength = 111320;
+  public static unitDegreeLongitudeLength = (latitude) => {
     return 40075000 * Math.cos(AngleHelper.degreesToRadius(latitude)) / 360;
   };
 

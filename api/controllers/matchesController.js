@@ -23,8 +23,8 @@ function mapToPosition(item, index) {
     return {
         username: item.name,
         position: {
-            x:position[0],
-            y:position[1]
+            latitude:position[0],
+            longitude:position[1]
         }
     };
 }

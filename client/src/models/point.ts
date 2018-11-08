@@ -1,6 +1,6 @@
 export class Point {
-  constructor(public x: number,
-              public y: number) { }
+  constructor(public latitude: number,
+              public longitude: number) { }
 }
 export class UserPosition {
   constructor(public username: string,
