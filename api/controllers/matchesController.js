@@ -67,7 +67,9 @@ exports.deleteUserInMatch= (req,res)=>{
                         // console.log(usersR);
                         var positions = [];
                         usersR.forEach(user =>{
-                            positions.push(mapToPosition(user));
+                            if(user.location){
+                                positions.push(mapToPosition(user));
+                            }
                         });
                         // console.log(positions)
                         io.to(req.params.roomName).emit('users-pos',positions);
