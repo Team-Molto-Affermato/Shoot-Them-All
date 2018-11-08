@@ -22,7 +22,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   password;
   remainingTime;
 
-  intervalId;
+  countdownIntervalId;
 
   constructor(private router: Router,
               private http: HttpClient,
@@ -35,7 +35,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     this.dataService.joinRoom(this.match.name,this.username);
     this.users = this.match.users;
 
-    this.intervalId = setInterval(()=> {
+    this.countdownIntervalId = setInterval(()=> {
       this.updateCountdown();
       },
       1000);
@@ -71,6 +71,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    clearInterval(this.countdownIntervalId);
     this.dataService.leaveRoom(this.match.name);
   }
 
@@ -90,7 +91,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     if (this.match.state === MatchState.SETTING_UP) {
       difference = DateHelper.dateDifference(this.match.startingTime, now);
 
-      if (difference) {
+      if (difference && difference>0) {
         this.remainingTime = this.outputTime(difference, false);
       }
 
@@ -98,14 +99,14 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
       difference = DateHelper.dateDifference(endingDate, now);
 
-      if (difference && difference > 0) {
+      if (difference && difference>0) {
         this.remainingTime = this.outputTime(difference, true);
       } else {
-        clearInterval(this.intervalId);
+        clearInterval(this.countdownIntervalId);
       }
 
     } else {
-      clearInterval(this.intervalId);
+      clearInterval(this.countdownIntervalId);
     }
 
   }

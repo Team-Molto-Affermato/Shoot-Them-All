@@ -1,14 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {Coordinate, CoordinatesHelper} from "../../utilities/CoordinatesHelper";
+import {CoordinatesHelper} from "../../utilities/CoordinatesHelper";
 import {AngleHelper} from "../../utilities/AngleHelper";
 import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
 import {MotionSensors} from "../../assets/motion-sensors.js"
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
-import {Match, MatchState} from "../../models/match";
+import {Match} from "../../models/match";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {CollisionsDetectionService} from "../../services/collision-detection.service";
+import {Point} from "../../models/point";
 
 @Component({
   selector: 'app-match',
@@ -36,10 +38,9 @@ export class MatchComponent implements OnInit, OnDestroy {
   username: string;
   match: Match;
 
-  centerCoordinate = new Coordinate(43.688756, 12.954835);
+  position: Point;
 
-  points = [{coordinate: new Coordinate(43.688632, 12.953757), active: false},
-            {coordinate: new Coordinate(43.688841, 12.955377), active: false}];
+  players = [];
 
   sensor = null;
   orientationAngle: number = 0;
@@ -51,10 +52,14 @@ export class MatchComponent implements OnInit, OnDestroy {
   userScoreSub: Subscription;
   radar: HTMLElement;
 
+  rotateIntervalId;
+  positionIntervalId;
+
   constructor(
     private router: Router,
     private http: HttpClient,
-    private dataService: DataService
+    private dataService: DataService,
+    private collisionDetectionService: CollisionsDetectionService
   ) {
   }
 
@@ -67,15 +72,18 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.radar = document.getElementById("rad");
     const radarRadius = this.radar.offsetWidth/2;
     this.ratio = radarRadius/this.radius;
+
+    this.getPosition();
+
     this.usersSub = this.dataService
       .getPositions()
       .subscribe(positions =>{
         console.log(positions);
         //Sarebbe da fare clear
+        this.players = [];
         positions.forEach(pos=>{
-          let newPos = {coordinate: new Coordinate(pos.position.x, pos.position.y), active: false};
-          this.points.push(newPos);
-          console.log(this.points);
+          let newPos = {userPosition: pos, active: false};
+          this.players.push(newPos);
         });
       });
     this.userScoreSub = this.dataService
@@ -98,12 +106,46 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     // createSensor((q) => this.updateOrientation(q), (e) => {this.handleError(e)})
 
-    setInterval(() => this.rotate(), 25);
+    this.rotateIntervalId = setInterval(() => this.rotate(), 25);
+
+    this.positionIntervalId = setInterval(() => this.getPosition(), 500);
 
   }
 
   ngOnDestroy(): void {
+    clearInterval(this.rotateIntervalId);
+    clearInterval(this.positionIntervalId);
     this.dataService.leaveRoom(this.match.name);
+  }
+
+  getPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => this.updatePosition(pos),
+        error => console.log(error),
+        {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
+    }
+  }
+
+  updatePosition(position) {
+
+
+    this.position = new Point(position.coords.longitude, position.coords.latitude);
+
+    const body = {
+      location: {
+        type: "Point",
+        coordinates: [this.position.x, this.position.y]
+      },
+    };
+
+    this.http.put("/api/matches/" + this.match.name + "/" + this.username + "/pos", body).subscribe(
+      data => {
+
+      },
+      error => {
+        console.log(error)
+      }
+    )
   }
 
   updateOrientation(q) {
@@ -155,10 +197,10 @@ export class MatchComponent implements OnInit, OnDestroy {
     const radarRadius = this.radar.offsetWidth/2;
     this.ratio = radarRadius/this.radius;
 
-    this.points.forEach(p => {
+    this.players.forEach(p => {
 
-      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.coordinate.longitude))*this.ratio,
-        (this.latitudeDistanceFromCenter(p.coordinate.latitude))*this.ratio);
+      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.userPosition.position.x))*this.ratio,
+        (this.latitudeDistanceFromCenter(p.userPosition.position.y))*this.ratio);
       const deg = (AngleHelper.radiusToDegrees(-atan)+180) | 0;
 
 
@@ -168,21 +210,21 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.deg = ++this.deg%360;
   }
 
-  calculatePosition(point) {
+  calculatePosition(position) {
 
     return {
-      left: (this.longitudeDistanceFromCenter(point.coordinate.longitude) + this.radius) * this.ratio + 'px',
-      top: (this.latitudeDistanceFromCenter(point.coordinate.latitude) + this.radius) * this.ratio + 'px'
+      left: (this.longitudeDistanceFromCenter(position.x) + this.radius) * this.ratio + 'px',
+      top: (this.latitudeDistanceFromCenter(position.y) + this.radius) * this.ratio + 'px'
     }
   }
 
   private longitudeDistanceFromCenter(longitude) {
-    return CoordinatesHelper.longitudeDistanceInMeters(this.centerCoordinate.longitude, longitude,
-      this.centerCoordinate.latitude)
+    return CoordinatesHelper.longitudeDistanceInMeters(this.position.x, longitude,
+      this.position.y)
   }
 
   private latitudeDistanceFromCenter(latitude) {
-    return CoordinatesHelper.latitudeDistanceInMeters(this.centerCoordinate.latitude, latitude)
+    return CoordinatesHelper.latitudeDistanceInMeters(this.position.y, latitude)
   }
 
   private handleOrientation(event) {
@@ -203,6 +245,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   }
 
   shoot() {
+    this.collisionDetectionService.checkCollisions(this.position, this.orientationAngle, this.players.map(u => u.userPosition));
   }
 
   exit() {

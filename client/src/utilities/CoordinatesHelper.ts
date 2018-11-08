@@ -1,13 +1,5 @@
 import {AngleHelper} from "./AngleHelper";
 
-export class Coordinate {
-
-  constructor(public latitude: number,
-              public longitude: number) {
-
-  }
-}
-
 export class CoordinatesHelper {
 
   private static unitDegreeLatitudeLength = 111320;
