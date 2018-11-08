@@ -54,17 +54,21 @@ exports.deleteUserInMatch= (req,res)=>{
                     roomName : req.params.roomName,
                     location: { $ne: null }
                 })
-                .where()
-                .exec(function(error, users){
-                    if(error)
-                        res.send(error);
-                    else{
-                        var positions = [];
-                        users.forEach(user =>{
-                            positions.push(mapToPosition(user));
-                        });
-                        io.to(req.params.roomName).emit('users-pos',positions);
-                        res.json(positions);
+                .where({
+                        name: req.params.username
+                    }
+                )
+                .exec({new:true},function(error, users){
+                        if(error)
+                            res.send(error);
+                        else{
+                            var positions = [];
+                            users.forEach(user =>{
+                                positions.push(mapToPosition(user));
+                            });
+                            io.to(req.params.roomName).emit('users-pos',positions);
+                            res.json(positions);
+                        }
                     }
                 });
         }
