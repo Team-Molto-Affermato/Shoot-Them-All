@@ -127,8 +127,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   }
 
   updatePosition(position) {
-
-
+    
     this.position = new Point(position.coords.latitude, position.coords.longitude);
 
     const body = {
@@ -218,6 +217,10 @@ export class MatchComponent implements OnInit, OnDestroy {
     }
   }
 
+  showPlayerInfo(player) {
+    alert(player.userPosition.username);
+  }
+
   private longitudeDistanceFromCenter(longitude) {
     return CoordinatesHelper.longitudeDistanceInMeters(this.position.longitude, longitude,
       this.position.latitude)
@@ -239,7 +242,7 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     alpha = Math.round(alpha);
 
-    this.orientationAngle = alpha;
+    this.orientationAngle = (alpha+90)%360;
 
     document.getElementById('container').style.transform = 'rotate(' + alpha + 'deg)';
   }

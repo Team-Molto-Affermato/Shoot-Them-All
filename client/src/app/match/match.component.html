@@ -3,7 +3,7 @@
   <div id="container">
     <div id="rad"></div>
     <div *ngFor="let player of players">
-      <div class="point" [ngStyle]="calculatePosition(player.userPosition.position)" [@switch]="player.active ? 'active' : 'inactive'" ></div>
+      <div (click)="showPlayerInfo(player)" class="point" [ngStyle]="calculatePosition(player.userPosition.position)" [@switch]="player.active ? 'active' : 'inactive'" ></div>
     </div>
   </div>
 

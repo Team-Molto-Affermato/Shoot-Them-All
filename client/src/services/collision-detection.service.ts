@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {from} from "rxjs";
 import {Point, UserPosition} from "../models/point";
 import {CoordinatesHelper} from "../utilities/CoordinatesHelper";
+import {AngleHelper} from "../utilities/AngleHelper";
 
 @Injectable({
   providedIn: 'root'
@@ -27,11 +28,15 @@ export class CollisionsDetectionService {
       const player = players[i];
 
       const lateralDistance = this.lateralDistance(player.position, m, q);
-      const lateralDistanceInMeters = lateralDistance * CoordinatesHelper.unitDegreeLongitudeLength(player.position.latitude);
-      if (lateralDistanceInMeters < this.maxLateralDistance) {
+
+      // alert("distance from " + player.username);
+      // alert("lateral distance " + lateralDistance);
+
+      if (lateralDistance < this.maxLateralDistance) {
         const verticalDistance = this.verticalDistance(position, player.position, lateralDistance);
-        const verticalDistanceInMeters = verticalDistance * CoordinatesHelper.unitDegreeLatitudeLength;
-        if (verticalDistanceInMeters < this.maxVerticalDistance) {
+        // alert("vertical distance " + verticalDistance);
+
+        if (verticalDistance < this.maxVerticalDistance) {
           if (this.checkOrientation(position, player.position, orientationAngle)) {
             hitPlayers.push(player);
           }
@@ -49,18 +54,31 @@ export class CollisionsDetectionService {
   }
 
   private lateralDistance(point: Point, m: number, q: number): number {
-    const num = Math.abs(point.latitude - (point.longitude * m +q));
+    //mettere curvatura terrestre
+    const num = Math.abs(point.latitude - (point.longitude * m + q));
     const den = Math.sqrt(1 + Math.pow(m, 2));
-    return num/den;
+    return num/den * CoordinatesHelper.unitDegreeLongitudeLength(point.latitude);
   }
 
   private verticalDistance(sourcePoint: Point, point: Point, lateralDistance: number): number {
     const hypotenuse = this.pointDistance(sourcePoint, point);
-    return Math.sqrt(Math.pow(hypotenuse, 2) + Math.pow(lateralDistance, 2));
+    const c2 = Math.sqrt(Math.pow(hypotenuse, 2) - Math.pow(lateralDistance, 2));
+    // alert("hypotenuse = " + hypotenuse + "\nc1 = " + lateralDistance + "\nc2 = " + c2);
+    return c2;
   }
 
   private pointDistance(fromPoint: Point, toPoint: Point): number {
-    return Math.sqrt(Math.pow(toPoint.longitude - fromPoint.longitude, 2) + Math.pow(toPoint.latitude - fromPoint.latitude, 2));
+    var R = 6371000; // Radius of the earth in meters
+    var dLat = AngleHelper.degreesToRadius(toPoint.latitude-fromPoint.latitude);  // deg2rad below
+    var dLon = AngleHelper.degreesToRadius(toPoint.longitude-fromPoint.longitude);
+    var a =
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(AngleHelper.degreesToRadius(fromPoint.latitude)) * Math.cos(AngleHelper.degreesToRadius(toPoint.latitude)) *
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+    ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c; // Distance in meters
+    return d;
   }
 
   private checkOrientation(sourcePoint: Point, point: Point, orientationAngle: number): boolean {
