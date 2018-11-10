@@ -50,13 +50,13 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.usersSub = this.dataService
       .getPositions()
       .subscribe(positions =>{
-        console.log(positions);
+        // console.log(positions);
         //Sarebbe da fare clear
         this.players = [];
         positions.forEach(pos=>{
           let newPos = {userPosition: pos, active: false};
           this.players.push(newPos);
-          console.log(pos);
+          // console.log(pos);
         });
       });
     this.userScoreSub = this.dataService

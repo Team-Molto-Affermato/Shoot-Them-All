@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from './core/core.module';
 import { ChartsModule } from 'ng2-charts';
 import {FormsModule} from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -57,7 +58,10 @@ const appRoutes: Routes = [
     CoreModule,
     ChartsModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
+    })
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
