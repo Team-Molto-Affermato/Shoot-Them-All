@@ -1,7 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {CoordinatesHelper} from "../../utilities/CoordinatesHelper";
-import {AngleHelper} from "../../utilities/AngleHelper";
 import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
 import {MotionSensors} from "../../assets/motion-sensors.js"
@@ -15,44 +12,22 @@ import {Point} from "../../models/point";
 @Component({
   selector: 'app-match',
   templateUrl: './match.component.html',
-  styleUrls: ['./match.component.css'],
-  animations: [
-    trigger('switch', [
-      state('inactive', style({
-        opacity: 0.2
-      })),
-      state('active', style({
-        opacity: 1
-      })),
-      transition('inactive => active', [
-        animate(1)
-      ]),
-      transition('active => inactive', [
-        animate(1700)
-      ])
-    ])
-  ]
+  styleUrls: ['./match.component.css']
 })
 export class MatchComponent implements OnInit, OnDestroy {
 
   username: string;
   match: Match;
-
   position: Point;
+  score: number = 100;
 
+  orientationAngle;
   players = [];
 
-  sensor = null;
-  orientationAngle: number = 0;
   timeoutSub: Subscription;
-  deg: number = 0;
-  radius: number = 100;
-  ratio: number;
   usersSub: Subscription;
   userScoreSub: Subscription;
-  radar: HTMLElement;
 
-  rotateIntervalId;
   positionIntervalId;
 
   constructor(
@@ -69,9 +44,6 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     this.dataService.joinRoom(this.match.name,this.username);
 
-    this.radar = document.getElementById("rad");
-    const radarRadius = this.radar.offsetWidth/2;
-    this.ratio = radarRadius/this.radius;
 
     this.getPosition();
 
@@ -84,6 +56,7 @@ export class MatchComponent implements OnInit, OnDestroy {
         positions.forEach(pos=>{
           let newPos = {userPosition: pos, active: false};
           this.players.push(newPos);
+          console.log(pos);
         });
       });
     this.userScoreSub = this.dataService
@@ -104,16 +77,11 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     window.addEventListener("deviceorientationabsolute", (e) => this.handleOrientation(e));
 
-    // createSensor((q) => this.updateOrientation(q), (e) => {this.handleError(e)})
-
-    this.rotateIntervalId = setInterval(() => this.rotate(), 25);
-
     this.positionIntervalId = setInterval(() => this.getPosition(), 500);
 
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.rotateIntervalId);
     clearInterval(this.positionIntervalId);
     this.dataService.leaveRoom(this.match.name);
   }
@@ -127,7 +95,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   }
 
   updatePosition(position) {
-    
+
     this.position = new Point(position.coords.latitude, position.coords.longitude);
 
     const body = {
@@ -147,87 +115,10 @@ export class MatchComponent implements OnInit, OnDestroy {
     )
   }
 
-  updateOrientation(q) {
-
-    // // roll (longitude-axis rotation)
-    const sinr_cosp = +2.0 * (q.w * q.x + q.y * q.z);
-    const cosr_cosp = +1.0 - 2.0 * (q.x * q.x + q.y * q.y);
-    var roll = Math.atan2(sinr_cosp, cosr_cosp);
-    //
-    // pitch (latitude-axis rotation)
-    const sinp = 2.0 * (q.w * q.y - q.z * q.x);
-    var pitch;
-    if (Math.abs(sinp) >= 1)
-        pitch = (Math.PI / 2) * Math.sign(sinp); // use 90 degrees if out of range
-    else
-        pitch = Math.asin(sinp);
-
-    // yaw (z-axis rotation)
-    const siny_cosp = 2.0 * (q.w * q.z + q.x * q.y);
-    const cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z);
-    var yaw = Math.atan2(siny_cosp, cosy_cosp);
-
-    roll = roll*180/Math.PI;
-    pitch = pitch*180/Math.PI;
-    yaw = yaw*180/Math.PI;
-    if (yaw < 0) {
-      yaw = yaw + 360;
-    }
-
-    roll = Math.round(roll);
-    pitch = Math.round(pitch);
-    yaw = Math.round(yaw);
-
-    this.orientationAngle = yaw;
-
-    if (roll>90 || roll<-90) {
-      this.orientationAngle=Math.abs(yaw+180)%360;
-    }
-
-    document.getElementById('container').style.transform = 'rotate(' + this.orientationAngle + 'deg)';
-  }
-
-  handleError(e) {
-    alert(e)
-  }
-
-  rotate() {
-    this.radar.style.transform = 'rotate(' + this.deg + 'deg)';
-    const radarRadius = this.radar.offsetWidth/2;
-    this.ratio = radarRadius/this.radius;
-
-    this.players.forEach(p => {
-
-      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.userPosition.position.longitude))*this.ratio,
-        (this.latitudeDistanceFromCenter(p.userPosition.position.latitude))*this.ratio);
-      const deg = (AngleHelper.radiusToDegrees(-atan)+180) | 0;
-
-
-      p.active = this.deg === deg;
-    });
-
-    this.deg = ++this.deg%360;
-  }
-
-  calculatePosition(position) {
-
+  getScoreStyle() {
     return {
-      left: (this.longitudeDistanceFromCenter(position.longitude) + this.radius) * this.ratio + 'px',
-      top: (this.latitudeDistanceFromCenter(position.latitude) + this.radius) * this.ratio + 'px'
+      width: this.score + '%'
     }
-  }
-
-  showPlayerInfo(player) {
-    alert(player.userPosition.username);
-  }
-
-  private longitudeDistanceFromCenter(longitude) {
-    return CoordinatesHelper.longitudeDistanceInMeters(this.position.longitude, longitude,
-      this.position.latitude)
-  }
-
-  private latitudeDistanceFromCenter(latitude) {
-    return CoordinatesHelper.latitudeDistanceInMeters(this.position.latitude, latitude)
   }
 
   private handleOrientation(event) {
@@ -247,8 +138,29 @@ export class MatchComponent implements OnInit, OnDestroy {
     document.getElementById('container').style.transform = 'rotate(' + alpha + 'deg)';
   }
 
+  calculateScore() {
+    const self = this;
+
+    var newScore = this.score - 30;
+    if(newScore < 0) {
+      newScore = 0;
+    }
+
+    const id = setInterval(() => f(), 10);
+
+    function f() {
+      if(self.score <= newScore) {
+        clearInterval(id);
+      } else {
+        self.score--;
+      }
+    }
+  }
+
   shoot() {
     this.collisionDetectionService.checkCollisions(this.position, this.orientationAngle, this.players.map(u => u.userPosition));
+
+    this.calculateScore();
   }
 
   exit() {

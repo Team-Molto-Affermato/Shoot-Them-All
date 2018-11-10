@@ -19,6 +19,9 @@ import {AuthGuardService as AuthGuard} from "../services/auth-guard.service";
 import { NavbarComponent } from './navbar/navbar.component';
 import { MatchComponent } from './match/match.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { GameMapComponent } from './match/game-map/game-map.component';
+import { RadarComponent } from './match/game-map/radar/radar.component';
+import { EarthMapComponent } from './match/game-map/earth-map/earth-map.component';
 
 const appRoutes: Routes = [
   {path: "", redirectTo: 'home', pathMatch: 'full'},
@@ -41,7 +44,10 @@ const appRoutes: Routes = [
     MatchConfigurationComponent,
     MatchInfoComponent,
     NavbarComponent,
-    MatchComponent
+    MatchComponent,
+    GameMapComponent,
+    RadarComponent,
+    EarthMapComponent
   ],
   imports: [
     BrowserModule,
