@@ -203,7 +203,7 @@ exports.addUserToMatch = (req,res)=>{
                             name: req.body.username,
                             roomName: req.params.roomName
                         };
-                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location }, {upsert:true,new:true}, function (err,user) {
+                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location ,score:req.body.score}, {upsert:true,new:true}, function (err,user) {
                             if (err) {
 
                             } else {

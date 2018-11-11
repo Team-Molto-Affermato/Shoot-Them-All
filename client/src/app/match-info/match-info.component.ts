@@ -136,13 +136,22 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   switchPartecipation() {
-
+    const penality = 500;
     if (!this.userJoined()) {
-      const body = {
+      var body = {
         username: this.username,
-        password: this.password
+        password: this.password,
+        score: 0
       };
+      if(this.match.state === MatchState.STARTED) {
+        const now = new Date();
+        const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
+        const remaining = DateHelper.dateDifference(endingDate, now)/60000;
+        console.log(remaining);
+        body.score = -((this.match.duration-remaining)/this.match.duration)*penality;
+        console.log(body.score);
 
+      }
       this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
         data => {
         }, error => {
