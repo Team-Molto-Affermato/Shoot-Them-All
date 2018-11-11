@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatchComponent} from "../../match.component";
+import { AgmCoreModule } from '@agm/core';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-earth-map',
@@ -8,7 +10,22 @@ import {MatchComponent} from "../../match.component";
 })
 export class EarthMapComponent implements OnInit {
 
-  constructor(private matchComponent: MatchComponent) { }
+  centralPosition;
+  userPositions;
+  styles;
+
+  constructor(private matchComponent: MatchComponent,
+              private http: HttpClient) {
+    this.http.get("../../../../assets/earthMapStyles.json").subscribe(
+      data => {
+        this.styles = data;
+      }, error => {
+        console.log(error)
+      }
+    )
+    this.centralPosition = this.matchComponent.position;
+    this.userPositions = this.matchComponent.players.map(p => p.userPosition);
+  }
 
   ngOnInit() {
   }

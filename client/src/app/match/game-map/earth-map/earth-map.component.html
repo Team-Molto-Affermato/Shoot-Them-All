@@ -1,3 +1,4 @@
-<p>
-  earth-map works!
-</p>
+<agm-map [latitude]="centralPosition.latitude" [longitude]="centralPosition.longitude" [styles]="styles">
+  <agm-marker [latitude]="userPosition.position.latitude" [longitude]="userPosition.position.longitude"
+              *ngFor="let userPosition of userPositions"></agm-marker>
+</agm-map>
