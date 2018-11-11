@@ -8,6 +8,8 @@ import { Socket } from '../shared/interfaces';
 import {UserPosition} from "../models/point";
 import {UserScore} from "../models/user";
 import {HttpClient} from "@angular/common/http";
+import {Match} from "../models/match";
+import {MatchConverterService} from "./match-converter.service";
 
 declare var io : {
   connect(url: string): Socket;
@@ -22,8 +24,18 @@ export class DataService {
   timeoutObserver: Observer<String>;
   positionObserver: Observer<Array<UserPosition>>;
   scoreObserver: Observer<UserScore>;
-  constructor(private http:HttpClient){
+  matchesObserver: Observer<Array<Match>>;
+  constructor(private http:HttpClient,
+              private matchConverter:MatchConverterService){
 
+  }
+  getMatches():Observable<Array<Match>>{
+    this.socket.on('matches', (res) => {
+      this.matchesObserver.next(
+        res.matches.map(m=>this.matchConverter.jsonToClass(m))
+      );
+    });
+    return this.createMatchesObservable();
   }
   getScores():Observable<UserScore>{
     this.socket.on('users-score', (res) => {
@@ -87,7 +99,11 @@ export class DataService {
       message:"Ciao Diego"
     })
   }
-
+  createMatchesObservable() : Observable<Array<Match>> {
+    return new Observable<Array<Match>>(observer => {
+      this.matchesObserver = observer;
+    });
+  }
   createUserScoreObservable() : Observable<UserScore> {
     return new Observable<UserScore>(observer => {
       this.scoreObserver = observer;

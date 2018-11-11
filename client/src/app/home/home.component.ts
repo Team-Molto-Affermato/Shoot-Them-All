@@ -6,6 +6,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
 import {DataService} from '../../services/data.service';
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit {
 
   username;
   matches: Array<Match> = [];
+  matchesSub: Subscription;
 
   constructor(private router: Router,
               private authenticationService: AuthenticationService,
@@ -27,6 +29,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.dataService.sendMessage();
+    this.matchesSub = this.dataService.getMatches().subscribe(matches=>this.matches = matches);
   }
 
   updateMatches() {

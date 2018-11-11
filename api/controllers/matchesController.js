@@ -160,6 +160,7 @@ exports.setMatchState = (req, res) => {
         if (err) {
             return res.send(err)
         } else {
+            getMatchesAndEmit();
             res.json(req.body)
         }
     });
@@ -213,7 +214,17 @@ exports.addUserToMatch = (req,res)=>{
 
 
 }
-
+function getMatchesAndEmit(){
+    var query = Room.find({});
+    query.exec(function(err, matches){
+        if(err){
+            // res.send(err);
+        }
+        else{
+            io.emit('matches',{matches:matches});
+        }
+    });
+}
 exports.createMatch = (req, res) => {
     console.log(req.body);
 
@@ -230,6 +241,7 @@ exports.createMatch = (req, res) => {
         if(err)
             res.status(400).send(err);
         else {
+            getMatchesAndEmit();
             startTimer(req.body.roomName);
             res.json(newMatch);
         }
@@ -260,8 +272,10 @@ exports.deleteMatch = (req, res) => {
     query.exec(function (err,raw) {
         if(err)
             res.send(err)
-        else
+        else{
+            getMatchesAndEmit();
             res.send(raw)
+        }
     });
 };
 
