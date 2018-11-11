@@ -3,7 +3,6 @@ import {from} from "rxjs";
 import {Point, UserPosition} from "../models/point";
 import {CoordinatesHelper} from "../utilities/CoordinatesHelper";
 import {AngleHelper} from "../utilities/AngleHelper";
-import {DataService} from "./data.service";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
