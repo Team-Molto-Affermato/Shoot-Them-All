@@ -158,7 +158,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   }
 
   shoot() {
-    this.collisionDetectionService.checkCollisions(this.position, this.orientationAngle, this.players.map(u => u.userPosition));
+    this.collisionDetectionService.checkCollisions(this.position, this.orientationAngle, this.players.map(u => u.userPosition),this.match.name,this.username);
 
     this.calculateScore();
   }

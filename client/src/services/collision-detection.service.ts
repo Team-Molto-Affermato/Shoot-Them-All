@@ -3,6 +3,8 @@ import {from} from "rxjs";
 import {Point, UserPosition} from "../models/point";
 import {CoordinatesHelper} from "../utilities/CoordinatesHelper";
 import {AngleHelper} from "../utilities/AngleHelper";
+import {DataService} from "./data.service";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,11 @@ export class CollisionsDetectionService {
   private maxLateralDistance = 10;
   private maxVerticalDistance = 100;
 
-  constructor() { }
+  constructor(
+    private http:HttpClient
+  ) { }
 
-  checkCollisions(position: Point, orientationAngle: number, players: Array<UserPosition>) {
+  checkCollisions(position: Point, orientationAngle: number, players: Array<UserPosition>,roomName:String,username:String) {
 
     const xp = position.longitude;
     const yp = position.latitude;
@@ -44,7 +48,22 @@ export class CollisionsDetectionService {
       }
     }
 
-    hitPlayers.forEach(p => alert(p.username));
+    hitPlayers.forEach(p =>{
+      alert(p.username);
+      this.http.put('/matches/'+roomName+username+'/users/score',{score:100}).subscribe(
+        data=>{
+          this.http.put('/matches/'+roomName+p.username+'/users/score',{score:-100}).subscribe(
+            data=>{
+
+            },err =>{
+              console.log(err);
+            }
+          )
+        },err=>{
+          console.log(err);
+        }
+      );
+    });
 
     return hitPlayers;
   }
