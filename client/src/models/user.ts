@@ -1,3 +1,6 @@
+import {Point} from "./point";
+import {Match} from "./match";
+
 export class User {
   name: String;
   surname: String;
@@ -12,6 +15,14 @@ export class UserScore {
 export class UserData {
   username: String;
   password: String;
+}
+
+export class UserInMatch {
+  constructor(public username: string,
+              public position: Point,
+              public score: number) {
+  }
+
 }
 
 

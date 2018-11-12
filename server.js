@@ -1,5 +1,12 @@
 const express = require("express");
-var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
+const fs = require('fs');
+
+// var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
+const ip = require("ip");
+const address = ip.address("Wi-Fi");
+
+fs.writeFileSync('./configuration.json', "{\"address\": \"" + address + "\"}");
+console.log(address)
 
 const bodyParser = require("body-parser");
 var mongoose        = require('mongoose');
@@ -9,7 +16,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var cors = require('cors');
-var fs = require('fs');
 
 const app = express();
 var options = {
@@ -21,7 +27,7 @@ io = require('socket.io')(server);
 
 var redis = require('socket.io-redis');
 //
-io.adapter(redis({ host: configuration.address, port: 6379 }));
+io.adapter(redis({ host: address, port: 6379 }));
 
 const port = 3000;
 let timerId = null,

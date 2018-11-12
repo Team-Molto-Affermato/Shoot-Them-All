@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {MatchComponent} from "../../match.component";
-import { AgmCoreModule } from '@agm/core';
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -23,7 +22,7 @@ export class EarthMapComponent implements OnInit {
         console.log(error)
       }
     )
-    this.centralPosition = this.matchComponent.position;
+    this.centralPosition = this.matchComponent.userInMatch.position;
     this.userPositions = this.matchComponent.players.map(p => p.userPosition);
   }
 

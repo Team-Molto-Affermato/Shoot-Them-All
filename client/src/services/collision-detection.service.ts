@@ -10,8 +10,8 @@ import {HttpClient} from "@angular/common/http";
 })
 export class CollisionsDetectionService {
 
-  private maxLateralDistance = 10;
-  private maxVerticalDistance = 100;
+  private maxLateralDistance = 20;
+  private maxVerticalDistance = 500;
 
   constructor(
     private http:HttpClient
@@ -21,7 +21,7 @@ export class CollisionsDetectionService {
 
     const xp = position.longitude;
     const yp = position.latitude;
-    const m = Math.tan(this.degFromRad(orientationAngle));
+    const m = Math.tan(AngleHelper.radiusToDegrees(orientationAngle));
     const q = yp - m*xp;
 
 
@@ -30,20 +30,25 @@ export class CollisionsDetectionService {
     for (const i in players) {
       const player = players[i];
 
-      const lateralDistance = this.lateralDistance(player.position, m, q);
+      const angle = (this.getAngle(position, player.position) + 90)%360;
+      const deg = this.angularDistance(orientationAngle, angle);
+      const rad = AngleHelper.degreesToRadius(deg);
 
-      // alert("distance from " + player.username);
-      // alert("lateral distance " + lateralDistance);
+      // const lateralDistance = this.lateralDistance(player.position, m, q);
+      const distance = this.pointDistance(position, player.position);
+      const lateralDistance = Math.abs(distance * Math.sin(rad));
+      const verticalDistance = Math.abs(distance * Math.cos(rad));
 
-      if (lateralDistance < this.maxLateralDistance) {
-        const verticalDistance = this.verticalDistance(position, player.position, lateralDistance);
-        // alert("vertical distance " + verticalDistance);
 
-        if (verticalDistance < this.maxVerticalDistance) {
-          if (this.checkOrientation(position, player.position, orientationAngle)) {
-            hitPlayers.push(player);
-          }
-        }
+      // alert("player: " + player.username +
+      //   "\nangle: " + angle +
+      //   "\norientationAngle: " + orientationAngle +
+      //   "\ndeg: " + deg +
+      //   "\nlateral distance: " + lateralDistance +
+      //   "\nvertical distance: " + verticalDistance);
+
+      if (lateralDistance<this.maxLateralDistance && verticalDistance<this.maxVerticalDistance && deg<45) {
+        hitPlayers.push(player);
       }
     }
 
@@ -67,13 +72,21 @@ export class CollisionsDetectionService {
     return hitPlayers;
   }
 
-  private degFromRad(degrees) {
-    return degrees * Math.PI/180;
+  private getAngle(centralPosition, position) {
+    const atan = Math.atan2(CoordinatesHelper.longitudeDistanceInMeters(centralPosition.longitude, position.longitude, centralPosition.latitude),
+      CoordinatesHelper.latitudeDistanceInMeters(centralPosition.latitude, position.latitude));
+    return (AngleHelper.radiusToDegrees(atan)+180) | 0;
+  }
+
+  private angularDistance(alpha, beta) {
+    const phi = Math.abs(beta - alpha) % 360;       // This is either the distance or 360 - distance
+    const  distance = phi > 180 ? 360 - phi : phi;
+    return distance;
   }
 
   private lateralDistance(point: Point, m: number, q: number): number {
     //mettere curvatura terrestre
-    const num = Math.abs(point.latitude - (point.longitude * m + q));
+    const num = Math.abs(q + point.longitude * m - point.latitude);
     const den = Math.sqrt(1 + Math.pow(m, 2));
     return num/den * CoordinatesHelper.unitDegreeLongitudeLength(point.latitude);
   }

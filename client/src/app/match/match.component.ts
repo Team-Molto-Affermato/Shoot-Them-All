@@ -8,6 +8,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {CollisionsDetectionService} from "../../services/collision-detection.service";
 import {Point} from "../../models/point";
+import {UserInMatch} from "../../models/user";
 
 @Component({
   selector: 'app-match',
@@ -16,10 +17,8 @@ import {Point} from "../../models/point";
 })
 export class MatchComponent implements OnInit, OnDestroy {
 
-  username: string;
   match: Match;
-  position: Point;
-  score: number = 100;
+  userInMatch: UserInMatch;
 
   orientationAngle;
   players = [];
@@ -39,10 +38,12 @@ export class MatchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
+    const username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
 
-    this.dataService.joinRoom(this.match.name,this.username);
+    this.userInMatch = new UserInMatch(username, new Point(0,0), 100);
+
+    this.dataService.joinRoom(this.match.name, username);
 
 
     this.getPosition();
@@ -96,16 +97,16 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   updatePosition(position) {
 
-    this.position = new Point(position.coords.latitude, position.coords.longitude);
+    this.userInMatch.position = new Point(position.coords.latitude, position.coords.longitude);
 
     const body = {
       location: {
         type: "Point",
-        coordinates: [this.position.latitude, this.position.longitude]
+        coordinates: [this.userInMatch.position.latitude, this.userInMatch.position.longitude]
       },
     };
 
-    this.http.put("/api/matches/" + this.match.name + "/" + this.username + "/pos", body).subscribe(
+    this.http.put("/api/matches/" + this.match.name + "/" + this.userInMatch.username + "/pos", body).subscribe(
       data => {
 
       },
@@ -117,7 +118,7 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   getScoreStyle() {
     return {
-      width: this.score + '%'
+      width: this.userInMatch.score + '%'
     }
   }
 
@@ -141,7 +142,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   calculateScore() {
     const self = this;
 
-    var newScore = this.score - 30;
+    var newScore = this.userInMatch.score - 30;
     if(newScore < 0) {
       newScore = 0;
     }
@@ -149,22 +150,23 @@ export class MatchComponent implements OnInit, OnDestroy {
     const id = setInterval(() => f(), 10);
 
     function f() {
-      if(self.score <= newScore) {
+      if(self.userInMatch.score <= newScore) {
         clearInterval(id);
       } else {
-        self.score--;
+        self.userInMatch.score--;
       }
     }
   }
 
   shoot() {
-    this.collisionDetectionService.checkCollisions(this.position, this.orientationAngle, this.players.map(u => u.userPosition),this.match.name,this.username);
+    this.collisionDetectionService.checkCollisions(this.userInMatch.position, this.orientationAngle,
+      this.players.map(u => u.userPosition),this.match.name,this.userInMatch.username);
 
     this.calculateScore();
   }
 
   exit() {
-    this.http.delete("/api/matches/" + this.match.name + "/users/" + this.username).subscribe(
+    this.http.delete("/api/matches/" + this.match.name + "/users/" + this.userInMatch.username).subscribe(
       data => {
         this.router.navigateByUrl("/home");
       }, error => {
