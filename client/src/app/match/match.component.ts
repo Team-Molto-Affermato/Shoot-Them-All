@@ -16,7 +16,8 @@ import {UserInMatch} from "../../models/user";
   styleUrls: ['./match.component.css']
 })
 export class MatchComponent implements OnInit, OnDestroy {
-
+  showLeaderboard = false;
+  username: string;
   match: Match;
   userInMatch: UserInMatch;
 
@@ -63,6 +64,11 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.userScoreSub = this.dataService
       .getScores()
       .subscribe(score=>{
+        score.forEach(score =>{
+          if(score.username === this.username){
+            this.userInMatch.score = Number(score.score);
+          }
+        });
         console.log(score);
       });
     this.timeoutSub = this.dataService
@@ -174,5 +180,7 @@ export class MatchComponent implements OnInit, OnDestroy {
       }
     )
   }
-
+  switchComponent() {
+    this.showLeaderboard = !this.showLeaderboard;
+  }
 }

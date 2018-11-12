@@ -16,7 +16,6 @@ exports.listMatches = (req, res) => {
         else
             res.json(matches);
     });
-
 };
 function mapToPosition(item, index) {
     var position = item.location.coordinates
@@ -141,8 +140,10 @@ function updateMatchState(roomName,state){
         }else{
             if(state==="ENDED"){
                 console.log("Ciao Closed");
+                getMatchesAndEmit();
                 updateLeaderBoard(roomName);
             }else{
+                getMatchesAndEmit();
                 setTimeout(() => {
                     updateMatchState(roomName,"ENDED");
                     io.to(roomName).emit('timeout',{message:"ENDED"});
@@ -160,6 +161,7 @@ exports.setMatchState = (req, res) => {
         if (err) {
             return res.send(err)
         } else {
+            getMatchesAndEmit();
             res.json(req.body)
         }
     });
@@ -200,7 +202,7 @@ exports.addUserToMatch = (req,res)=>{
                             name: req.body.username,
                             roomName: req.params.roomName
                         };
-                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location }, {upsert:true,new:true}, function (err,user) {
+                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location ,score:req.body.score}, {upsert:true,new:true}, function (err,user) {
                             if (err) {
 
                             } else {
@@ -213,7 +215,17 @@ exports.addUserToMatch = (req,res)=>{
 
 
 }
-
+function getMatchesAndEmit(){
+    var query = Room.find({});
+    query.exec(function(err, matches){
+        if(err){
+            // res.send(err);
+        }
+        else{
+            io.emit('matches',{matches:matches});
+        }
+    });
+}
 exports.createMatch = (req, res) => {
     console.log(req.body);
 
@@ -230,6 +242,7 @@ exports.createMatch = (req, res) => {
         if(err)
             res.status(400).send(err);
         else {
+            getMatchesAndEmit();
             startTimer(req.body.roomName);
             res.json(newMatch);
         }
@@ -260,8 +273,10 @@ exports.deleteMatch = (req, res) => {
     query.exec(function (err,raw) {
         if(err)
             res.send(err)
-        else
+        else{
+            getMatchesAndEmit();
             res.send(raw)
+        }
     });
 };
 

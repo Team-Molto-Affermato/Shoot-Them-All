@@ -1,8 +1,10 @@
 <div id="myProgress">
   <div id="myBar" [ngStyle]="getScoreStyle()"></div>
 </div>
-
-<app-game-map></app-game-map>
+<app-match-leaderboard *ngIf="showLeaderboard"></app-match-leaderboard>
+<app-game-map *ngIf="!showLeaderboard"></app-game-map>
 
 <button (click)="shoot()">Shoot</button>
 <button (click)="exit()">Exit</button>
+<button (click)="switchComponent()">Leaderboard</button>
+

@@ -1,9 +1,10 @@
 <app-navbar></app-navbar>
 <a routerLink="/matchConfiguration"><button>New Match</button></a>
-<ul>
-  <li *ngFor="let match of matches"><a (click)="showInfo(match)">
-    {{match.name}}
-    {{match.state}}
-    {{match.access}}
-  </a></li>
-</ul>
+  <ul>
+    <li *ngFor="let match of matches"><a (click)="showInfo(match)">
+      {{match.name}}
+      {{match.state}}
+      {{match.access}}
+    </a></li>
+  </ul>
+<app-leaderboard></app-leaderboard>
