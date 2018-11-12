@@ -27,9 +27,7 @@ function emitLeaderboard(roomName){
             else{
                 var usersScore = [];
                 users.forEach(user =>{
-                    if(user.score){
                         usersScore.push(mapToScore(user));
-                    }
                 });
                 io.to(roomName).emit('users-score',usersScore);
             }
@@ -48,9 +46,7 @@ exports.leaderboard = (req, res) => {
             else{
                 var usersScore = [];
                 users.forEach(user =>{
-                    if(user.score){
                         usersScore.push(mapToScore(user));
-                    }
                 });
                 res.json(usersScore);
             }
