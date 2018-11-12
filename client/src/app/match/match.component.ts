@@ -17,7 +17,6 @@ import {UserInMatch} from "../../models/user";
 })
 export class MatchComponent implements OnInit, OnDestroy {
   showLeaderboard = false;
-  username: string;
   match: Match;
   userInMatch: UserInMatch;
 
@@ -65,8 +64,9 @@ export class MatchComponent implements OnInit, OnDestroy {
       .getScores()
       .subscribe(score=>{
         score.forEach(score =>{
-          if(score.username === this.username){
+          if(score.username === this.userInMatch.username){
             this.userInMatch.score = Number(score.score);
+            alert(this.userInMatch.score)
           }
         });
         console.log(score);

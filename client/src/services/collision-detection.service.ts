@@ -54,9 +54,9 @@ export class CollisionsDetectionService {
 
     hitPlayers.forEach(p =>{
       alert(p.username);
-      this.http.put('/matches/'+roomName+username+'/users/score',{score:100}).subscribe(
+      this.http.put('api/matches/'+roomName+'/'+username+'/score',{score:100}).subscribe(
         data=>{
-          this.http.put('/matches/'+roomName+p.username+'/users/score',{score:-100}).subscribe(
+          this.http.put('api/matches/'+roomName+'/'+p.username+'/score',{score:-100}).subscribe(
             data=>{
 
             },err =>{
