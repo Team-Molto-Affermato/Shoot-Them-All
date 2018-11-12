@@ -16,7 +16,6 @@ exports.listMatches = (req, res) => {
         else
             res.json(matches);
     });
-
 };
 function mapToPosition(item, index) {
     var position = item.location.coordinates

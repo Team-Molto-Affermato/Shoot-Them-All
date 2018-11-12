@@ -24,6 +24,7 @@ export class DataService {
   timeoutObserver: Observer<String>;
   positionObserver: Observer<Array<UserPosition>>;
   scoreObserver: Observer<Array<UserScore>>;
+  leaderboardObserver: Observer<Array<UserScore>>;
   matchesObserver: Observer<Array<Match>>;
   constructor(private http:HttpClient,
               private matchConverter:MatchConverterService){
@@ -36,6 +37,12 @@ export class DataService {
       );
     });
     return this.createMatchesObservable();
+  }
+  getLeaderboard():Observable<Array<UserScore>>{
+    this.socket.on('users-leaderboard', (res) => {
+      this.leaderboardObserver.next(res);
+    });
+    return this.createLeaderboardObservable();
   }
   getScores():Observable<Array<UserScore>>{
     this.socket.on('users-score', (res) => {
@@ -103,6 +110,11 @@ export class DataService {
   createMatchesObservable() : Observable<Array<Match>> {
     return new Observable<Array<Match>>(observer => {
       this.matchesObserver = observer;
+    });
+  }
+  createLeaderboardObservable() : Observable<Array<UserScore>> {
+    return new Observable<Array<UserScore>>(observer => {
+      this.leaderboardObserver = observer;
     });
   }
   createUserScoreObservable() : Observable<Array<UserScore>> {

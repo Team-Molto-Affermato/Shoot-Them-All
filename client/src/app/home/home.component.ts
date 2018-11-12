@@ -14,7 +14,7 @@ import {Subscription} from "rxjs";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  showleaderboard = false;
   username;
   matches: Array<Match> = [];
   matchesSub: Subscription;
@@ -25,7 +25,9 @@ export class HomeComponent implements OnInit {
               private dataService: DataService) {
     this.updateMatches();
   }
-
+  switchComponent() {
+    this.showleaderboard = !this.showleaderboard;
+  }
   ngOnInit() {
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.dataService.sendMessage();

@@ -24,7 +24,7 @@ export class MatchLeaderboardComponent implements OnInit {
           console.log(scores);
           this.leaderboard = scores;
       }
-    );
+  );
     this.http.get('api/matches/'+this.match.name+'/users/score').subscribe(
       (data: Array<UserScore>)=>{
       this.leaderboard = data;

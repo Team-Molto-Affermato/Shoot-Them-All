@@ -24,6 +24,7 @@ import { GameMapComponent } from './match/game-map/game-map.component';
 import { RadarComponent } from './match/game-map/radar/radar.component';
 import { EarthMapComponent } from './match/game-map/earth-map/earth-map.component';
 import { MatchLeaderboardComponent } from './match/match-leaderboard/match-leaderboard.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 const appRoutes: Routes = [
   {path: "", redirectTo: 'home', pathMatch: 'full'},
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     GameMapComponent,
     RadarComponent,
     EarthMapComponent,
-    MatchLeaderboardComponent
+    MatchLeaderboardComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,

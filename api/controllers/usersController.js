@@ -84,11 +84,38 @@ exports.updateUserScore = (req, res) => {
         if (err) {
             return res.send(err)
         } else {
+            emitLeaderboard();
             res.json(user)
         }
     });
 };
+exports.leaderboard = (req, res) => {
+    User
+        .find()
+        .sort({score: -1})
+        .select({username:1,score:1})
+        .exec(function(err, users){
+            if(err)
+                res.send(err);
+            else{
+                res.json(users);
+            }
+        });
+}
 
+function emitLeaderboard(){
+    User
+        .find()
+        .sort({score: -1})
+        .select({username:1,score:1})
+        .exec(function(err, users){
+            if(err){
+            }
+            else{
+                io.emit('users-leaderboard',users);
+            }
+        });
+}
 exports.deleteUser = (req, res) => {
     var query = User.deleteOne({
         username: req.params.userId
