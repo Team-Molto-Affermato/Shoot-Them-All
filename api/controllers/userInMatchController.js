@@ -14,7 +14,27 @@ exports.listUserInMatch = (req, res) => {
             res.json(users);
     });
 };
-
+function emitLeaderboard(roomName){
+    var find = UserInMatch
+        .find({
+            roomName : roomName
+        })
+        .sort({score: -1})
+        .select({name:1,score:1})
+        .exec(function(err, users){
+            if(err){
+            }
+            else{
+                var usersScore = [];
+                users.forEach(user =>{
+                    if(user.score){
+                        usersScore.push(mapToScore(user));
+                    }
+                });
+                io.to(roomName).emit('users-score',usersScore);
+            }
+        });
+}
 exports.leaderboard = (req, res) => {
     var find = UserInMatch
         .find({
@@ -25,8 +45,15 @@ exports.leaderboard = (req, res) => {
         .exec(function(err, users){
             if(err)
                 res.send(err);
-            else
-                res.json(users);
+            else{
+                var usersScore = [];
+                users.forEach(user =>{
+                    if(user.score){
+                        usersScore.push(mapToScore(user));
+                    }
+                });
+                res.json(usersScore);
+            }
         });
 };
 
@@ -72,8 +99,10 @@ exports.updateUserScore = (req, res) => {
         if (err) {
             return res.send(err)
         } else {
+            emitLeaderboard(req.params.roomName);
             res.json(mapToScore(users));
-            io.to(req.params.roomName).emit('users-score',mapToScore(users));
+            // const usersScore = users.map(mapToScore);
+            // io.to(req.params.roomName).emit('users-score',usersScore);
         }
     });
 };
