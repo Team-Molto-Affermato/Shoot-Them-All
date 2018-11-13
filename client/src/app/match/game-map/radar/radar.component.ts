@@ -3,6 +3,9 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatchComponent} from "../../match.component";
 import {AngleHelper} from "../../../../utilities/AngleHelper";
 import {CoordinatesHelper} from "../../../../utilities/CoordinatesHelper";
+import {GameMap} from "../../../../models/GameMap";
+import {UserInMatch} from "../../../../models/user";
+import {none, some} from "ts-option";
 
 @Component({
   selector: 'app-radar',
@@ -25,36 +28,63 @@ import {CoordinatesHelper} from "../../../../utilities/CoordinatesHelper";
     ])
   ]
 })
-export class RadarComponent implements OnInit, OnDestroy {
+export class RadarComponent implements GameMap, OnInit, OnDestroy {
 
   deg: number = 0;
-  radius: number = 1000;
+  radius: number;
   ratio: number;
-  radar: HTMLElement;
+  radar_line: HTMLElement;
 
   activePoints = new Map<String, Boolean>();
 
   rotateIntervalId;
 
-  constructor(private matchComponent: MatchComponent) { }
+  radarStyle;
+
+  constructor(readonly matchComponent: MatchComponent) {
+    this.radius = this.matchComponent.match.radius;
+    this.matchComponent.gameMap = some(this);
+  }
 
   ngOnInit() {
-    this.radar = document.getElementById("rad");
-    const radarRadius = this.radar.offsetWidth/2;
-    this.ratio = radarRadius/this.radius;
 
-    this.rotate();
-
-    this.rotateIntervalId = setInterval(() => this.rotate(), 25);
   }
 
   ngOnDestroy() {
     clearInterval(this.rotateIntervalId);
+    this.matchComponent.gameMap = none;
+  }
+
+  updatePosition(userInArea: boolean) {
+    if (userInArea) {
+      this.radar_line = document.getElementById("radar_line");
+      const radarRadius = this.radar_line.offsetWidth/2;
+      this.ratio = radarRadius/this.radius;
+
+      this.radarStyle = {
+        'background': '#222 url("../../../../assets/radar_enabled.png") no-repeat',
+        'background-size': '40vh'
+      };
+
+
+      if (!this.rotateIntervalId){
+        this.rotateIntervalId = setInterval(() => this.rotate(), 25);
+      }
+    } else {
+      this.radarStyle = {
+        'background': '#222 url("../../../../assets/radar_disabled.png") no-repeat',
+        'background-size': '40vh'
+      };
+      if (this.rotateIntervalId) {
+        clearInterval(this.rotateIntervalId);
+        this.rotateIntervalId = null;
+      }
+    }
   }
 
   rotate() {
-    this.radar.style.transform = 'rotate(' + this.deg + 'deg)';
-    const radarRadius = this.radar.offsetWidth/2;
+    this.radar_line.style.transform = 'rotate(' + this.deg + 'deg)';
+    const radarRadius = this.radar_line.offsetWidth/2;
     this.ratio = radarRadius/this.radius;
 
     this.matchComponent.players.forEach(p => {
@@ -69,10 +99,6 @@ export class RadarComponent implements OnInit, OnDestroy {
     this.deg = ++this.deg%360;
   }
 
-  getPlayers() {
-    return this.matchComponent.players;
-  }
-
   getPositionStyle(position) {
     return {
       left: (this.longitudeDistanceFromCenter(position.longitude) + this.radius) * this.ratio + 'px',
@@ -85,12 +111,12 @@ export class RadarComponent implements OnInit, OnDestroy {
   }
 
   private longitudeDistanceFromCenter(longitude) {
-    return CoordinatesHelper.longitudeDistanceInMeters(this.matchComponent.userInMatch.position.longitude, longitude,
+    return CoordinatesHelper.longitudeSignedDistanceInMeters(this.matchComponent.userInMatch.position.longitude, longitude,
       this.matchComponent.userInMatch.position.latitude)
   }
 
   private latitudeDistanceFromCenter(latitude) {
-    return CoordinatesHelper.latitudeDistanceInMeters(this.matchComponent.userInMatch.position.latitude, latitude)
+    return CoordinatesHelper.latitudeSignedDistanceInMeters(this.matchComponent.userInMatch.position.latitude, latitude)
   }
 
 }

@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../models/match";
 import {MatchConfigurationService} from "../../services/match-configuration.service";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
+import {Point} from "../../models/point";
 
 @Component({
   selector: 'app-match-configuration',
@@ -76,7 +77,7 @@ export class MatchConfigurationComponent implements OnInit {
       formValues.name,
       this.access,
       this.organization,
-      position,
+      new Point(position.coords.latitude, position.coords.longitude),
       formValues.areaRadius,
       new Date(),
       new Date(),

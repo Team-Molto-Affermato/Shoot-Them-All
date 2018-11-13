@@ -3,8 +3,8 @@
   overflow:hidden;
   width:40vh;
   height:40vh;
-  background: #222 url(http://i.stack.imgur.com/vY6Tl.png) no-repeat;
-  background-size: 40vh;
+  /*background: #222 url("../../../../assets/radar_enabled.png") no-repeat;*/
+  /*background-size: 40vh;*/
   border-radius: 50%;
 }
 
@@ -14,11 +14,11 @@
   height:40vh;
 }
 
-#rad{
+#radar_line{
   position:absolute;
   width:40vh;
   height:40vh;
-  background:url(http://i.stack.imgur.com/fbgUD.png) no-repeat;
+  background:url("../../../../assets/radar_line.png") no-repeat;
   background-size: 40vh;
 }
 .point{

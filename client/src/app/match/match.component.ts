@@ -9,6 +9,9 @@ import {Router} from "@angular/router";
 import {CollisionsDetectionService} from "../../services/collision-detection.service";
 import {Point} from "../../models/point";
 import {UserInMatch, UserScore} from "../../models/user";
+import {CoordinatesHelper} from "../../utilities/CoordinatesHelper";
+import {GameMap} from "../../models/GameMap";
+import {Option, some} from "ts-option";
 
 @Component({
   selector: 'app-match',
@@ -22,6 +25,9 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   orientationAngle;
   players = [];
+  userInArea = true;
+
+  gameMap: Option<GameMap>;
 
   timeoutSub: Subscription;
   usersSub: Subscription;
@@ -74,7 +80,7 @@ export class MatchComponent implements OnInit, OnDestroy {
       .subscribe(score=>{
         score.forEach(score =>{
           if(score.username === this.userInMatch.username){
-            this.userInMatch.score = Number(score.score);
+            this.updateScore(Number(score.score));
           }
         });
         console.log(score);
@@ -112,6 +118,9 @@ export class MatchComponent implements OnInit, OnDestroy {
   updatePosition(position) {
 
     this.userInMatch.position = new Point(position.coords.latitude, position.coords.longitude);
+    this.userInArea = CoordinatesHelper.pointDistance(this.userInMatch.position, this.match.centralPoint) < this.match.radius;
+
+    this.gameMap.map((g) => g.updatePosition(this.userInArea));
 
     const body = {
       location: {
@@ -150,9 +159,17 @@ export class MatchComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateScore(score: number) {
+    if (score < this.userInMatch.score) {
+      navigator.vibrate(200);
+    }
+    this.userInMatch.score = score;
+
+  }
+
   shoot() {
     this.collisionDetectionService.checkCollisions(this.userInMatch.position, this.orientationAngle,
-      this.players.map(u => u.userPosition),this.match.name,this.userInMatch.username);
+      this.players,this.match.name,this.userInMatch.username);
   }
 
   exit() {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatchComponent} from "../../match.component";
 import {HttpClient} from "@angular/common/http";
+import {Match} from "../../../../models/match";
 
 @Component({
   selector: 'app-earth-map',
@@ -8,8 +9,7 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./earth-map.component.css']
 })
 export class EarthMapComponent implements OnInit {
-  match;
-  centralPosition;
+  match: Match;
   userPositions;
   styles;
 
@@ -27,10 +27,10 @@ export class EarthMapComponent implements OnInit {
       }
     )
     this.match = this.matchComponent.match;
-    console.log("Ciaooooooooooooooooooooooooo"+this.matchComponent.match);
-    console.log("Ciaooooooooooooooooooooooooo"+this.matchComponent.match.centerPoint);
 
-    this.centralPosition = this.matchComponent.userInMatch.position;
+    console.log(this.matchComponent.match);
+    console.log(this.matchComponent.match.centralPoint);
+
     this.userPositions = this.matchComponent.players;
   }
 }

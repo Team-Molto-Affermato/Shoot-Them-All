@@ -6,7 +6,7 @@ export class Match {
   constructor(public name: string,
               public access: MatchAccess,
               public organization: MatchOrganization,
-              public centerPoint: Point,
+              public centralPoint: Point,
               public radius: number,
               public createdAt: Date,
               public startingTime: Date,

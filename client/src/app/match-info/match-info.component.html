@@ -8,10 +8,12 @@
 <input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>
 <label for="radius">Radius</label>
 <p id="radius">{{match.radius}}</p>
-<label for="centerPoint">Center Point</label>
-<p id="centerPoint">{{match.centerPoint.longitude}}, {{match.centerPoint.latitude}}</p>
+<label for="centralPoint">Center Point</label>
+<p id="centralPoint">{{match.centralPoint.latitude}}, {{match.centralPoint.longitude}}</p>
 <label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>
 <p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>
+<label for="organization">ORganization</label>
+<p id="organization">{{match.organization}}</p>
 
 <label for="users">Players</label>
 <ul id="users">

@@ -11,6 +11,7 @@ export class User {
 export class UserScore {
   username:String;
   score: Number;
+  team: String;
 }
 export class UserData {
   username: String;

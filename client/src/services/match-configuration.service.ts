@@ -25,7 +25,7 @@ export class MatchConfigurationService {
       roomName: match.name,
       location: {
         type: "Point",
-        coordinates: [match.centerPoint.longitude, match.centerPoint.latitude]
+        coordinates: [match.centralPoint.latitude, match.centralPoint.longitude]
       },
       max_user: match.maxUser,
       duration: match.duration,

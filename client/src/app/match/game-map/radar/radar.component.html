@@ -1,7 +1,7 @@
-<div id="radar">
-  <div id="container">
-    <div id="rad"></div>
-    <div *ngFor="let player of getPlayers()">
+<div id="radar" [ngStyle]="radarStyle">
+  <div id="container" *ngIf="matchComponent.userInArea">
+    <div id="radar_line"></div>
+    <div *ngFor="let player of matchComponent.players">
       <div (click)="showPlayerInfo(player)" class="point" [ngStyle]="getPositionStyle(player.position)"
            [@switch]="activePoints.get(player.username) ? 'active' : 'inactive'" ></div>
     </div>

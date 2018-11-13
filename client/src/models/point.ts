@@ -4,7 +4,8 @@ export class Point {
 }
 export class UserPosition {
   constructor(public username: string,
-              public position: Point){
+              public position: Point,
+              public team: String){
 
   }
 }
