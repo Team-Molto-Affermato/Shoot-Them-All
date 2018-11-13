@@ -41,6 +41,10 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
     this.teamVisible = this.match.organization === MatchOrganization.TEAM;
 
+    if (this.teamVisible) {
+      this.team = some(Team.TEAM1);
+    }
+
 
     this.countdownIntervalId = setInterval(()=> {
       this.updateCountdown();

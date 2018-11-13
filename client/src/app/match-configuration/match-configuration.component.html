@@ -9,6 +9,11 @@
   </select>
   <label for="password" *ngIf="passwordVisible">Password</label>
   <input formControlName="password" id="password" *ngIf="passwordVisible">
+  <label for="organization">Organization</label>
+  <select (change)="switchOrganization()" id="organization">
+    <option>Single Player</option>
+    <option>Team</option>
+  </select>
   <label for="duration">Duration</label>
   <input formControlName="duration" id="duration">
   <label for="areaRadius">Area Radius</label>

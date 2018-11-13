@@ -49,6 +49,14 @@ export class MatchConfigurationComponent implements OnInit {
     }
   }
 
+  switchOrganization() {
+    if (this.organization == MatchOrganization.SINGLE_PLAYER) {
+      this.organization = MatchOrganization.TEAM;
+    } else {
+      this.organization = MatchOrganization.SINGLE_PLAYER;
+    }
+  }
+
   createNewMatch() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
