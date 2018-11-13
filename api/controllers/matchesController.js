@@ -24,7 +24,8 @@ function mapToPosition(item, index) {
         position: {
             latitude:position[0],
             longitude:position[1]
-        }
+        },
+        team: item.team
     };
 }
 exports.deleteUserInMatch= (req,res)=>{
@@ -110,14 +111,25 @@ exports.matchState = (req,res) =>{
                 });
         });
 }
-
+function emitLeaderboard(){
+    User
+        .find()
+        .sort({score: -1})
+        .select({username:1,score:1,team:1})
+        .exec(function(err, users){
+            if(err){
+            }
+            else{
+                io.emit('users-leaderboard',users);
+            }
+        });
+}
 function updateLeaderBoard(roomName) {
     var query = UserInMatch.find({
         roomName : roomName
     });
     query.exec(function(err, users){
         if(err){
-
         }else{
             users.forEach(user=>{
                 var query = {
@@ -126,6 +138,7 @@ function updateLeaderBoard(roomName) {
                 User.findOneAndUpdate(query, { $inc: {score: user.score} }, function (err,upUser) {
                 });
             });
+            emitLeaderboard();
         }
     });
 }
