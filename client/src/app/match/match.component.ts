@@ -8,7 +8,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {CollisionsDetectionService} from "../../services/collision-detection.service";
 import {Point} from "../../models/point";
-import {UserInMatch} from "../../models/user";
+import {UserInMatch, UserScore} from "../../models/user";
 
 @Component({
   selector: 'app-match',
@@ -43,6 +43,17 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     this.userInMatch = new UserInMatch(username, new Point(0,0), 100);
 
+    this.http.get('api/matches/'+this.match.name+'/users/score').subscribe(
+      (data: Array<UserScore>)=>{
+        data.forEach(score =>{
+          if(score.username === this.userInMatch.username){
+            this.userInMatch.score = Number(score.score);
+          }
+        });
+      },err =>{
+        console.log(err);
+      });
+
     this.dataService.joinRoom(this.match.name, username);
 
 
@@ -51,13 +62,12 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.usersSub = this.dataService
       .getPositions()
       .subscribe(positions =>{
-        // console.log(positions);
-        //Sarebbe da fare clear
         this.players = [];
         positions.forEach(pos=>{
-          let newPos = {userPosition: pos, active: false};
-          this.players.push(newPos);
-          // console.log(pos);
+          if (pos.username !== this.userInMatch.username) {
+            let newPos = {userPosition: pos, active: false};
+            this.players.push(newPos);
+          }
         });
       });
     this.userScoreSub = this.dataService
@@ -66,7 +76,6 @@ export class MatchComponent implements OnInit, OnDestroy {
         score.forEach(score =>{
           if(score.username === this.userInMatch.username){
             this.userInMatch.score = Number(score.score);
-            alert(this.userInMatch.score)
           }
         });
         console.log(score);
@@ -122,12 +131,6 @@ export class MatchComponent implements OnInit, OnDestroy {
     )
   }
 
-  getScoreStyle() {
-    return {
-      width: this.userInMatch.score + '%'
-    }
-  }
-
   private handleOrientation(event) {
     var absolute: boolean = event.absolute;
     var alpha: number    = event.alpha;
@@ -142,33 +145,15 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     this.orientationAngle = (alpha+90)%360;
 
-    document.getElementById('container').style.transform = 'rotate(' + alpha + 'deg)';
-  }
-
-  calculateScore() {
-    const self = this;
-
-    var newScore = this.userInMatch.score - 30;
-    if(newScore < 0) {
-      newScore = 0;
-    }
-
-    const id = setInterval(() => f(), 10);
-
-    function f() {
-      if(self.userInMatch.score <= newScore) {
-        clearInterval(id);
-      } else {
-        self.userInMatch.score--;
-      }
+    const radar = document.getElementById('container');
+    if (radar) {
+      radar.style.transform = 'rotate(' + alpha + 'deg)';
     }
   }
 
   shoot() {
     this.collisionDetectionService.checkCollisions(this.userInMatch.position, this.orientationAngle,
       this.players.map(u => u.userPosition),this.match.name,this.userInMatch.username);
-
-    this.calculateScore();
   }
 
   exit() {
