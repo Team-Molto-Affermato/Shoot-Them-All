@@ -19,5 +19,10 @@
     {{user}}
   </li>
 </ul>
+<label for="team">Choose Your Team</label>
+<select (change)="switchTeam()" id="team" *ngIf="teamVisible">
+  <option>Team 1</option>
+  <option>Team 2</option>
+</select>
 <button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
 

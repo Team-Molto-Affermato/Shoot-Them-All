@@ -2,7 +2,8 @@
   <div id="container">
     <div id="rad"></div>
     <div *ngFor="let player of getPlayers()">
-      <div (click)="showPlayerInfo(player)" class="point" [ngStyle]="getPositionStyle(player.userPosition.position)" [@switch]="player.active ? 'active' : 'inactive'" ></div>
+      <div (click)="showPlayerInfo(player)" class="point" [ngStyle]="getPositionStyle(player.position)"
+           [@switch]="activePoints.get(player.username) ? 'active' : 'inactive'" ></div>
     </div>
   </div>
 </div>

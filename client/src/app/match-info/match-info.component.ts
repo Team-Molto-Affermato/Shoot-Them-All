@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {Match, MatchAccess, MatchState} from "../../models/match";
+import {Match, MatchAccess, MatchOrganization, MatchState} from "../../models/match";
 import {DataService} from '../../services/data.service';
 import {Subscription} from "rxjs";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {HttpClient} from "@angular/common/http";
 import {DateHelper} from "../../utilities/DateHelper";
+import {Option, some} from "ts-option";
 
 @Component({
   selector: 'app-match-info',
@@ -21,6 +22,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   users: Array<String> = [];
   password;
   remainingTime;
+  team: Option<Team>;
+
+  teamVisible = false;
 
   countdownIntervalId;
 
@@ -34,6 +38,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     this.match = LocalStorageHelper.getCurrentMatch();
     this.dataService.joinRoom(this.match.name,this.username);
     this.users = this.match.users;
+
+    this.teamVisible = this.match.organization === MatchOrganization.TEAM;
+
 
     this.countdownIntervalId = setInterval(()=> {
       this.updateCountdown();
@@ -75,7 +82,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     this.dataService.leaveRoom(this.match.name);
   }
 
-  checkUserInside() {
+  private checkUserInside() {
     if (this.match.state === MatchState.STARTED) {
       if(this.userJoined()) {
         this.router.navigateByUrl("/match");
@@ -111,8 +118,18 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
   }
 
-  userJoined(): boolean {
+  private userJoined(): boolean {
     return this.users.includes(this.username);
+  }
+
+  switchTeam() {
+    if (this.teamVisible) {
+      if (this.team.get === Team.TEAM1) {
+        this.team = some(Team.TEAM2);
+      } else {
+        this.team = some(Team.TEAM1);
+      }
+    }
   }
 
   showPassword() {
@@ -193,4 +210,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     return (withHour?(h + ":"):"") + m + ":" + s;
   }
   
+}
+
+enum Team {
+  TEAM1,
+  TEAM2
 }

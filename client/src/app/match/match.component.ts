@@ -65,8 +65,7 @@ export class MatchComponent implements OnInit, OnDestroy {
         this.players = [];
         positions.forEach(pos=>{
           if (pos.username !== this.userInMatch.username) {
-            let newPos = {userPosition: pos, active: false};
-            this.players.push(newPos);
+            this.players.push(pos);
           }
         });
       });

@@ -23,7 +23,7 @@ export class EarthMapComponent implements OnInit {
       }
     )
     this.centralPosition = this.matchComponent.userInMatch.position;
-    this.userPositions = this.matchComponent.players.map(p => p.userPosition);
+    this.userPositions = this.matchComponent.players;
   }
 
   ngOnInit() {
