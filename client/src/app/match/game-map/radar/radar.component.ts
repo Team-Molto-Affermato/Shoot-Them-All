@@ -32,6 +32,8 @@ export class RadarComponent implements OnInit, OnDestroy {
   ratio: number;
   radar: HTMLElement;
 
+  activePoints = new Map<String, Boolean>();
+
   rotateIntervalId;
 
   constructor(private matchComponent: MatchComponent) { }
@@ -40,6 +42,8 @@ export class RadarComponent implements OnInit, OnDestroy {
     this.radar = document.getElementById("rad");
     const radarRadius = this.radar.offsetWidth/2;
     this.ratio = radarRadius/this.radius;
+
+    this.rotate();
 
     this.rotateIntervalId = setInterval(() => this.rotate(), 25);
   }
@@ -55,11 +59,11 @@ export class RadarComponent implements OnInit, OnDestroy {
 
     this.matchComponent.players.forEach(p => {
 
-      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.userPosition.position.longitude))*this.ratio,
-        (this.latitudeDistanceFromCenter(p.userPosition.position.latitude))*this.ratio);
+      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.position.longitude))*this.ratio,
+        (this.latitudeDistanceFromCenter(p.position.latitude))*this.ratio);
       const deg = (AngleHelper.radiusToDegrees(-atan)+180) | 0;
 
-      p.active = this.deg === deg;
+      this.activePoints.set(p.username, this.deg === deg);
     });
 
     this.deg = ++this.deg%360;
@@ -77,7 +81,7 @@ export class RadarComponent implements OnInit, OnDestroy {
   }
 
   showPlayerInfo(player) {
-    alert(player.userPosition.username);
+    alert(player.username);
   }
 
   private longitudeDistanceFromCenter(longitude) {

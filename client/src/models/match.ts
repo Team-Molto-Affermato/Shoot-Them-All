@@ -5,6 +5,7 @@ export class Match {
 
   constructor(public name: string,
               public access: MatchAccess,
+              public organization: MatchOrganization,
               public centerPoint: Point,
               public radius: number,
               public createdAt: Date,
@@ -25,4 +26,9 @@ export enum MatchState {
   SETTING_UP = "SETTING_UP",
   STARTED = "STARTED",
   ENDED = "ENDED"
+}
+
+export enum MatchOrganization {
+  SINGLE_PLAYER = "SINGLE_PLAYER",
+  TEAM = "TEAM"
 }

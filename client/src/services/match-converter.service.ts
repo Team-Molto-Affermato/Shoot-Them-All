@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {Match, MatchAccess, MatchState} from "../models/match";
+import {Injectable} from '@angular/core';
+import {Match, MatchAccess, MatchOrganization, MatchState} from "../models/match";
 import {Point} from "../models/point";
 
 @Injectable({
@@ -13,6 +13,7 @@ export class MatchConverterService {
     return new Match(
       m.roomName,
       MatchAccess[<string>m.visibility],
+      MatchOrganization[<string>m.type],
       new Point(m.location.coordinates[0], m.location.coordinates[1]),
       m.radius,
       m.created_at,

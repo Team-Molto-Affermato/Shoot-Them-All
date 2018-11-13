@@ -33,5 +33,4 @@ export class EarthMapComponent implements OnInit {
     this.centralPosition = this.matchComponent.userInMatch.position;
     this.userPositions = this.matchComponent.players;
   }
-
 }

@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Match, MatchAccess, MatchState} from "../../models/match";
-import {Point} from "../../models/point";
+import {Match, MatchAccess, MatchOrganization, MatchState} from "../../models/match";
 import {MatchConfigurationService} from "../../services/match-configuration.service";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 
@@ -17,6 +16,7 @@ export class MatchConfigurationComponent implements OnInit {
 
   access: MatchAccess = MatchAccess.PUBLIC;
   passwordVisible = false;
+  organization: MatchOrganization = MatchOrganization.SINGLE_PLAYER;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -32,6 +32,7 @@ export class MatchConfigurationComponent implements OnInit {
       name: '',
       access: this.access,
       password: '',
+      organization: this.organization,
       duration: '',
       areaRadius: '',
       maxPlayerNumber: ''
@@ -49,11 +50,33 @@ export class MatchConfigurationComponent implements OnInit {
   }
 
   createNewMatch() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+          this.createMatch(pos);
+        },
+        error => console.log(error),
+        {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
+    }
+
+  }
+
+  createMatch(position) {
+
     const formValues = this.newMatchForm.value;
 
     const match: Match = new Match(
-      formValues.name, this.access, new Point(0, 0), formValues.areaRadius,
-      new Date(), new Date(), formValues.duration, formValues.maxPlayerNumber, formValues.password, [], MatchState.SETTING_UP);
+      formValues.name,
+      this.access,
+      this.organization,
+      position,
+      formValues.areaRadius,
+      new Date(),
+      new Date(),
+      formValues.duration,
+      formValues.maxPlayerNumber,
+      formValues.password,
+      [],
+      MatchState.SETTING_UP);
 
     this.matchConfigurationService.createNewMatch(match).subscribe(
       (data) => {
@@ -63,7 +86,6 @@ export class MatchConfigurationComponent implements OnInit {
       error =>
         alert(error)
     );
-
   }
 
 }
