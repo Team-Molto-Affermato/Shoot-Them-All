@@ -8,13 +8,17 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./earth-map.component.css']
 })
 export class EarthMapComponent implements OnInit {
-
+  match;
   centralPosition;
   userPositions;
   styles;
 
   constructor(private matchComponent: MatchComponent,
               private http: HttpClient) {
+
+  }
+
+  ngOnInit() {
     this.http.get("../../../../assets/earthMapStyles.json").subscribe(
       data => {
         this.styles = data;
@@ -22,11 +26,12 @@ export class EarthMapComponent implements OnInit {
         console.log(error)
       }
     )
-    this.centralPosition = this.matchComponent.userInMatch.position;
-    this.userPositions = this.matchComponent.players.map(p => p.userPosition);
-  }
+    this.match = this.matchComponent.match;
+    console.log("Ciaooooooooooooooooooooooooo"+this.matchComponent.match);
+    console.log("Ciaooooooooooooooooooooooooo"+this.matchComponent.match.centerPoint);
 
-  ngOnInit() {
+    this.centralPosition = this.matchComponent.userInMatch.position;
+    this.userPositions = this.matchComponent.players;
   }
 
 }

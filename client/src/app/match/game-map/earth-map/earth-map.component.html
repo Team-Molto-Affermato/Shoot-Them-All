@@ -1,4 +1,14 @@
 <agm-map [latitude]="centralPosition.latitude" [longitude]="centralPosition.longitude" [styles]="styles">
-  <agm-marker [latitude]="userPosition.position.latitude" [longitude]="userPosition.position.longitude"
-              *ngFor="let userPosition of userPositions"></agm-marker>
+  <agm-marker *ngFor="let userPosition of userPositions"
+              [latitude]="userPosition.position.latitude"
+              [longitude]="userPosition.position.longitude"></agm-marker>
+  <agm-circle
+              [latitude]="match.centerPoint.latitude"
+              [longitude]="match.centerPoint.longitude"
+              [circleDraggable]="false"
+              [editable]="false"
+              [fillColor]="'#red'"
+              [radius]="match.radius"
+  >
+  </agm-circle>
 </agm-map>
