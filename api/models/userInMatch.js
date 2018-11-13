@@ -19,7 +19,8 @@ const UserInRoomSchema = new Schema({
       type: String,
       index: true,
       required :true
-    } ,
+    },
+    team:{type:String},
     location: {
         type: pointSchema,
         required: true

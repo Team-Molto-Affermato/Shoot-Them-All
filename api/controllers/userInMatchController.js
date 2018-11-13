@@ -20,7 +20,7 @@ function emitLeaderboard(roomName){
             roomName : roomName
         })
         .sort({score: -1})
-        .select({name:1,score:1})
+        .select({name:1,score:1,team:1})
         .exec(function(err, users){
             if(err){
             }
@@ -39,7 +39,7 @@ exports.leaderboard = (req, res) => {
             roomName : req.params.roomName
         })
         .sort({score: -1})
-        .select({name:1,score:1})
+        .select({name:1,score:1,team:1})
         .exec(function(err, users){
             if(err)
                 res.send(err);
@@ -106,7 +106,8 @@ function mapToScore(item, index) {
     var score = item.score
     return {
         username: item.name,
-        score: score
+        score: score,
+        team: item.team
     };
 }
 
@@ -117,7 +118,8 @@ function mapToPosition(item, index) {
         position: {
             latitude:position[0],
             longitude:position[1]
-        }
+        },
+        team: item.team
     };
 }
 
