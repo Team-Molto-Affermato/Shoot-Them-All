@@ -1,5 +1,6 @@
 import {Point} from "./point";
 import {Match} from "./match";
+import {Team} from "./team";
 
 export class User {
   name: String;
@@ -9,9 +10,11 @@ export class User {
   email: String;
 }
 export class UserScore {
-  username:String;
-  score: Number;
-  team: String;
+  constructor(public username:String,
+              public score: number,
+              public team: Team){
+  }
+
 }
 export class UserData {
   username: String;

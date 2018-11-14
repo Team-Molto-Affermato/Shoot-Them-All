@@ -3,7 +3,7 @@ import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
 import {MotionSensors} from "../../assets/motion-sensors.js"
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
-import {Match} from "../../models/match";
+import {Match, MatchOrganization} from "../../models/match";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {CollisionsDetectionService} from "../../services/collision-detection.service";
@@ -11,7 +11,7 @@ import {Point} from "../../models/point";
 import {UserInMatch, UserScore} from "../../models/user";
 import {CoordinatesHelper} from "../../utilities/CoordinatesHelper";
 import {GameMap} from "../../models/GameMap";
-import {Option, some} from "ts-option";
+import {Option} from "ts-option";
 
 @Component({
   selector: 'app-match',
@@ -20,9 +20,10 @@ import {Option, some} from "ts-option";
 })
 export class MatchComponent implements OnInit, OnDestroy {
   showLeaderboard = false;
+  teamMode= false;
+
   match: Match;
   userInMatch: UserInMatch;
-
   orientationAngle;
   players = [];
   userInArea = true;
@@ -46,7 +47,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
-
+    this.teamMode =this.match.organization === MatchOrganization.TEAM;
     this.userInMatch = new UserInMatch(username, new Point(0,0), 100);
 
     this.http.get('api/matches/'+this.match.name+'/users/score').subscribe(

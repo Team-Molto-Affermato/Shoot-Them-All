@@ -25,6 +25,7 @@ import { RadarComponent } from './match/game-map/radar/radar.component';
 import { EarthMapComponent } from './match/game-map/earth-map/earth-map.component';
 import { MatchLeaderboardComponent } from './match/match-leaderboard/match-leaderboard.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { MatchMultiLeaderboardComponent } from './match/match-multi-leaderboard/match-multi-leaderboard.component';
 
 const appRoutes: Routes = [
   {path: "", redirectTo: 'home', pathMatch: 'full'},
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
     RadarComponent,
     EarthMapComponent,
     MatchLeaderboardComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    MatchMultiLeaderboardComponent
   ],
   imports: [
     BrowserModule,

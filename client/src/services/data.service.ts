@@ -10,6 +10,7 @@ import {UserScore} from "../models/user";
 import {HttpClient} from "@angular/common/http";
 import {Match} from "../models/match";
 import {MatchConverterService} from "./match-converter.service";
+import {Team} from "../models/team";
 
 declare var io : {
   connect(url: string): Socket;
@@ -46,8 +47,10 @@ export class DataService {
   }
   getScores():Observable<Array<UserScore>>{
     this.socket.on('users-score', (res) => {
-      console.log("Data ",res);
-      this.scoreObserver.next(res);
+      var scores = res.map(score =>
+        new UserScore(score.username,score.score,Team[<string>score.team]));
+      console.log("Data ",scores);
+      this.scoreObserver.next(scores);
     });
     return this.createUserScoreObservable();
   }

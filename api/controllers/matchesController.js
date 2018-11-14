@@ -72,6 +72,7 @@ exports.deleteUserInMatch= (req,res)=>{
                             }
                         });
                         // console.log(positions)
+                        emitLeaderboardRoom(req.params.roomName);
                         io.to(req.params.roomName).emit('users-pos',positions);
                         res.json(positions);
                     }
@@ -121,6 +122,33 @@ function emitLeaderboard(){
             }
             else{
                 io.emit('users-leaderboard',users);
+            }
+        });
+}
+function mapToScore(item, index) {
+    var score = item.score
+    return {
+        username: item.name,
+        score: score,
+        team: item.team
+    };
+}
+function emitLeaderboardRoom(roomName){
+    var find = UserInMatch
+        .find({
+            roomName : roomName
+        })
+        .sort({score: -1})
+        .select({name:1,score:1,team:1})
+        .exec(function(err, users){
+            if(err){
+            }
+            else{
+                var usersScore = [];
+                users.forEach(user =>{
+                    usersScore.push(mapToScore(user));
+                });
+                io.to(roomName).emit('users-score',usersScore);
             }
         });
 }
@@ -215,10 +243,12 @@ exports.addUserToMatch = (req,res)=>{
                             name: req.body.username,
                             roomName: req.params.roomName
                         };
-                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location ,score:req.body.score}, {upsert:true,new:true}, function (err,user) {
+                        console.log(req.body);
+                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location ,score:req.body.score,team: req.body.team}, {upsert:true,new:true}, function (err,user) {
                             if (err) {
 
                             } else {
+                                emitLeaderboardRoom(req.params.roomName);
                             }
                         });
                     }

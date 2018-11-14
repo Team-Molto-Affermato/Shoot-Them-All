@@ -1,0 +1,10 @@
+<ul id="leaderboardTeam1">
+  <h2>Team 1, score: {{scoreTeam1}}</h2>
+  <li *ngFor="let userScore of leaderboardTeam1">
+    {{userScore.username}} : {{userScore.score}}
+  </li>
+  <h2>Team 2, score: {{scoreTeam2}} </h2>
+  <li *ngFor="let userScore of leaderboardTeam2">
+    {{userScore.username}} : {{userScore.score}}
+  </li>
+</ul>

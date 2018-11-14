@@ -6,7 +6,8 @@ import {Subscription} from "rxjs";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {HttpClient} from "@angular/common/http";
 import {DateHelper} from "../../utilities/DateHelper";
-import {Option, some} from "ts-option";
+import {none, Option, some} from "ts-option";
+import {Team} from "../../models/team";
 
 @Component({
   selector: 'app-match-info',
@@ -22,7 +23,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   users: Array<String> = [];
   password;
   remainingTime;
-  team: Option<Team>;
+  team: Option<Team> = none;
 
   teamVisible = false;
 
@@ -159,9 +160,11 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   switchPartecipation() {
     const penality = 500;
     if (!this.userJoined()) {
+      const teamV = this.team.isDefined?this.team.get:"NONE";
       var body = {
         username: this.username,
         password: this.password,
+        team : teamV,
         score: 0
       };
       if(this.match.state === MatchState.STARTED) {
@@ -214,9 +217,4 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     return (withHour?(h + ":"):"") + m + ":" + s;
   }
   
-}
-
-enum Team {
-  TEAM1,
-  TEAM2
 }

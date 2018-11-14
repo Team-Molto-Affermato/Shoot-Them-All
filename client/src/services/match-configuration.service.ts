@@ -27,6 +27,7 @@ export class MatchConfigurationService {
         type: "Point",
         coordinates: [match.centralPoint.latitude, match.centralPoint.longitude]
       },
+      type: match.organization,
       max_user: match.maxUser,
       duration: match.duration,
       radius: match.radius,
