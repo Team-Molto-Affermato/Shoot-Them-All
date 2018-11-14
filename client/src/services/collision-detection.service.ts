@@ -22,8 +22,6 @@ export class CollisionsDetectionService {
 
     var hitPlayers = [];
 
-    alert(players.length);
-
     for (const i in players) {
       const player = players[i];
 
@@ -35,7 +33,7 @@ export class CollisionsDetectionService {
       const distance = CoordinatesHelper.pointDistance(position, player.position);
       const lateralDistance = Math.abs(distance * Math.sin(rad));
       const verticalDistance = Math.abs(distance * Math.cos(rad));
-      
+
       // alert("player: " + player.username +
       //   "\nangle: " + angle +
       //   "\norientationAngle: " + orientationAngle +
