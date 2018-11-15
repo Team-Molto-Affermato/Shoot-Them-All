@@ -5,6 +5,7 @@ import { CoreModule } from './core/core.module';
 import { ChartsModule } from 'ng2-charts';
 import {FormsModule} from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -26,6 +27,7 @@ import { EarthMapComponent } from './match/game-map/earth-map/earth-map.componen
 import { MatchLeaderboardComponent } from './match/match-leaderboard/match-leaderboard.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { MatchMultiLeaderboardComponent } from './match/match-multi-leaderboard/match-multi-leaderboard.component';
+import { MatchMapComponent } from './match-map/match-map.component';
 
 const appRoutes: Routes = [
   {path: "", redirectTo: 'home', pathMatch: 'full'},
@@ -54,7 +56,8 @@ const appRoutes: Routes = [
     EarthMapComponent,
     MatchLeaderboardComponent,
     LeaderboardComponent,
-    MatchMultiLeaderboardComponent
+    MatchMultiLeaderboardComponent,
+    MatchMapComponent
   ],
   imports: [
     BrowserModule,
@@ -66,8 +69,10 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     FormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
-    })
+      //apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
+      apiKey: 'AIzaSyCWcppTOQVIT7rzO8GVrtTeTGOqweTjmuc'
+    }),
+    AgmSnazzyInfoWindowModule
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]

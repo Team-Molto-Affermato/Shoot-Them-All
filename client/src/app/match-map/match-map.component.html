@@ -1,0 +1,27 @@
+<agm-map [latitude]="43.12" [longitude]="12.34" [styles]="styles">
+  <agm-marker *ngFor="let match of matches"
+              [latitude]="match.centralPoint.latitude"
+              [longitude]="match.centralPoint.longitude">
+    <div class="si-content-wrapper">
+      <agm-snazzy-info-window [maxWidth]="300" [closeWhenOthersOpen]="true">
+        <ng-template>
+          <a (click)="showInfo(match)">
+          <strong>Match Informations:</strong><br>
+          <strong>Match name: </strong>{{match.name}}<br>
+          <strong>Match state: </strong>{{match.state}}<br>
+          <strong>Match access: </strong>{{match.access}}
+          </a>
+        </ng-template>
+      </agm-snazzy-info-window>
+    </div>
+  </agm-marker>
+  <agm-circle *ngFor="let match of matches"
+    [latitude]="match.centralPoint.latitude"
+    [longitude]="match.centralPoint.longitude"
+    [circleDraggable]="false"
+    [editable]="false"
+    [fillColor]="'#red'"
+    [radius]="match.radius"
+  >
+  </agm-circle>
+</agm-map>
