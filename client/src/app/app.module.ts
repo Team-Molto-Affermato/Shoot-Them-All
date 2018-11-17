@@ -25,15 +25,34 @@ import { RadarComponent } from './match/game-map/radar/radar.component';
 import { EarthMapComponent } from './match/game-map/earth-map/earth-map.component';
 import { MatchLeaderboardComponent } from './match/match-leaderboard/match-leaderboard.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { LoadingComponent } from './loading/loading.component';
+import { ErrorComponent } from './error/error.component';
+import {RoleGuardService as RoleGuard} from "../services/role-guard.service";
+import {Role} from "../models/RoleHelper";
+
+export enum ComponentName {
+  LOGIN = "login",
+  REGISTRATION = "registration",
+  HOME = "home",
+  MATCH_CONFIGURATION = "matchConfiguration",
+  MATCH_INFO = "matchInfo",
+  MATCH = "match",
+  ERROR = "error",
+  LOADING = "loading"
+}
 
 const appRoutes: Routes = [
-  {path: "", redirectTo: 'home', pathMatch: 'full'},
-  {path: "login", component: LoginComponent},
-  {path: "registration", component: RegistrationComponent},
-  {path: "home", component: HomeComponent, canActivate: [AuthGuard]},
-  {path: "matchConfiguration", component: MatchConfigurationComponent, canActivate: [AuthGuard]},
-  {path: "matchInfo", component: MatchInfoComponent, canActivate: [AuthGuard]},
-  {path: "match", component: MatchComponent, canActivate: [AuthGuard]}
+  {path: "", redirectTo: "home", pathMatch: "full"},
+  {path: ComponentName.LOGIN, component: LoginComponent},
+  {path: ComponentName.REGISTRATION, component: RegistrationComponent},
+  {path: ComponentName.HOME, component: HomeComponent, canActivate: [AuthGuard]},
+  {path: ComponentName.MATCH_CONFIGURATION, component: MatchConfigurationComponent, canActivate: [AuthGuard, RoleGuard],
+    data: {standardRole: Role.MANAGER, restrictedRole: Role.VISITOR}},
+  {path: ComponentName.MATCH_INFO, component: MatchInfoComponent, canActivate: [AuthGuard]},
+  {path: ComponentName.MATCH, component: MatchComponent, canActivate: [AuthGuard, RoleGuard],
+    data: {standardRole: Role.PLAYER}},
+  {path: ComponentName.ERROR, component: ErrorComponent, canActivate: [AuthGuard]},
+  {path: ComponentName.LOADING, component: LoadingComponent, canActivate: [AuthGuard]}
 ];
 
 
@@ -52,7 +71,9 @@ const appRoutes: Routes = [
     RadarComponent,
     EarthMapComponent,
     MatchLeaderboardComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    LoadingComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

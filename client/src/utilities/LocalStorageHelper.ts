@@ -21,9 +21,17 @@ export class LocalStorageHelper {
     match.startingTime = new Date(match.startingTime);
     return match;
   }
+
+  static hasItem(key: StorageKey): boolean {
+    return localStorage.getItem(key) !== null
+  }
 }
 
 export enum StorageKey {
   USERNAME = "username",
-  MACTH =  "match"
+  MACTH =  "match",
+  ROLE =  "role",
+  PREVIOUS_COMPONENT = "previous_component",
+  COMPLETE_FUNCTIONALITIES = "functionalities",
+  POINTED_COMPONENT = "pointed_component"
 }
