@@ -28,7 +28,8 @@ import { MatchLeaderboardComponent } from './match/match-leaderboard/match-leade
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { MatchMultiLeaderboardComponent } from './match/match-multi-leaderboard/match-multi-leaderboard.component';
 import { MatchMapComponent } from './match-map/match-map.component';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
 const appRoutes: Routes = [
   {path: "", redirectTo: 'home', pathMatch: 'full'},
   {path: "login", component: LoginComponent},
@@ -72,7 +73,9 @@ const appRoutes: Routes = [
       //apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
       apiKey: 'AIzaSyCWcppTOQVIT7rzO8GVrtTeTGOqweTjmuc'
     }),
-    AgmSnazzyInfoWindowModule
+    AgmSnazzyInfoWindowModule,
+    MatToolbarModule,
+    MatCardModule
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
