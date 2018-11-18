@@ -50,7 +50,7 @@ var MatchConfigurationComponent = /** @class */ (function () {
         var formValues = this.newMatchForm.value;
         var matchBaseInfo = new MatchBaseInfo(this.access, new Point(0, 0), formValues.areaRadius, 0, formValues.duration, formValues.maxPlayerNumber, formValues.password);
         var match = new Match("0", matchBaseInfo, [], MatchState.WAITING);
-        this.matchConfigurationService.createNewMatch(match).subscribe(function (data) {
+        this.matchConfigurationService.createMatch(match).subscribe(function (data) {
             alert(data);
             _this.matchInfoService.setCurrentMatch(data.id);
         }, function (error) { return alert(error); });

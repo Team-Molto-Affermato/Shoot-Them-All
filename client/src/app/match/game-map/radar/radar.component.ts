@@ -66,7 +66,6 @@ export class RadarComponent implements GameMap, OnInit, OnDestroy {
         'background-size': '40vh'
       };
 
-
       if (!this.rotateIntervalId){
         this.rotateIntervalId = setInterval(() => this.rotate(), 25);
       }
@@ -75,6 +74,7 @@ export class RadarComponent implements GameMap, OnInit, OnDestroy {
         'background': '#222 url("../../../../assets/radar_disabled.png") no-repeat',
         'background-size': '40vh'
       };
+
       if (this.rotateIntervalId) {
         clearInterval(this.rotateIntervalId);
         this.rotateIntervalId = null;

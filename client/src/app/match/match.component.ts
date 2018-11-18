@@ -146,17 +146,19 @@ export class MatchComponent implements OnInit, OnDestroy {
     var beta: number     = event.beta;
     var gamma: number    = event.gamma;
 
-    if (beta>90 || beta<-90) {
-      alpha=Math.abs(alpha+180)%360;
-    }
+    if (alpha) {
+      if (beta>90 || beta<-90) {
+        alpha=Math.abs(alpha+180)%360;
+      }
 
-    alpha = Math.round(alpha);
+      alpha = Math.round(alpha);
 
-    this.orientationAngle = (alpha+90)%360;
+      this.orientationAngle = (alpha+90)%360;
 
-    const radar = document.getElementById('container');
-    if (radar) {
-      radar.style.transform = 'rotate(' + alpha + 'deg)';
+      const radar = document.getElementById('container');
+      if (radar) {
+        radar.style.transform = 'rotate(' + alpha + 'deg)';
+      }
     }
   }
 

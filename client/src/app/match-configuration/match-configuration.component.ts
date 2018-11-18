@@ -1,17 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Router} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../models/match";
 import {MatchConfigurationService} from "../../services/match-configuration.service";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {Point} from "../../models/point";
+import {ConditionUpdaterService} from "../../services/condition-updater.service";
+import {AbstractObserverComponent} from "../ObserverComponent";
 
 @Component({
   selector: 'app-match-configuration',
   templateUrl: './match-configuration.component.html',
   styleUrls: ['./match-configuration.component.css']
 })
-export class MatchConfigurationComponent implements OnInit {
+export class MatchConfigurationComponent extends AbstractObserverComponent implements OnInit, OnDestroy {
 
   newMatchForm: FormGroup;
 
@@ -19,13 +21,17 @@ export class MatchConfigurationComponent implements OnInit {
   passwordVisible = false;
   organization: MatchOrganization = MatchOrganization.SINGLE_PLAYER;
 
-  constructor(private router: Router,
-              private formBuilder: FormBuilder,
-              private matchConfigurationService: MatchConfigurationService) {
-    this.newMatchForm = this.createFormGroup();
+  constructor(private formBuilder: FormBuilder,
+              private matchConfigurationService: MatchConfigurationService,
+              router: Router,
+              conditionObserverService: ConditionUpdaterService,
+              route: ActivatedRoute) {
+    super(router, conditionObserverService, route);
   }
 
   ngOnInit() {
+    this.init();
+    this.newMatchForm = this.createFormGroup();
   }
 
   createFormGroup() {
@@ -36,7 +42,10 @@ export class MatchConfigurationComponent implements OnInit {
       organization: this.organization,
       duration: '',
       areaRadius: '',
-      maxPlayerNumber: ''
+      maxPlayerNumber: '',
+      centralPosition: '',
+      latitude: '',
+      longitude: ''
     });
   }
 
@@ -58,26 +67,22 @@ export class MatchConfigurationComponent implements OnInit {
     }
   }
 
-  createNewMatch() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-          this.createMatch(pos);
-        },
-        error => console.log(error),
-        {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
-    }
-
-  }
-
-  createMatch(position) {
+  createMatch() {
 
     const formValues = this.newMatchForm.value;
+
+    var position: Point;
+    if (this.completeFunctionalities) {
+      position = this.conditionUpdaterService.position;
+    } else {
+      position = new Point(formValues.latitude, formValues.longitude);
+    }
 
     const match: Match = new Match(
       formValues.name,
       this.access,
       this.organization,
-      new Point(position.coords.latitude, position.coords.longitude),
+      position,
       formValues.areaRadius,
       new Date(),
       new Date(),
@@ -95,6 +100,11 @@ export class MatchConfigurationComponent implements OnInit {
       error =>
         alert(error)
     );
+
+  }
+
+  ngOnDestroy(): void {
+    this.destroy();
   }
 
 }
