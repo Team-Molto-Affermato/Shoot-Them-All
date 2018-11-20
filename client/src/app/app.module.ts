@@ -65,6 +65,7 @@ import {
   MatSliderModule, MatSlideToggleModule,
   MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatTooltipModule, MatTreeModule
 } from "@angular/material";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 export enum ComponentName {
   LOGIN = "login",
@@ -128,6 +129,7 @@ const appRoutes: Routes = [
       //apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
       apiKey: 'AIzaSyCWcppTOQVIT7rzO8GVrtTeTGOqweTjmuc'
     }),
+    // FlexLayoutModule,
     AgmSnazzyInfoWindowModule,
     MatToolbarModule,
     MatCardModule,
