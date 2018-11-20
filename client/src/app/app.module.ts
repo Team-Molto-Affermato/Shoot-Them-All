@@ -38,7 +38,7 @@ import {
   MatButtonModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule, MatMenuModule
+  MatInputModule, MatMenuModule, MatNavList, MatSidenavModule
 } from "@angular/material";
 import {FlexLayoutModule} from "@angular/flex-layout";
 
@@ -104,7 +104,7 @@ const appRoutes: Routes = [
       //apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
       apiKey: 'AIzaSyCWcppTOQVIT7rzO8GVrtTeTGOqweTjmuc'
     }),
-    // FlexLayoutModule,
+    FlexLayoutModule,
     AgmSnazzyInfoWindowModule,
     MatToolbarModule,
     MatCardModule,
@@ -113,7 +113,8 @@ const appRoutes: Routes = [
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSidenavModule
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
