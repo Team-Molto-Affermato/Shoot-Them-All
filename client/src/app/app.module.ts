@@ -65,7 +65,7 @@ import {
   MatSliderModule, MatSlideToggleModule,
   MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatTooltipModule, MatTreeModule
 } from "@angular/material";
-import {FlexLayoutModule} from "@angular/flex-layout";
+import {FlexLayoutModule} from "@angular/flex-cdlayout";
 
 export enum ComponentName {
   LOGIN = "login",
