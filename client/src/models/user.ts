@@ -17,8 +17,9 @@ export class UserScore {
 
 }
 export class UserData {
-  username: String;
-  password: String;
+  constructor(public username: String,
+              public password: String) {
+  }
 }
 
 export class UserInMatch {

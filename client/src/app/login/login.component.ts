@@ -1,9 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {UserData} from "../../models/user";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
+import {ErrorStateMatcher} from "@angular/material";
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -12,18 +20,23 @@ import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper
 })
 export class LoginComponent implements OnInit {
 
-  title = "Shoot Them All";
-
   loginForm: FormGroup;
+
+  username = new FormControl('', [Validators.required, Validators.maxLength(15)]);
+  password = new FormControl('', Validators.required);
+
+  matcher = new MyErrorStateMatcher();
+
+  hide = true;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private loginService: LoginService) {
-     this.loginForm = this.createFormGroup();
   }
 
 
   ngOnInit() {
+    this.loginForm = this.createFormGroup();
   }
 
   createFormGroup() {

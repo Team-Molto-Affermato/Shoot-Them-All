@@ -15,6 +15,7 @@ export class RoleGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
+    LocalStorageHelper.setItem(StorageKey.COMPLETE_FUNCTIONALITIES, true);
     return true;
 
     if(this.conditionUpdaterService.ready) {

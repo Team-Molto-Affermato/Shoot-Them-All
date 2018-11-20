@@ -34,6 +34,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { ErrorComponent } from './error/error.component';
 import {RoleGuardService as RoleGuard} from "../services/role-guard.service";
 import {Role} from "../models/RoleHelper";
+import {MatFormFieldModule, MatHint, MatIconModule, MatInput, MatInputModule} from "@angular/material";
 
 export enum ComponentName {
   LOGIN = "login",
@@ -99,7 +100,11 @@ const appRoutes: Routes = [
     }),
     AgmSnazzyInfoWindowModule,
     MatToolbarModule,
-    MatCardModule
+    MatCardModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
