@@ -1,25 +1,60 @@
 <app-navbar></app-navbar>
 <a routerLink="/matchConfiguration"><button>New Match</button></a>
-<div class="container">
-  <table class="table table-dark table-hover table-striped">
-    <thead class="thead-light">
-    <tr>
-      <th>Match Name</th>
-      <th>Match State</th>
-      <th>Match Access</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let match of matches" (click)="showInfo(match)">
-      <!--<a (click)="showInfo(match)">-->
-        <td>{{match.name}}</td>
-        <td>{{match.state}}</td>
-        <td>{{match.access}}</td>
-      <!--</a>-->
-    </tr>
-    </tbody>
+<!--<div class="container">-->
+  <!--<table class="table table-dark table-hover table-striped">-->
+    <!--<thead class="thead-light">-->
+    <!--<tr>-->
+      <!--<th>Match Name</th>-->
+      <!--<th>Match State</th>-->
+      <!--<th>Match Access</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let match of matches" (click)="showInfo(match)">-->
+      <!--&lt;!&ndash;<a (click)="showInfo(match)">&ndash;&gt;-->
+        <!--<td>{{match.name}}</td>-->
+        <!--<td>{{match.state}}</td>-->
+        <!--<td>{{match.access}}</td>-->
+      <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--</tr>-->
+    <!--</tbody>-->
+  <!--</table>-->
+<!--</div>-->
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- Position Column -->
+    <!--<ng-container matColumnDef="position">-->
+      <!--<th mat-header-cell *matHeaderCellDef> No. </th>-->
+      <!--<td mat-cell *matCellDef="let element"> {{element.position}} </td>-->
+    <!--</ng-container>-->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Match Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="state">
+      <th mat-header-cell *matHeaderCellDef> Match State </th>
+      <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="access">
+      <th mat-header-cell *matHeaderCellDef> Match Access </th>
+      <td mat-cell *matCellDef="let element"> {{element.access}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
+
   <!--<ul>-->
     <!--<li *ngFor="let match of matches"><a (click)="showInfo(match)">-->
       <!--{{match.name}}-->
