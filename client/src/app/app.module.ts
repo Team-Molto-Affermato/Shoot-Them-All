@@ -34,7 +34,13 @@ import { LoadingComponent } from './loading/loading.component';
 import { ErrorComponent } from './error/error.component';
 import {RoleGuardService as RoleGuard} from "../services/role-guard.service";
 import {Role} from "../models/RoleHelper";
-import {MatFormFieldModule, MatHint, MatIconModule, MatInput, MatInputModule} from "@angular/material";
+import {
+  MatButtonModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule, MatMenuModule
+} from "@angular/material";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 export enum ComponentName {
   LOGIN = "login",
@@ -98,13 +104,16 @@ const appRoutes: Routes = [
       //apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
       apiKey: 'AIzaSyCWcppTOQVIT7rzO8GVrtTeTGOqweTjmuc'
     }),
+    // FlexLayoutModule,
     AgmSnazzyInfoWindowModule,
     MatToolbarModule,
     MatCardModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
