@@ -16,6 +16,14 @@ export class UserScore {
   }
 
 }
+export class UserInLeaderboard {
+  constructor(
+    public position:number,
+    public username:String,
+    public score: number
+  ){
+  }
+}
 export class UserData {
   constructor(public username: String,
               public password: String) {

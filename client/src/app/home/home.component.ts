@@ -21,7 +21,6 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
   matches: Array<Match> = [];
   dataSource = new MatTableDataSource<Match>(this.matches);
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  showleaderboard = false;
   showMap =false;
   username;
   matchesSub: Subscription;
@@ -35,7 +34,7 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
   }
 
   switchComponent() {
-    this.showleaderboard = !this.showleaderboard;
+    this.showMap = !this.showMap;
   }
 
   ngOnInit() {

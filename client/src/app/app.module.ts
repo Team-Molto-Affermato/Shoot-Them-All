@@ -75,7 +75,8 @@ export enum ComponentName {
   MATCH_INFO = "matchInfo",
   MATCH = "match",
   ERROR = "error",
-  LOADING = "loading"
+  LOADING = "loading",
+  LEADERBOARD = "leaderboard"
 }
 
 
@@ -91,7 +92,8 @@ const appRoutes: Routes = [
   {path: ComponentName.MATCH, component: MatchComponent, canActivate: [AuthGuard, RoleGuard],
     data: {standardRole: Role.PLAYER}},
   {path: ComponentName.ERROR, component: ErrorComponent, canActivate: [AuthGuard]},
-  {path: ComponentName.LOADING, component: LoadingComponent, canActivate: [AuthGuard]}
+  {path: ComponentName.LOADING, component: LoadingComponent, canActivate: [AuthGuard]},
+  {path: ComponentName.LEADERBOARD, component: LeaderboardComponent, canActivate: [AuthGuard]}
 ];
 
 

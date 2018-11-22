@@ -12,6 +12,7 @@
   <!--<span class="fill-remaining-space"></span>-->
   <div id="item-row" fxShow="false" fxShow.gt-xs>
     <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/leaderboard">Leaderboard</button>
     <button mat-button routerLink="/matchConfiguration">New Match</button>
     <button mat-button (click)="logout()">Logout</button>
   </div>
@@ -22,6 +23,7 @@
 
 <mat-menu x-position="before" #menu="matMenu">
   <button mat-button routerLink="/home">Home</button>
+  <button mat-button routerLink="/leaderboard">Leaderboard</button>
   <button mat-button routerLink="/matchConfiguration">New Match</button>
   <button mat-button (click)="logout()">Logout</button>
 </mat-menu>

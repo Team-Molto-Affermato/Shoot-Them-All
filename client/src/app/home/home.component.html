@@ -19,39 +19,40 @@
     <!--</tbody>-->
   <!--</table>-->
 <!--</div>-->
+<div id="match-list" [hidden]="showMap">
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
 
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
-
-    <!-- Position Column -->
-    <!--<ng-container matColumnDef="position">-->
+      <!-- Position Column -->
+      <!--<ng-container matColumnDef="position">-->
       <!--<th mat-header-cell *matHeaderCellDef> No. </th>-->
       <!--<td mat-cell *matCellDef="let element"> {{element.position}} </td>-->
-    <!--</ng-container>-->
+      <!--</ng-container>-->
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Match Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Match Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="state">
-      <th mat-header-cell *matHeaderCellDef> Match State </th>
-      <td mat-cell *matCellDef="let element"> {{element.state}} </td>
-    </ng-container>
+      <!-- Weight Column -->
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef> Match State </th>
+        <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+      </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="access">
-      <th mat-header-cell *matHeaderCellDef> Match Access </th>
-      <td mat-cell *matCellDef="let element"> {{element.access}} </td>
-    </ng-container>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="access">
+        <th mat-header-cell *matHeaderCellDef> Match Access </th>
+        <td mat-cell *matCellDef="let element"> {{element.access}} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
 </div>
 
   <!--<ul>-->
@@ -61,5 +62,5 @@
       <!--{{match.access}}-->
     <!--</a></li>-->
   <!--</ul>-->
-<app-leaderboard></app-leaderboard>
-<app-match-map *ngIf="completeFunctionalities"></app-match-map>
+<button (click)="switchComponent()">Switch</button>
+<app-match-map *ngIf="completeFunctionalities && showMap"></app-match-map>
