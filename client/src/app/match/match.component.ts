@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
-import {MotionSensors} from "../../assets/motion-sensors.js"
+import {MotionSensors} from "../../assets/scripts/motion-sensors.js"
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {Match, MatchOrganization} from "../../models/match";
 import {HttpClient} from "@angular/common/http";

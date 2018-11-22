@@ -27,7 +27,7 @@ export class MatchMapComponent implements OnInit {
               private dataService: DataService) {
   }
   ngOnInit() {
-    this.http.get("../../assets/earthMapStyles.json").subscribe(
+    this.http.get("../../assets/styles/earthMapStyles.json").subscribe(
       data => {
         this.styles = data;
       }, error => {

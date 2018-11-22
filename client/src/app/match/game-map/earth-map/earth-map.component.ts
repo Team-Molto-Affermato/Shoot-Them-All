@@ -19,7 +19,7 @@ export class EarthMapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.get("../../../../assets/earthMapStyles.json").subscribe(
+    this.http.get("../../../../assets/styles/earthMapStyles.json").subscribe(
       data => {
         this.styles = data;
       }, error => {

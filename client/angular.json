@@ -25,7 +25,7 @@
             "styles": [
               "src/styles.scss",
               "node_modules/snazzy-info-window/dist/snazzy-info-window.css",
-              "src/assets/dark-theme.scss"
+              "src/assets/styles/dark-theme.scss"
             ],
             "scripts": []
           },

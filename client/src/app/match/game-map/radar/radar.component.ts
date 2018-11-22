@@ -62,7 +62,7 @@ export class RadarComponent implements GameMap, OnInit, OnDestroy {
       this.ratio = radarRadius/this.radius;
 
       this.radarStyle = {
-        'background': '#222 url("../../../../assets/radar_enabled.png") no-repeat',
+        'background': '#222 url("../../../../assets/images/radar_enabled.png") no-repeat',
         'background-size': '40vh'
       };
 
@@ -71,7 +71,7 @@ export class RadarComponent implements GameMap, OnInit, OnDestroy {
       }
     } else {
       this.radarStyle = {
-        'background': '#222 url("../../../../assets/radar_disabled.png") no-repeat',
+        'background': '#222 url("../../../../assets/images/radar_disabled.png") no-repeat',
         'background-size': '40vh'
       };
 

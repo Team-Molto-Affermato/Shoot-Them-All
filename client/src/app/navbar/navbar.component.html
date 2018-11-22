@@ -9,13 +9,13 @@
 <!--</nav>-->
 
 <mat-toolbar color="primary">
-  <span class="fill-remaining-space"></span>
-  <div fxLayout="row" fxShow="false" fxShow.gt-xs>
+  <!--<span class="fill-remaining-space"></span>-->
+  <div id="item-row" fxShow="false" fxShow.gt-xs>
     <button mat-button routerLink="/home">Home</button>
     <button mat-button routerLink="/matchConfiguration">New Match</button>
     <button mat-button (click)="logout()">Logout</button>
   </div>
-  <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-xs>
+  <button mat-button [mat-menu-trigger-for]="menu" fxShow="true" fxHide.gt-xs>
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
