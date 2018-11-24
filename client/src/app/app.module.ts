@@ -131,13 +131,13 @@ const appRoutes: Routes = [
       //apiKey: 'AIzaSyDu3kkOqXnf2L0xR4ktNS1o31OCCNnIHuk'
       apiKey: 'AIzaSyCWcppTOQVIT7rzO8GVrtTeTGOqweTjmuc'
     }),
+    MatInputModule,
     FlexLayoutModule,
     AgmSnazzyInfoWindowModule,
     MatToolbarModule,
     MatCardModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
-    MatInputModule,
     MatIconModule,
     MatButtonModule,
     MatAutocompleteModule,

@@ -19,9 +19,12 @@
     <!--</tbody>-->
   <!--</table>-->
 <!--</div>-->
-
-<div id="particle-canvas"></div>
-  <div id="match-list" [hidden]="showMap">
+<div id="main-container"
+  (swipeleft)="switchComponent()"
+  (swiperight)="switchComponent()"
+>
+  <div id="match-list"
+       [hidden]="showMap">
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
 
@@ -34,19 +37,19 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Match Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          <td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.name}} </td>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="state">
           <th mat-header-cell *matHeaderCellDef> Match State </th>
-          <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+          <td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.state}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="access">
           <th mat-header-cell *matHeaderCellDef> Match Access </th>
-          <td mat-cell *matCellDef="let element"> {{element.access}} </td>
+          <td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.access}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -56,13 +59,17 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
-
-    <!--<ul>-->
-      <!--<li *ngFor="let match of matches"><a (click)="showInfo(match)">-->
-        <!--{{match.name}}-->
-        <!--{{match.state}}-->
-        <!--{{match.access}}-->
-      <!--</a></li>-->
-    <!--</ul>-->
-  <button (click)="switchComponent()">Switch</button>
   <app-match-map *ngIf="completeFunctionalities && showMap"></app-match-map>
+  <button (click)="switchComponent()">Switch</button>
+</div>
+
+
+  <!--<ul>-->
+    <!--<li *ngFor="let match of matches"><a (click)="showInfo(match)">-->
+      <!--{{match.name}}-->
+      <!--{{match.state}}-->
+      <!--{{match.access}}-->
+    <!--</a></li>-->
+  <!--</ul>-->
+
+
