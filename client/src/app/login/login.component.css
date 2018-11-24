@@ -1,8 +1,14 @@
-.login-form {
-  min-width: 150px;
-  width: 100%;
-}
+/*.container {*/
+  /*display: flex;*/
+  /*justify-content: center;*/
+/*}*/
 
-.login-input {
-  width: 100%;
-}
+/*.login-form {*/
+  /*padding-top: 100px;*/
+  /*min-width: 150px;*/
+  /*width: 60%;*/
+/*}*/
+
+/*.login-input {*/
+  /*width: 100%;*/
+/*}*/

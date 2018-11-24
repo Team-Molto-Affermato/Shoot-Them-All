@@ -10,6 +10,7 @@ import {AbstractObserverComponent} from "../ObserverComponent";
 import {ConditionUpdaterService} from "../../services/condition-updater.service";
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {Subscription} from "rxjs";
+import {drawParticles} from "../../assets/scripts/particles.js"
 
 @Component({
   selector: 'app-home',
@@ -38,6 +39,9 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
   }
 
   ngOnInit() {
+    const canvasDiv = document.getElementById('particle-canvas');
+    drawParticles(canvasDiv);
+
     this.matchesSub = this.dataService
       .getMatches()
       .subscribe(matches=>{
