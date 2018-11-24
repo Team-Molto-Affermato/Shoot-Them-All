@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../models/match";
 import {MatchConfigurationService} from "../../services/match-configuration.service";
@@ -14,7 +14,15 @@ import {AbstractObserverComponent} from "../ObserverComponent";
   styleUrls: ['./match-configuration.component.css']
 })
 export class MatchConfigurationComponent extends AbstractObserverComponent implements OnInit, OnDestroy {
-
+  nameFormGroup: FormGroup;
+  accessFormGroup: FormGroup;
+  playerFormGroup: FormGroup;
+  durationFormGroup: FormGroup;
+  positionFormGroup: FormGroup;
+  policies: String[] = ["Public","Private"];
+  defaultPolicy:String = "Public";
+  organizations: String[] = ["Single Player","Team"];
+  defaultOrganization = "Single Player";
   newMatchForm: FormGroup;
 
   access: MatchAccess = MatchAccess.PUBLIC;
@@ -32,6 +40,25 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
   ngOnInit() {
     this.init();
     this.newMatchForm = this.createFormGroup();
+    this.nameFormGroup = this.formBuilder.group({
+      nameCtrl: ['', Validators.required]
+    });
+    this.accessFormGroup = this.formBuilder.group({
+      accessCtrl: '',
+      pwdCtrl: ''
+    });
+    this.playerFormGroup = this.formBuilder.group({
+      orgCtrl: '',
+      playersCtrl: ''
+    });
+    this.durationFormGroup = this.formBuilder.group({
+      durationCtrl: ''
+    });
+    this.positionFormGroup = this.formBuilder.group({
+      areaCtrl: '',
+      latitudeCtrl: '',
+      longitudeCtrl: ''
+    });
   }
 
   createFormGroup() {
@@ -69,26 +96,26 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
 
   createMatch() {
 
-    const formValues = this.newMatchForm.value;
-
+    // const formValues = this.newMatchForm.value;
+    const positionsForm = this.positionFormGroup.value
     var position: Point;
     if (this.completeFunctionalities) {
       position = this.conditionUpdaterService.position;
     } else {
-      position = new Point(formValues.latitude, formValues.longitude);
+      position = new Point(positionsForm.latitudeCtrl, positionsForm.longitudeCtrl);
     }
 
     const match: Match = new Match(
-      formValues.name,
+      this.nameFormGroup.value.nameCtrl,
       this.access,
       this.organization,
       position,
-      formValues.areaRadius,
+      positionsForm.areaCtrl,
       new Date(),
       new Date(),
-      formValues.duration,
-      formValues.maxPlayerNumber,
-      formValues.password,
+      this.durationFormGroup.value.durationCtrl,
+      this.playerFormGroup.value.playersCtrl,
+      this.accessFormGroup.value.pwdCtrl,
       [],
       MatchState.SETTING_UP);
 
