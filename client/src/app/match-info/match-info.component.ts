@@ -9,6 +9,14 @@ import {DateHelper} from "../../utilities/DateHelper";
 import {none, Option, some} from "ts-option";
 import {Team} from "../../models/team";
 
+export class SpinnerOption {
+  constructor(
+    public color:String,
+    public mode:String,
+    public value:number
+  ){
+  }
+}
 @Component({
   selector: 'app-match-info',
   templateUrl: './match-info.component.html',
@@ -24,7 +32,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   password;
   remainingTime;
   team: Option<Team> = none;
-
+  spinnerOption:SpinnerOption;
   teamVisible = false;
 
   countdownIntervalId;
@@ -79,7 +87,52 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
               this.match.state = MatchState.ENDED;
               break;
           }
+          this.setSpinnerOption();
         });
+
+     this.setSpinnerOption();
+  }
+  private printState():string{
+    switch (this.match.state) {
+      case MatchState.SETTING_UP:
+        return "Waiting to start the match";
+      case MatchState.STARTED:
+        return "The match is started";
+      case MatchState.ENDED:
+        return "The match is ended";
+    }
+  }
+  private setSpinnerOption(){
+    this.spinnerOption = new SpinnerOption(
+      this.getSpinnerColor(),
+      "determinate",
+      this.getElapsedPercentage()
+    );
+  }
+  private getElapsedPercentage():number{
+    const now = new Date();
+    if(this.match.state === MatchState.SETTING_UP){
+      const difference = DateHelper.dateDifference(this.match.startingTime, now);
+      if (difference && difference>0) {
+        return ((60000-difference)/60000)*100;
+      }else{
+        return 100;
+      }
+    }else{
+      const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
+      const remaining = DateHelper.dateDifference(endingDate, now)/60000;
+      return ((this.match.duration-remaining)/this.match.duration)*100;
+    }
+  }
+  private getSpinnerColor():String {
+    switch (this.match.state) {
+      case MatchState.SETTING_UP:
+        return "primary";
+      case MatchState.STARTED:
+        return "accent";
+      case MatchState.ENDED:
+        return "warn";
+    }
   }
 
   ngOnDestroy() {
@@ -99,7 +152,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
     const now = new Date();
     var difference: number;
-
+    this.setSpinnerOption();
     if (this.match.state === MatchState.SETTING_UP) {
       difference = DateHelper.dateDifference(this.match.startingTime, now);
 
