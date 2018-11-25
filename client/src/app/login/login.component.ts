@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {UserData} from "../../models/user";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {ErrorStateMatcher} from "@angular/material";
+import {animate, animation, state, style, transition, trigger} from "@angular/animations";
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -17,7 +18,22 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  animations: [
+    trigger('scan', [
+      state('inactive', style({
+      })),
+      state('active', style({
+        transform: 'translateY(90px)'
+      })),
+      transition('inactive => active', [
+        animate(500)
+      ]),
+      transition('active => inactive', [
+        animate(1)
+      ])
+    ])
+  ]
 })
 export class LoginComponent implements OnInit {
 
@@ -28,16 +44,20 @@ export class LoginComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  hide = true;
+  showPassword = false;
+  showScanner = false;
+
+  scanning = false;
+  scanTimeoutId;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private loginService: LoginService) {
   }
 
-
   ngOnInit() {
     this.loginForm = this.createFormGroup();
+    this.setScanner();
   }
 
   createFormGroup() {
@@ -57,6 +77,23 @@ export class LoginComponent implements OnInit {
       alert(err);
     });
 
+  }
+
+  setScanner() {
+    this.showScanner = ('ontouchstart' in document.documentElement);
+  }
+
+  startScan() {
+    this.scanning = true;
+    this.scanTimeoutId = window.setTimeout(() => {
+      this.stopScan();
+      this.login();
+    }, 500);
+  }
+
+  stopScan() {
+    window.clearTimeout(this.scanTimeoutId);
+    this.scanning = false;
   }
 
 }

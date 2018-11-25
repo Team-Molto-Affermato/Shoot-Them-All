@@ -1,26 +1,38 @@
 <div class="container">
-  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
-    <mat-form-field class="login-input">
-      <input matInput type="text" placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
-      <mat-hint></mat-hint>
-      <mat-error *ngIf="username.hasError('required')">
-        Username is required
-      </mat-error>
-    </mat-form-field>
 
-    <mat-form-field class="login-input">
-      <input matInput placeholder="Password" formControlName="password" [type]="hide ? 'password' : 'text'" [errorStateMatcher]="matcher">
-      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-      <mat-hint></mat-hint>
-      <mat-error *ngIf="password.hasError('required')">
-        Password is required
-      </mat-error>
-    </mat-form-field>
+  <h1>Shoot them all</h1>
 
-    <button type="submit" mat-flat-button>Login</button>
-    <button mat-flat-button color="warn" routerLink="/registration">Register</button>
+  <div class="form-container">
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field class="login-input">
+        <input matInput type="text" placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
+        <mat-hint></mat-hint>
+        <mat-error *ngIf="username.hasError('required')">
+          Username is required
+        </mat-error>
+      </mat-form-field>
 
-  </form>
+      <mat-form-field class="login-input">
+        <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" [errorStateMatcher]="matcher">
+        <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-hint></mat-hint>
+        <mat-error *ngIf="password.hasError('required')">
+          Password is required
+        </mat-error>
+      </mat-form-field>
+
+      <div class="buttons-container">
+        <div id="scanner" *ngIf="showScanner">
+          <div id="scanner-beam" [hidden]="!scanning"
+               [@scan]="scanning ? 'active' : 'inactive'"></div>
+          <div id="fingerprint" (press)="startScan()" (pressup)="stopScan()" (pan)="stopScan()"></div>
+        </div>
+
+        <button id="login-button" color="primary" type="submit" mat-flat-button *ngIf="!showScanner">Login</button>
+        <button id="registration-button" mat-flat-button routerLink="/registration">Register</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 
