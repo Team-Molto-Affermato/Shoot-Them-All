@@ -50,3 +50,21 @@ export interface UserDetails {
 export interface TokenResponse {
   token: string;
 }
+
+export enum Rankings {
+  RECRUIT = "Recruit",
+  PRIVATE = "Private",
+  CORPORAL = "Corporal",
+  SERGEANT ="Sergeant",
+  MASTER_SERGEANT = "Master Sergeant",
+  SERGEANT_MAJOR="Sergeant Major",
+  LIEUTENANT = "Lieutenant",
+  CAPTAIN = "Captain",
+  MAJOR ="Major",
+  COLONEL = "Colonel",
+  BRIGADIER_GENERAL = "Brigadier General",
+  MAJOR_GENERAL = "Major general",
+  LIEUTENANT_GENERAL = "Lieutenant general",
+  GENERAL = "General",
+  GLOBAL_GENERAL ="Global general"
+}

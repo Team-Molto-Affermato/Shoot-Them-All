@@ -28,3 +28,22 @@
 </select>
 <button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
 
+<h1 class="mat-display-4">{{match.name}}</h1>
+<div>
+  <mat-card>
+    <mat-card-content>
+      <h2>{{printState()}}</h2>
+      <mat-progress-spinner
+        [color]="spinnerOption.color"
+        [mode]="spinnerOption.mode"
+        [value]="spinnerOption.value">
+      </mat-progress-spinner>
+    </mat-card-content>
+  </mat-card>
+  <div style="position:relative; top: -20px; left: 35px;">
+    {{ remainingTime}}
+  </div>
+</div>
+
+
+
