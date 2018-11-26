@@ -1,14 +1,78 @@
-/*.container {*/
-  /*display: flex;*/
-  /*justify-content: center;*/
-/*}*/
+* {
+  font-family: 'centauri', 'arial', sans-serif;
+}
 
-/*.login-form {*/
-  /*padding-top: 100px;*/
-  /*min-width: 150px;*/
-  /*width: 60%;*/
-/*}*/
+h1 {
+  text-align: center;
+  margin-top: 10vh;
+  font-size: 30px;
+}
 
-/*.login-input {*/
-  /*width: 100%;*/
-/*}*/
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10vh;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8vh;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  width: 60%;
+}
+
+.login-input {
+  margin-top: 5px;
+}
+
+#scanner {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 7vh;
+}
+
+#fingerprint {
+  width: 80px;
+  height: 100px;
+  background: url("../../assets/images/fingerprint.png") no-repeat center;
+  background-size: auto 100%;
+}
+
+#scanner-beam {
+  width: 60%;
+  position: absolute;
+  border:none;
+  height: 0px;
+  margin-top: 0;
+  border-bottom: 1px solid #00e640;
+  box-shadow: 0px 0px 8px 4px #00e640;
+}
+
+#registration-button {
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 599px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .login-form {
+    width: 80%;
+    font-size: 70%;
+  }
+
+
+}
