@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../models/match";
 import {DataService} from '../../services/data.service';
@@ -8,6 +8,8 @@ import {HttpClient} from "@angular/common/http";
 import {DateHelper} from "../../utilities/DateHelper";
 import {none, Option, some} from "ts-option";
 import {Team} from "../../models/team";
+import {Rankings, UserInLeaderboard} from "../../models/user";
+import {MatPaginator, MatTableDataSource} from "@angular/material";
 
 export class SpinnerOption {
   constructor(
@@ -23,7 +25,7 @@ export class SpinnerOption {
   styleUrls: ['./match-info.component.css']
 })
 export class MatchInfoComponent implements OnInit, OnDestroy {
-
+  topScore:number= 40000;
   username: string;
   match: Match;
   usersSub: Subscription;
@@ -34,15 +36,19 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   team: Option<Team> = none;
   spinnerOption:SpinnerOption;
   teamVisible = false;
-
   countdownIntervalId;
-
+  leaderBoardSub: Subscription;
+  leaderboard: Array<UserInLeaderboard> = [];
+  dataSource = new MatTableDataSource<UserInLeaderboard>(this.leaderboard);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private router: Router,
               private http: HttpClient,
               private dataService: DataService) {
   }
 
   ngOnInit() {
+    const keys = Object.keys(Rankings);
+    console.log(keys);
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
     this.dataService.joinRoom(this.match.name,this.username);
@@ -88,7 +94,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
               break;
           }
           this.setSpinnerOption();
-        });
+        this.dataSource.paginator = this.paginator;
+
+      });
 
      this.setSpinnerOption();
   }
