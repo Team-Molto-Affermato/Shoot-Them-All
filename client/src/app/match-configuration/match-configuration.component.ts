@@ -7,6 +7,7 @@ import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper
 import {Point} from "../../models/point";
 import {ConditionUpdaterService} from "../../services/condition-updater.service";
 import {AbstractObserverComponent} from "../ObserverComponent";
+import {drawParticles} from "../../assets/scripts/particles";
 
 @Component({
   selector: 'app-match-configuration',
@@ -39,6 +40,10 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
 
   ngOnInit() {
     this.init();
+
+    const canvasDiv = document.getElementById('particle-canvas');
+    drawParticles(canvasDiv);
+
     this.newMatchForm = this.createFormGroup();
     this.nameFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required]

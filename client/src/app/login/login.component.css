@@ -33,10 +33,6 @@ h1 {
   width: 60%;
 }
 
-.login-input {
-  margin-top: 5px;
-}
-
 #scanner {
   display: flex;
   justify-content: center;
@@ -71,8 +67,6 @@ h1 {
 
   .login-form {
     width: 80%;
-    font-size: 70%;
+    font-size: 12px;
   }
-
-
 }
