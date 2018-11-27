@@ -5,8 +5,8 @@ export function drawParticles(canvasDiv) {
     particleColor: '#00c62b',
     background: '#303030',
     interactive: false,
-    speed: 'medium',
-    density: 'high'
+    speed: 'low',
+    density: 'medium'
   };
   var particleCanvas = new ParticleNetwork(canvasDiv, options);
 }

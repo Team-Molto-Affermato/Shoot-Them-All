@@ -1,0 +1,59 @@
+#armies {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#army-blue, #army-red {
+  width: 25%;
+  max-width: 110px;
+}
+
+#battle {
+  width: 10%;
+  margin-bottom: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
+  max-width: 40px;
+}
+
+#armies, #device-functionalities {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#device-gun {
+  width: 16%;
+  max-width: 80px;
+}
+
+#device-radar {
+  width: 15%;
+  max-width: 75px;
+
+  margin-left: 13%;
+  margin-right: 13%;
+}
+
+#device-map {
+  width: 15%;
+  max-width: 75px;
+}
+
+#play {
+  margin-top: 7vh;
+}
+
+#shoot {
+  width: 22%;
+  max-width: 100px;
+}
+
+@media screen and (max-width: 599px) {
+ * {
+    font-size: 12px;
+  }
+}

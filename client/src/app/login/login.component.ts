@@ -6,14 +6,7 @@ import {UserData} from "../../models/user";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {ErrorStateMatcher} from "@angular/material";
 import {animate, animation, state, style, transition, trigger} from "@angular/animations";
-
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import {DefaultErrorStateMatcher} from "../../models/DefaultErrorStateMatcher";
 
 @Component({
   selector: 'app-login',
@@ -42,7 +35,7 @@ export class LoginComponent implements OnInit {
   username = new FormControl('', [Validators.required, Validators.maxLength(15)]);
   password = new FormControl('', Validators.required);
 
-  matcher = new MyErrorStateMatcher();
+  matcher = new DefaultErrorStateMatcher();
 
   showPassword = false;
   showScanner = false;

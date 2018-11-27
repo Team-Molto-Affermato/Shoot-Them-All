@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { User} from "../../models/user";
 import {RegistrationService} from "../../services/registration.service";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
+import {DefaultErrorStateMatcher} from "../../models/DefaultErrorStateMatcher";
 
 @Component({
   selector: 'app-registration',
@@ -15,6 +16,18 @@ export class RegistrationComponent implements OnInit {
 
 
   registrationForm: FormGroup;
+
+  name = new FormControl('', Validators.required);
+  surname = new FormControl('', Validators.required);
+  username = new FormControl('', [Validators.required, Validators.maxLength(15)]);
+  email = new FormControl('', Validators.required);
+  password = new FormControl('', Validators.required);
+  confirmPassword = new FormControl('', Validators.required);
+
+  matcher = new DefaultErrorStateMatcher();
+
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,

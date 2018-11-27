@@ -66,6 +66,9 @@ import {
   MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatTooltipModule, MatTreeModule
 } from "@angular/material";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import { ParticleCanvasComponent } from './particle-canvas/particle-canvas.component';
+import { DescriptionComponent } from './home/description/description.component';
+import { MatchesMapComponent } from './home/matches-map/matches-map.component';
 
 export enum ComponentName {
   LOGIN = "login",
@@ -116,7 +119,10 @@ const appRoutes: Routes = [
     MatchMultiLeaderboardComponent,
     MatchMapComponent,
     LoadingComponent,
-    ErrorComponent
+    ErrorComponent,
+    ParticleCanvasComponent,
+    DescriptionComponent,
+    MatchesMapComponent
   ],
   imports: [
     BrowserModule,

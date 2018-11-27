@@ -1,0 +1,43 @@
+* {
+  font-family: 'centauri', 'arial', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 10vh;
+  font-size: 30px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 8vh;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  width: 60%;
+}
+
+#registration-button {
+  margin-top: 10vh;
+}
+
+@media screen and (max-width: 599px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .registration-form {
+    width: 80%;
+    font-size: 70%;
+  }
+}

@@ -1,14 +1,43 @@
-<form id="form" [formGroup]="registrationForm" (ngSubmit)="register()" novalidate>
-  <label for="name">Name</label>
-  <input formControlName="name" id="name">
-  <label for="surname">Surname</label>
-  <input formControlName="surname" id="surname">
-  <label for="username">Username</label>
-  <input formControlName="username" id="username">
-  <label for="password">Password</label>
-  <input formControlName="password" id="password">
-  <label for="email">Email</label>
-  <input formControlName="email" id="email">
+<div class="container">
 
-  <button type="submit">Register</button>
-</form>
+  <h1>Shoot them all</h1>
+
+  <div class="form-container">
+    <form class="registration-form" [formGroup]="registrationForm" (ngSubmit)="register()" novalidate>
+      <mat-form-field class="registration-input">
+        <input matInput type="text" placeholder="Name" formControlName="name">
+        <mat-hint></mat-hint>
+      </mat-form-field>
+      <mat-form-field class="registration-input">
+        <input matInput type="text" placeholder="Surname" formControlName="surname">
+        <mat-hint></mat-hint>
+      </mat-form-field>
+      <mat-form-field class="registration-input">
+        <input matInput type="email" placeholder="Email" formControlName="email">
+        <mat-hint></mat-hint>
+      </mat-form-field>
+      <mat-form-field class="registration-input">
+        <input matInput type="text" placeholder="Username" formControlName="username">
+        <mat-hint></mat-hint>
+      </mat-form-field>
+      <mat-form-field class="registration-input">
+        <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" [errorStateMatcher]="matcher">
+        <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-hint></mat-hint>
+        <mat-error *ngIf="password.hasError('required')">
+          Password is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="registration-input">
+        <input matInput placeholder="Confirm Password" formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" [errorStateMatcher]="matcher">
+        <mat-icon matSuffix (click)="showConfirmPassword = !showConfirmPassword">{{showConfirmPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-hint></mat-hint>
+        <mat-error *ngIf="confirmPassword.hasError('required')">
+          Confirm password is required
+        </mat-error>
+      </mat-form-field>
+
+      <button id="registration-button" type="submit" mat-flat-button color="primary">Register</button>
+    </form>
+  </div>
+</div>

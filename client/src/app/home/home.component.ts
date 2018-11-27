@@ -10,7 +10,8 @@ import {AbstractObserverComponent} from "../ObserverComponent";
 import {ConditionUpdaterService} from "../../services/condition-updater.service";
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {Subscription} from "rxjs";
-import {drawParticles} from "../../assets/scripts/particles"
+import {drawParticles} from "../../assets/scripts/particles";
+
 
 @Component({
   selector: 'app-home',
@@ -39,6 +40,7 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
   }
 
   ngOnInit() {
+
     const canvasDiv = document.getElementById('particle-canvas');
     drawParticles(canvasDiv);
 
@@ -62,7 +64,7 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
         this.matches = data;
         this.refresh();
       },
-      error => alert(error)
+      // error => alert(error)
     );
   }
    refresh() {
