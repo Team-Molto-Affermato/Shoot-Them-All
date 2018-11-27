@@ -12,7 +12,9 @@ export class User {
 export class UserScore {
   constructor(public username:String,
               public score: number,
-              public team: Team){
+              public team: Team,
+              public scoreG: number
+              ){
   }
 
 }
@@ -20,7 +22,8 @@ export class UserInLeaderboard {
   constructor(
     public position:number,
     public username:String,
-    public score: number
+    public score: number,
+    public ranking: string
   ){
   }
 }
@@ -51,20 +54,20 @@ export interface TokenResponse {
   token: string;
 }
 
-export enum Rankings {
-  RECRUIT = "Recruit",
-  PRIVATE = "Private",
-  CORPORAL = "Corporal",
-  SERGEANT ="Sergeant",
-  MASTER_SERGEANT = "Master Sergeant",
-  SERGEANT_MAJOR="Sergeant Major",
-  LIEUTENANT = "Lieutenant",
-  CAPTAIN = "Captain",
-  MAJOR ="Major",
-  COLONEL = "Colonel",
-  BRIGADIER_GENERAL = "Brigadier General",
-  MAJOR_GENERAL = "Major general",
-  LIEUTENANT_GENERAL = "Lieutenant general",
-  GENERAL = "General",
-  GLOBAL_GENERAL ="Global general"
-}
+export const rankings:Array<string> = [
+  "Recruit",
+  "Private",
+  "Corporal",
+  "Sergeant",
+  "Master Sergeant",
+  "Sergeant Major",
+  "Lieutenant",
+  "Captain",
+  "Major",
+  "Colonel",
+  "Brigadier General",
+  "Major general",
+  "Lieutenant general",
+  "General",
+  "Global general"
+]

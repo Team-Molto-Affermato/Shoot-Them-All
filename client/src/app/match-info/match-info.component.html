@@ -1,50 +1,78 @@
 <app-navbar></app-navbar>
-<label for="name">Name</label>
-<p id="name">{{match.name}}</p>
-<label for="state">State</label>
-<p id="state">{{match.state}}</p>
-<label for="access">Access</label>
-<p id="access">{{match.access}}</p>
-<label for="password" *ngIf="showPassword()">Password</label>
-<input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>
-<label for="radius">Radius</label>
-<p id="radius">{{match.radius}}</p>
-<label for="centralPoint">Center Point</label>
-<p id="centralPoint">{{match.centralPoint.latitude}}, {{match.centralPoint.longitude}}</p>
-<label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>
-<p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>
-<label for="organization">ORganization</label>
-<p id="organization">{{match.organization}}</p>
+<div id="insertPassword" *ngIf="!isVisible">
 
-<label for="users">Players</label>
-<ul id="users">
-  <li *ngFor="let user of users">
-    {{user}}
-  </li>
-</ul>
-<label for="team">Choose Your Team</label>
-<select (change)="switchTeam()" id="team" *ngIf="teamVisible">
-  <option>Team 1</option>
-  <option>Team 2</option>
-</select>
-<button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
+  <div class="container">
 
-<h1 class="mat-display-4">{{match.name}}</h1>
-<div>
-  <mat-card>
-    <mat-card-content>
-      <h2>{{printState()}}</h2>
-      <mat-progress-spinner
-        [color]="spinnerOption.color"
-        [mode]="spinnerOption.mode"
-        [value]="spinnerOption.value">
-      </mat-progress-spinner>
-    </mat-card-content>
-  </mat-card>
-  <div style="position:relative; top: -20px; left: 35px;">
-    {{ remainingTime}}
+    <h1>Insert the password to unlock the room</h1>
+
+    <div class="form-container">
+      <form class="login-form" [formGroup]="unlockRoomForm" (ngSubmit)="savePassword()">
+
+        <mat-form-field class="login-input">
+          <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" [errorStateMatcher]="matcher">
+          <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-hint></mat-hint>
+          <!--<mat-error *ngIf="password.hasError('required')">-->
+            <!--Password is required-->
+          <!--</mat-error>-->
+        </mat-form-field>
+        <div class="buttons-container">
+          <button id="login-button" color="primary" type="submit" mat-flat-button *ngIf="!showScanner">Unlock Room</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
-<app-match-leaderboard></app-match-leaderboard>
 
+<div id="content" *ngIf="isVisible">
+  <label for="name">Name</label>
+  <p id="name">{{match.name}}</p>
+  <label for="state">State</label>
+  <p id="state">{{match.state}}</p>
+  <label for="access">Access</label>
+  <p id="access">{{match.access}}</p>
+  <label for="password" *ngIf="showPassword()">Password</label>
+  <input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>
+  <label for="radius">Radius</label>
+  <p id="radius">{{match.radius}}</p>
+  <label for="centralPoint">Center Point</label>
+  <p id="centralPoint">{{match.centralPoint.latitude}}, {{match.centralPoint.longitude}}</p>
+  <label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>
+  <p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>
+  <label for="organization">ORganization</label>
+  <p id="organization">{{match.organization}}</p>
+
+  <label for="users">Players</label>
+  <ul id="users">
+    <li *ngFor="let user of users">
+      {{user}}
+    </li>
+  </ul>
+  <label for="team">Choose Your Team</label>
+  <select (change)="switchTeam()" id="team" *ngIf="teamVisible">
+    <option>Team 1</option>
+    <option>Team 2</option>
+  </select>
+  <button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
+
+  <h1 class="mat-display-4">{{match.name}}</h1>
+  <div>
+    <mat-card>
+      <mat-card-content>
+        <h2>{{printState()}}</h2>
+        <mat-progress-spinner
+          [color]="spinnerOption.color"
+          [mode]="spinnerOption.mode"
+          [value]="spinnerOption.value">
+        </mat-progress-spinner>
+      </mat-card-content>
+    </mat-card>
+    <div style="position:relative; top: -20px; left: 35px;">
+      {{ remainingTime}}
+    </div>
+  </div>
+  <app-match-leaderboard></app-match-leaderboard>
+</div>
+
+<!--<app-game-map></app-game-map>-->
 

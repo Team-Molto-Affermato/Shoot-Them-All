@@ -48,7 +48,7 @@ export class DataService {
   getScores():Observable<Array<UserScore>>{
     this.socket.on('users-score', (res) => {
       var scores = res.map(score =>
-        new UserScore(score.username,score.score,Team[<string>score.team]));
+        new UserScore(score.username,score.score,Team[<string>score.team],score.scoreG));
       console.log("Data ",scores);
       this.scoreObserver.next(scores);
     });

@@ -1,5 +1,6 @@
 var mongoose        = require('mongoose');
 var UserInMatch            = require('../models/userInMatch');
+var User = require('../models/users');
 var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
 console.log(configuration.address);
 var io = require('socket.io-emitter')({ host: configuration.address, port: 6379 });
@@ -14,44 +15,63 @@ exports.listUserInMatch = (req, res) => {
             res.json(users);
     });
 };
-function emitLeaderboard(roomName){
-    var find = UserInMatch
+async function emitLeaderboard(roomName){
+    // var find = UserInMatch
+    //     .find({
+    //         roomName : roomName
+    //     })
+    //     .sort({score: -1})
+    //     .select({name:1,score:1,team:1})
+    //     .exec(function(err, users){
+    //         if(err){
+    //         }
+    //         else{
+    //             var usersScore = [];
+    //             users.forEach(user =>{
+    //                     usersScore.push(mapToScore(user));
+    //             });
+    //             io.to(roomName).emit('users-score',usersScore);
+    //         }
+    //     });
+    const leaderboard = await UserInMatch
         .find({
             roomName : roomName
         })
         .sort({score: -1})
         .select({name:1,score:1,team:1})
-        .exec(function(err, users){
-            if(err){
-            }
-            else{
-                var usersScore = [];
-                users.forEach(user =>{
-                        usersScore.push(mapToScore(user));
-                });
-                io.to(roomName).emit('users-score',usersScore);
-            }
-        });
+        .exec();
+    // console.log(leaderboard);
+    var usersScore = [];
+    for(i = 0;i< leaderboard.length;i++){
+        const temp = await mapUser(leaderboard[i]);
+        usersScore.push(temp);
+    }
+    console.log("emit",usersScore);
+    io.to(roomName).emit('users-score',usersScore);
 }
-exports.leaderboard = (req, res) => {
-    var find = UserInMatch
+exports.leaderboard = async (req, res) => {
+    // const leaderboard = await UserInMatch.find({}).exec();
+    const leaderboard = await UserInMatch
         .find({
             roomName : req.params.roomName
         })
         .sort({score: -1})
         .select({name:1,score:1,team:1})
-        .exec(function(err, users){
-            if(err)
-                res.send(err);
-            else{
-                var usersScore = [];
-                users.forEach(user =>{
-                        usersScore.push(mapToScore(user));
-                });
-                res.json(usersScore);
-            }
-        });
+        .exec();
+    // console.log(leaderboard);
+    var usersScore = [];
+    for(i = 0;i< leaderboard.length;i++){
+        const temp = await mapUser(leaderboard[i]);
+        usersScore.push(temp);
+    }
+    res.json(usersScore);
 };
+async function mapUser(user){
+    const scoreG = await User.findOne({username: user.name}).select({score:1}).exec();
+    var temp = mapToScore(user);
+    temp.scoreG = scoreG.score;
+    return temp;
+}
 
 exports.listUserInMatchRange = (req,res)=> {
     var lat =    Number(req.query.lat);
@@ -95,7 +115,7 @@ exports.updateUserScore = (req, res) => {
         if (err) {
             return res.send(err)
         } else {
-            emitLeaderboard(req.params.roomName);
+            emitLeaderboard(req.params.roomName).then();
             res.json(mapToScore(users));
             // const usersScore = users.map(mapToScore);
             // io.to(req.params.roomName).emit('users-score',usersScore);

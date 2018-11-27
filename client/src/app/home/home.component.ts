@@ -45,8 +45,6 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
     this.matchesSub = this.dataService
       .getMatches()
       .subscribe(matches=>{
-        alert("CIao");
-        console.log("Che palle");
         this.matches = matches;
         console.log(this.matches);
         this.refresh();

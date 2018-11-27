@@ -33,5 +33,6 @@ export enum StorageKey {
   ROLE =  "role",
   PREVIOUS_COMPONENT = "previous_component",
   COMPLETE_FUNCTIONALITIES = "functionalities",
-  POINTED_COMPONENT = "pointed_component"
+  POINTED_COMPONENT = "pointed_component",
+  MATCH_PASSWORD = "match_password"
 }

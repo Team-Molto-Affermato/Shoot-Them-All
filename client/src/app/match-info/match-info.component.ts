@@ -8,8 +8,9 @@ import {HttpClient} from "@angular/common/http";
 import {DateHelper} from "../../utilities/DateHelper";
 import {none, Option, some} from "ts-option";
 import {Team} from "../../models/team";
-import {Rankings, UserInLeaderboard} from "../../models/user";
+import {UserInLeaderboard} from "../../models/user";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 export class SpinnerOption {
   constructor(
@@ -25,13 +26,16 @@ export class SpinnerOption {
   styleUrls: ['./match-info.component.css']
 })
 export class MatchInfoComponent implements OnInit, OnDestroy {
+  unlockRoomForm: FormGroup;
+  savedPassword:string;
+  isVisible= false;
   topScore:number= 40000;
   username: string;
   match: Match;
   usersSub: Subscription;
   timeoutSub: Subscription;
   users: Array<String> = [];
-  password;
+  // password;
   remainingTime;
   team: Option<Team> = none;
   spinnerOption:SpinnerOption;
@@ -41,16 +45,27 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   leaderboard: Array<UserInLeaderboard> = [];
   dataSource = new MatTableDataSource<UserInLeaderboard>(this.leaderboard);
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private router: Router,
+  constructor(private formBuilder: FormBuilder,
+              private router: Router,
               private http: HttpClient,
               private dataService: DataService) {
   }
 
   ngOnInit() {
-    const keys = Object.keys(Rankings);
-    console.log(keys);
+    this.unlockRoomForm = this.formBuilder.group({
+      password: ['', Validators.required]
+    });
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
+    const savedData = LocalStorageHelper.getItem(StorageKey.MATCH_PASSWORD);
+    if(this.match.access === MatchAccess.PRIVATE){
+     if((this.match.password === savedData.password)&&(this.match.name===savedData.matchName)){
+       this.isVisible = true;
+       this.savedPassword = savedData.password;
+     }
+    }else{
+      this.isVisible = true;
+    }
     this.dataService.joinRoom(this.match.name,this.username);
     this.users = this.match.users;
 
@@ -99,6 +114,24 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       });
 
      this.setSpinnerOption();
+  }
+  private savePassword(){
+    const insertedPassword = this.unlockRoomForm.value.password
+    if(insertedPassword===this.match.password){
+      LocalStorageHelper.setItem(
+        StorageKey.MATCH_PASSWORD,
+      {
+        matchName: this.match.name,
+        password: insertedPassword
+      });
+      this.isVisible = true;
+    }
+  }
+  createFormGroup() {
+    return this.formBuilder.group({
+      username: '',
+      password: ''
+    });
   }
   private printState():string{
     switch (this.match.state) {
@@ -224,7 +257,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       const teamV = this.team.isDefined?this.team.get:"NONE";
       var body = {
         username: this.username,
-        password: this.password,
+        password: this.savedPassword,
         team : teamV,
         score: 0
       };

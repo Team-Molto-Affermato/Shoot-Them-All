@@ -6,6 +6,7 @@ import {UserInLeaderboard, UserScore} from "../../models/user";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {Match} from "../../models/match";
 import {Team} from "../../models/team";
+import {rankings} from "../../models/user";
 
 @Component({
   selector: 'app-leaderboard',
@@ -13,7 +14,8 @@ import {Team} from "../../models/team";
   styleUrls: ['./leaderboard.component.css']
 })
 export class LeaderboardComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'username', 'score'];
+  topScore:number = 35000;
+  displayedColumns: string[] = ['position', 'username', 'score',"ranking"];
   leaderBoardSub: Subscription;
   leaderboard: Array<UserInLeaderboard> = [];
   dataSource = new MatTableDataSource<UserInLeaderboard>(this.leaderboard);
@@ -24,8 +26,13 @@ export class LeaderboardComponent implements OnInit {
     this.leaderBoardSub = this.dataService.getLeaderboard().subscribe(
       scores=>{
         this.leaderboard = scores.map(
-          (v,index)=>new UserInLeaderboard(
-            index+1,v.username,v.score)
+          (v,index)=>
+            new UserInLeaderboard(
+            index+1,
+            v.username,
+            v.score,
+            this.getRankings(v.score)
+          )
         );
         this.refresh();
       }
@@ -33,8 +40,13 @@ export class LeaderboardComponent implements OnInit {
     this.http.get('api/users/score').subscribe(
       (data: Array<UserScore>)=>{
         this.leaderboard = data.map(
-          (v,index)=>new UserInLeaderboard(
-            index+1,v.username,v.score)
+          (
+            v,index)=>new UserInLeaderboard(
+            index+1,
+                    v.username,
+                    v.score,
+            this.getRankings(v.score)
+          )
         );
         this.refresh();
       },err =>{
@@ -42,6 +54,11 @@ export class LeaderboardComponent implements OnInit {
       });
     this.dataSource.paginator = this.paginator;
 
+  }
+  getRankings(score:number):string {
+    var level =  Math.floor(score/(this.topScore/14));
+    level = level>14?14:level<0?0:level;
+    return rankings[level];
   }
   refresh() {
     this.dataSource.data = this.leaderboard;
