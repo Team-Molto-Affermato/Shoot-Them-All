@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit,ViewChild,ChangeDetectorRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit} from '@angular/core';
 import {HomeService} from "../../services/home.service";
 import {Match, MatchState} from "../../models/match";
 import {MatchInfoService} from "../../services/match-info.service";
@@ -11,6 +11,7 @@ import {ConditionUpdaterService} from "../../services/condition-updater.service"
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {Subscription} from "rxjs";
 import {drawParticles} from "../../assets/scripts/particles";
+import Swiper from 'swiper';
 
 
 @Component({
@@ -18,7 +19,7 @@ import {drawParticles} from "../../assets/scripts/particles";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent extends AbstractObserverComponent implements OnInit, OnDestroy {
+export class HomeComponent extends AbstractObserverComponent implements OnInit, OnDestroy, AfterViewInit {
   displayedColumns: string[] = ['name', 'state', 'access'];
   matches: Array<Match> = [];
   dataSource = new MatTableDataSource<Match>(this.matches);
@@ -26,6 +27,8 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
   showMap =false;
   username;
   matchesSub: Subscription;
+  swiper: Swiper;
+
   constructor(private authenticationService: AuthenticationService,
               private homeService: HomeService,
               private dataService: DataService,
@@ -56,6 +59,22 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
     this.dataService.sendMessage();
     this.updateMatches();
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngAfterViewInit() {
+    this.swiper = new Swiper('.swiper-container', {
+      slidesPerView: 1,
+      loop: true,
+      spaceBetween: '20%',
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
   }
 
   updateMatches() {
