@@ -9,18 +9,30 @@
       <div class="swiper-container">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <div id="description">
-              <app-description></app-description>
+            <div class="slide-content">
+              <div id="description">
+                <h2 class="slide-title">Get Started</h2>
+                <app-description></app-description>
+              </div>
             </div>
           </div>
           <div class="swiper-slide">
-            <app-match-map></app-match-map>
+            <div class="slide-content">
+              <h2 class="slide-title">Matches Map</h2>
+              <app-match-map></app-match-map>
+            </div>
           </div>
           <div class="swiper-slide">
+            <div class="slide-content">
+              <h2 class="slide-title">Matches List</h2>
+              <app-matches-list></app-matches-list>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="slide-content">
+              <h2 class="slide-title">LeaderBoard</h2>
               <app-leaderboard></app-leaderboard>
-          </div>
-          <div class="swiper-slide">
-            <app-matches-list></app-matches-list>
+            </div>
           </div>
         </div>
         <!-- Add Pagination -->

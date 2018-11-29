@@ -5,14 +5,6 @@
   /*overflow: hidden;*/
 }
 
-app-navbar {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 10;
-}
-
 #container {
   position: relative;
   width: 100%;
@@ -30,7 +22,7 @@ app-navbar {
   width: 100%;
   /*height: 100%;*/
 
-  margin-top: 12vh;
+  margin-top: 65px;
 
   position: absolute;
   left: 0;
@@ -42,11 +34,8 @@ app-navbar {
 }
 
 .swiper-container {
-  width: 70%;
+  width: 80%;
   height: 100%;
-
-  /*background: rgba(66, 66, 66, 0.8);*/
-  /*padding: 2% 10%;*/
 }
 
 .swiper-button-next, .swiper-button-prev {
@@ -58,15 +47,72 @@ app-navbar {
   position: fixed;
 
   justify-content: center;
-  bottom: 30px;
+  bottom: 20px;
 }
 
-app-description {
+.slide-content {
+  height: calc(97vh - 65px - 45px);
+  margin: 2vh 10% 0 10%;
+}
+
+.swiper-slide {
+  overflow: auto;
+  background: rgba(66, 66, 66, 0.8);
+}
+
+.slide-title {
+  text-align: center;
+}
+
+#description {
   text-align: justify;
+}
+
+* {
   text-justify: inter-word;
   font-family: 'Orbitron', sans-serif;
 }
 
-app-match-map {
-  height: 100%;
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+@media screen and (max-width: 599px) {
+
+  #menu {
+    margin-top: 55px;
+  }
+
+  .swiper-container {
+    width: 100%;
+  }
+
+  .swiper-pagination {
+    position: fixed;
+
+    justify-content: center;
+    bottom: 15px;
+  }
+
+  .slide-content {
+    height: calc(98vh - 55px - 45px);
+    margin: 0;
+  }
 }
