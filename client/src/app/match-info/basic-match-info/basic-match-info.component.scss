@@ -1,0 +1,25 @@
+#info-container{
+  /*background: rgba(66, 66, 66, 0.8);*/
+  /*width: 66%;*/
+  /*padding: 3% 1% 3% 1%;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+#match-name,h2{
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+}
+#team-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+#yoda,#darth{
+  width: 100px;
+  height: 100px;
+}
+

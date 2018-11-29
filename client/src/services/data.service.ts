@@ -21,8 +21,8 @@ export class DataService {
 
   socket: Socket;
   observer: Observer<number>;
-  userObserver: Observer<Array<String>>;
-  timeoutObserver: Observer<String>;
+  userObserver: Array<Observer<Array<String>>> = [];
+  timeoutObserver: Array<Observer<String>> = [];
   positionObserver: Observer<Array<UserPosition>>;
   scoreObserver: Observer<Array<UserScore>>;
   leaderboardObserver: Observer<Array<UserScore>>;
@@ -64,7 +64,9 @@ export class DataService {
 
   getTimeouts():Observable<String>{
     this.socket.on('timeout', (res) => {
-      this.timeoutObserver.next(res.message);
+      this.timeoutObserver.forEach(o=>{
+        o.next(res.message);
+      })
     });
     return this.createTimeoutObservable();
   }
@@ -80,8 +82,10 @@ export class DataService {
   }
   getUsers() :Observable<Array<String>> {
     this.socket.on('users', (res) => {
-      console.log("Ciaoooo");
-      this.userObserver.next(res.users);
+      this.userObserver.forEach(o=>{
+        console.log("Ciaoooo");
+        o.next(res.users);
+      });
     });
     return this.createUserObservable();
   }
@@ -134,12 +138,12 @@ export class DataService {
 
   createTimeoutObservable() : Observable<String> {
     return new Observable<String>(observer => {
-      this.timeoutObserver = observer;
+      this.timeoutObserver.push(observer);
     });
   }
   createUserObservable() : Observable<Array<String>> {
     return new Observable<Array<String>>(observer => {
-      this.userObserver = observer;
+      this.userObserver.push(observer);
     });
   }
   createObservable() : Observable<number> {
