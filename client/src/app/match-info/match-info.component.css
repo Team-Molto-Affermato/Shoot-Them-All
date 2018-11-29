@@ -9,16 +9,74 @@
   /*position:absolute;*/
   /*z-index: 1;*/
 /*}*/
-*{
-  font-family: 'centauri', 'arial', sans-serif;
-}
+/**{*/
+  /*font-family: 'centauri', 'arial', sans-serif;*/
+/*}*/
 
-h1 {
+app-navbar {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+#password-title {
   text-align: center;
   margin-top: 10vh;
   font-size: 30px;
+  font-family: 'Orbitron', sans-serif;
+}
+#match-name,h2{
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
 }
 
+#main-container{
+  position: relative;
+  width: 100%;
+  height: 99vh;
+}
+#principle-container{
+  position: relative;
+  margin-top: 13vh;
+  width: 100%;
+  height: 100%;
+}
+#particle-canvas{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+#contentContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+#img-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#locked{
+  /*width: 15%;*/
+  /*height: auto;*/
+}
+#centered-container{
+  background: rgba(66, 66, 66, 0.8);
+  width: 66%;
+  padding: 3% 1% 3% 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -30,6 +88,7 @@ h1 {
   display: flex;
   justify-content: center;
   margin-top: 10vh;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .buttons-container {
@@ -37,7 +96,16 @@ h1 {
   flex-direction: column;
   margin-top: 8vh;
 }
-
+#info-container{
+  /*background: rgba(66, 66, 66, 0.8);*/
+  /*width: 66%;*/
+  /*padding: 3% 1% 3% 1%;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
 .login-form {
   display: flex;
   flex-direction: column;
@@ -55,27 +123,9 @@ h1 {
   margin-bottom: 7vh;
 }
 
-#fingerprint {
-  width: 80px;
-  height: 100px;
-  background: url("../../assets/images/fingerprint.png") no-repeat center;
-  background-size: auto 100%;
+#login-button{
+  font-family: 'Orbitron', sans-serif;
 }
-
-#scanner-beam {
-  width: 60%;
-  position: absolute;
-  border:none;
-  height: 0px;
-  margin-top: 0;
-  border-bottom: 1px solid #00e640;
-  box-shadow: 0px 0px 8px 4px #00e640;
-}
-
-#registration-button {
-  margin-top: 10px;
-}
-
 @media screen and (max-width: 599px) {
   h1 {
     font-size: 24px;

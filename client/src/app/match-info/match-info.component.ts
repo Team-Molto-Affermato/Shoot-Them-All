@@ -11,6 +11,7 @@ import {Team} from "../../models/team";
 import {UserInLeaderboard} from "../../models/user";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {drawParticles} from "../../assets/scripts/particles";
 
 export class SpinnerOption {
   constructor(
@@ -52,6 +53,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const canvasDiv = document.getElementById('particle-canvas');
+    drawParticles(canvasDiv);
+
     this.unlockRoomForm = this.formBuilder.group({
       password: ['', Validators.required]
     });
