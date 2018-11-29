@@ -6,7 +6,22 @@
 mat-toolbar, mat-menu {
   width: 100%;
   height: 100%;
+
+  background: rgba(30, 30, 30, 0.9);
+  color: #06a533
 }
+
+>>> .nav-menu .mat-menu-content {
+  display: flex;
+  flex-direction: column;
+  background: rgba(30, 30, 30, 0.9);
+  color: #06a533
+}
+
+>>> .nav-menu .mat-menu-content > button {
+  text-align: left;
+}
+
 
 #container {
   position: fixed;
