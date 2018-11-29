@@ -1,144 +1,86 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router} from "@angular/router";
-import {Match, MatchAccess, MatchOrganization, MatchState} from "../../models/match";
-import {DataService} from '../../services/data.service';
+import { Component, OnInit } from '@angular/core';
+import {Match, MatchAccess, MatchOrganization, MatchState} from "../../../models/match";
 import {Subscription} from "rxjs";
-import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
-import {HttpClient} from "@angular/common/http";
-import {DateHelper} from "../../utilities/DateHelper";
 import {none, Option, some} from "ts-option";
-import {Team} from "../../models/team";
-import {UserInLeaderboard} from "../../models/user";
-import {MatPaginator, MatTableDataSource} from "@angular/material";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {drawParticles} from "../../assets/scripts/particles";
-import Swiper from 'swiper';
+import {Team} from "../../../models/team";
+import {SpinnerOption} from "../match-info.component";
+import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {DataService} from "../../../services/data.service";
+import {LocalStorageHelper, StorageKey} from "../../../utilities/LocalStorageHelper";
+import {DateHelper} from "../../../utilities/DateHelper";
 
-export class SpinnerOption {
-  constructor(
-    public color:String,
-    public mode:String,
-    public value:number
-  ){
-  }
-}
 @Component({
-  selector: 'app-match-info',
-  templateUrl: './match-info.component.html',
-  styleUrls: ['./match-info.component.css']
+  selector: 'app-basic-match-info',
+  templateUrl: './basic-match-info.component.html',
+  styleUrls: ['./basic-match-info.component.scss']
 })
-export class MatchInfoComponent implements OnInit, OnDestroy {
-  unlockRoomForm: FormGroup;
-  savedPassword:string;
-  isVisible= false;
-  topScore:number= 40000;
-  username: string;
-  match: Match;
-  usersSub: Subscription;
-  timeoutSub: Subscription;
+export class BasicMatchInfoComponent implements OnInit {
   users: Array<String> = [];
-  // password;
+  usersSub: Subscription;
+
+  match: Match;
+  username: string;
+  savedPassword:string;
+  timeoutSub: Subscription;
   remainingTime;
   team: Option<Team> = none;
   spinnerOption:SpinnerOption;
   teamVisible = false;
   countdownIntervalId;
-  leaderBoardSub: Subscription;
-  leaderboard: Array<UserInLeaderboard> = [];
-  dataSource = new MatTableDataSource<UserInLeaderboard>(this.leaderboard);
-  swiper: Swiper;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private http: HttpClient,
-              private dataService: DataService) {
-  }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private dataService: DataService
+  ) { }
 
   ngOnInit() {
-    const canvasDiv = document.getElementById('particle-canvas');
-    drawParticles(canvasDiv);
-
-    this.unlockRoomForm = this.formBuilder.group({
-      password: ['', Validators.required]
-    });
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
     const savedData = LocalStorageHelper.getItem(StorageKey.MATCH_PASSWORD);
-    if(this.match.access === MatchAccess.PRIVATE){
-     if((this.match.password === savedData.password)&&(this.match.name===savedData.matchName)){
-       this.isVisible = true;
-       this.savedPassword = savedData.password;
-     }
-    }else{
-      this.isVisible = true;
+    if(this.match.access === MatchAccess.PRIVATE) {
+      if ((this.match.password === savedData.password) && (this.match.name === savedData.matchName)) {
+        this.savedPassword = savedData.password;
+      }
     }
-    this.dataService.joinRoom(this.match.name,this.username);
     this.users = this.match.users;
-
-    this.teamVisible = this.match.organization === MatchOrganization.TEAM;
-
-    if (this.teamVisible) {
-      this.team = some(Team.TEAM1);
-    }
-
-
-    this.countdownIntervalId = setInterval(()=> {
-      this.updateCountdown();
-      },
-      1000);
-
-    this.updateCountdown();
-
-    this.checkUserInside();
-
     this.usersSub = this.dataService
       .getUsers()
       .subscribe(userList => {
         console.log(userList);
         this.users = userList;
-        this.checkUserInside();
+        // this.checkUserInside();
         console.log(this.users[0]);
         console.log(this.users);
       });
+    this.dataService.joinRoom(this.match.name,this.username);
+    this.teamVisible = this.match.organization === MatchOrganization.TEAM;
+    if (this.teamVisible) {
+      this.team = some(Team.TEAM1);
+    }
+    this.countdownIntervalId = setInterval(()=> {
+        this.updateCountdown();
+      },
+      1000);
+    this.updateCountdown();
     this.timeoutSub = this.dataService
       .getTimeouts()
       .subscribe( timeouts =>{
-          switch (timeouts) {
-            case "STARTED":
-              console.log("Started")
-              this.match.state = MatchState.STARTED;
-              this.checkUserInside()
-              break;
-            case "ENDED":
-              console.log("Ended")
-              this.match.state = MatchState.ENDED;
-              break;
-          }
-          this.setSpinnerOption();
-        this.dataSource.paginator = this.paginator;
-
+        switch (timeouts) {
+          case "STARTED":
+            console.log("Started")
+            this.match.state = MatchState.STARTED;
+            break;
+          case "ENDED":
+            console.log("Ended")
+            this.match.state = MatchState.ENDED;
+            break;
+        }
+        this.setSpinnerOption();
       });
 
-     this.setSpinnerOption();
-  }
-  private savePassword(){
-    const insertedPassword = this.unlockRoomForm.value.password
-    if(insertedPassword===this.match.password){
-      LocalStorageHelper.setItem(
-        StorageKey.MATCH_PASSWORD,
-      {
-        matchName: this.match.name,
-        password: insertedPassword
-      });
-      this.isVisible = true;
-    }
-  }
-  createFormGroup() {
-    return this.formBuilder.group({
-      username: '',
-      password: ''
-    });
+    this.setSpinnerOption();
   }
   private printState():string{
     switch (this.match.state) {
@@ -182,18 +124,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
         return "warn";
     }
   }
-
   ngOnDestroy() {
     clearInterval(this.countdownIntervalId);
     // this.dataService.leaveRoom(this.match.name);
-  }
-
-  private checkUserInside() {
-    if (this.match.state === MatchState.STARTED) {
-      if(this.userJoined()) {
-        this.router.navigateByUrl("/match");
-      }
-    }
   }
 
   updateCountdown() {
@@ -224,9 +157,6 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
   }
 
-  private userJoined(): boolean {
-    return this.users.includes(this.username);
-  }
 
   switchTeam() {
     if (this.teamVisible) {
@@ -237,19 +167,15 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  showPassword() {
-    return this.match.access===MatchAccess.PRIVATE;
-  }
-
   showRemainingTime() {
     return this.match.state !== MatchState.ENDED;
   }
-
   showJoin() {
     return this.match.state !== MatchState.ENDED;
   }
-
+  private userJoined(): boolean {
+    return this.users.includes(this.username);
+  }
   partecipationButtonText() {
     if (this.userJoined()) {
       return "Exit"
@@ -257,7 +183,6 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       return "Join"
     }
   }
-
   switchPartecipation() {
     const penality = 500;
     if (!this.userJoined()) {
@@ -316,20 +241,5 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     }
 
     return (withHour?(h + ":"):"") + m + ":" + s;
-  }
-  ngAfterViewInit() {
-    this.swiper = new Swiper('.swiper-container', {
-      slidesPerView: 1,
-      loop: true,
-      // spaceBetween: '20%',
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
   }
 }

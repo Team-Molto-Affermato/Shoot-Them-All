@@ -12,7 +12,25 @@
 /**{*/
   /*font-family: 'centauri', 'arial', sans-serif;*/
 /*}*/
+.swiper-container {
+  width: 70%;
+  height: 100%;
 
+  /*background: rgba(66, 66, 66, 0.8);*/
+  /*padding: 2% 10%;*/
+}
+
+.swiper-button-next, .swiper-button-prev {
+  position: fixed;
+  align-items: center;
+}
+
+.swiper-pagination {
+  position: fixed;
+
+  justify-content: center;
+  bottom: 30px;
+}
 app-navbar {
   position: fixed;
   width: 100%;

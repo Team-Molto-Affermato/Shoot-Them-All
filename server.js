@@ -35,13 +35,16 @@ let timerId = null,
 io.on('connection', socket => {
     socket.on('room',function (room) {
         for(oldRoom in socket.rooms){
-            if(socket.id !== oldRoom){
+            if(socket.id !== oldRoom && oldRoom !==room.room){
                 console.log("Leave old Room ",oldRoom);
                 socket.leave(oldRoom);
             }
         }
-        console.log(`Socket ${socket.id} added to room ${room.room}`);
-        socket.join(room.room);
+        let rooms = Object.keys(socket.rooms);
+        if(!rooms.includes(room.room)){
+            console.log(`Socket ${socket.id} added to room ${room.room}`);
+            socket.join(room.room);
+        }
         // io.sockets.in(room).emit('users',{username:room.user});
     });
 

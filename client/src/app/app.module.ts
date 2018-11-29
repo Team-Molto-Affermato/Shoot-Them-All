@@ -70,6 +70,7 @@ import { ParticleCanvasComponent } from './particle-canvas/particle-canvas.compo
 import { DescriptionComponent } from './home/description/description.component';
 import { MatchesMapComponent } from './home/matches-map/matches-map.component';
 import { MatchesListComponent } from './home/matches-list/matches-list.component';
+import { BasicMatchInfoComponent } from './match-info/basic-match-info/basic-match-info.component';
 
 export enum ComponentName {
   LOGIN = "login",
@@ -124,7 +125,8 @@ const appRoutes: Routes = [
     ParticleCanvasComponent,
     DescriptionComponent,
     MatchesMapComponent,
-    MatchesListComponent
+    MatchesListComponent,
+    BasicMatchInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -37,63 +37,74 @@
 
         <div id="content" *ngIf="isVisible">
 
-          <div id="info-container">
-            <h1 class="mat-display-3" id="match-name">{{match.name}}</h1>
-            <h2>{{printState()}}</h2>
-            <div id="timer-container">
-              <mat-progress-spinner
-                [color]="spinnerOption.color"
-                [mode]="spinnerOption.mode"
-                [value]="spinnerOption.value">
-                id="timer"
-              </mat-progress-spinner>
-              <div style="position:relative; top: -20px; left: 35px;">
-                {{ remainingTime}}
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div id="old-info-container">
+                  <label for="name">Name</label>
+                  <p id="name">{{match.name}}</p>
+                  <label for="state">State</label>
+                  <p id="state">{{match.state}}</p>
+                  <label for="access">Access</label>
+                  <p id="access">{{match.access}}</p>
+                  <!--<label for="password" *ngIf="showPassword()">Password</label>-->
+                  <!--<input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>-->
+                  <label for="radius">Radius</label>
+                  <p id="radius">{{match.radius}}</p>
+                  <label for="centralPoint">Center Point</label>
+                  <p id="centralPoint">{{match.centralPoint.latitude}}, {{match.centralPoint.longitude}}</p>
+                  <label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>
+                  <p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>
+                  <label for="organization">ORganization</label>
+                  <p id="organization">{{match.organization}}</p>
+
+                  <label for="users">Players</label>
+                  <ul id="users">
+                    <li *ngFor="let user of users">
+                      {{user}}
+                    </li>
+                  </ul>
+                  <label for="team">Choose Your Team</label>
+                  <select (change)="switchTeam()" id="team" *ngIf="teamVisible">
+                    <option>Team 1</option>
+                    <option>Team 2</option>
+                  </select>
+                  <button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <app-basic-match-info></app-basic-match-info>
+                <!--<div id="info-container">-->
+                  <!--<h1 class="mat-display-3" id="match-name">{{match.name}}</h1>-->
+                  <!--<h2>{{printState()}}</h2>-->
+                  <!--<div id="timer-container">-->
+                    <!--<mat-progress-spinner-->
+                      <!--[color]="spinnerOption.color"-->
+                      <!--[mode]="spinnerOption.mode"-->
+                      <!--[value]="spinnerOption.value">-->
+                      <!--id="timer"-->
+                    <!--</mat-progress-spinner>-->
+                    <!--<div style="position:relative; top: -20px; left: 35px;">-->
+                      <!--{{ remainingTime}}-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              </div>
+              <div class="swiper-slide">
+                <div id="leaderboard-container" *ngIf="false">
+                  <app-match-leaderboard></app-match-leaderboard>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div id="map-container" *ngIf="false">
+                </div>
               </div>
             </div>
-          </div>
-
-          <div id="old-info-container">
-            <label for="name">Name</label>
-            <p id="name">{{match.name}}</p>
-            <label for="state">State</label>
-            <p id="state">{{match.state}}</p>
-            <label for="access">Access</label>
-            <p id="access">{{match.access}}</p>
-            <!--<label for="password" *ngIf="showPassword()">Password</label>-->
-            <!--<input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>-->
-            <label for="radius">Radius</label>
-            <p id="radius">{{match.radius}}</p>
-            <label for="centralPoint">Center Point</label>
-            <p id="centralPoint">{{match.centralPoint.latitude}}, {{match.centralPoint.longitude}}</p>
-            <label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>
-            <p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>
-            <label for="organization">ORganization</label>
-            <p id="organization">{{match.organization}}</p>
-
-            <label for="users">Players</label>
-            <ul id="users">
-              <li *ngFor="let user of users">
-                {{user}}
-              </li>
-            </ul>
-            <label for="team">Choose Your Team</label>
-            <select (change)="switchTeam()" id="team" *ngIf="teamVisible">
-              <option>Team 1</option>
-              <option>Team 2</option>
-            </select>
-            <button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
-          </div>
-
-
-          <div id="leaderboard-container" *ngIf="false">
-            <app-match-leaderboard></app-match-leaderboard>
-          </div>
-
-          <div id="map-container" *ngIf="false">
+            <div class="swiper-pagination swiper-pagination-white"></div>
+            <div class="swiper-button-next swiper-button-white" fxShow="false" fxShow.gt-xs></div>
+            <div class="swiper-button-prev swiper-button-white" fxShow="false" fxShow.gt-xs></div>
 
           </div>
-
 
 
         </div>
