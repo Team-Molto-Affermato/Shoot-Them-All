@@ -69,6 +69,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import { ParticleCanvasComponent } from './particle-canvas/particle-canvas.component';
 import { DescriptionComponent } from './home/description/description.component';
 import { MatchesMapComponent } from './home/matches-map/matches-map.component';
+import { MatchesListComponent } from './home/matches-list/matches-list.component';
 
 export enum ComponentName {
   LOGIN = "login",
@@ -122,7 +123,8 @@ const appRoutes: Routes = [
     ErrorComponent,
     ParticleCanvasComponent,
     DescriptionComponent,
-    MatchesMapComponent
+    MatchesMapComponent,
+    MatchesListComponent
   ],
   imports: [
     BrowserModule,

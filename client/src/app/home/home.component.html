@@ -19,7 +19,9 @@
           <div class="swiper-slide">
               <app-leaderboard></app-leaderboard>
           </div>
-
+          <div class="swiper-slide">
+            <app-matches-list></app-matches-list>
+          </div>
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination swiper-pagination-white"></div>
@@ -32,48 +34,3 @@
 
   </div>
 </div>
-
-
-<!--<div id="main-container"-->
-  <!--(swipeleft)="switchComponent()"-->
-  <!--(swiperight)="switchComponent()"-->
-<!--&gt;-->
-  <!--<div id="match-list"-->
-       <!--[hidden]="showMap">-->
-    <!--<div class="mat-elevation-z8">-->
-      <!--<table mat-table [dataSource]="dataSource">-->
-
-        <!--&lt;!&ndash; Position Column &ndash;&gt;-->
-        <!--&lt;!&ndash;<ng-container matColumnDef="position">&ndash;&gt;-->
-        <!--&lt;!&ndash;<th mat-header-cell *matHeaderCellDef> No. </th>&ndash;&gt;-->
-        <!--&lt;!&ndash;<td mat-cell *matCellDef="let element"> {{element.position}} </td>&ndash;&gt;-->
-        <!--&lt;!&ndash;</ng-container>&ndash;&gt;-->
-
-        <!--&lt;!&ndash; Name Column &ndash;&gt;-->
-        <!--<ng-container matColumnDef="name">-->
-          <!--<th mat-header-cell *matHeaderCellDef>Match Name </th>-->
-          <!--<td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.name}} </td>-->
-        <!--</ng-container>-->
-
-        <!--&lt;!&ndash; Weight Column &ndash;&gt;-->
-        <!--<ng-container matColumnDef="state">-->
-          <!--<th mat-header-cell *matHeaderCellDef> Match State </th>-->
-          <!--<td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.state}} </td>-->
-        <!--</ng-container>-->
-
-        <!--&lt;!&ndash; Symbol Column &ndash;&gt;-->
-        <!--<ng-container matColumnDef="access">-->
-          <!--<th mat-header-cell *matHeaderCellDef> Match Access </th>-->
-          <!--<td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.access}} </td>-->
-        <!--</ng-container>-->
-
-        <!--<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
-        <!--<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-      <!--</table>-->
-
-      <!--<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<app-match-map *ngIf="completeFunctionalities && showMap"></app-match-map>-->
-  <!--<button (click)="switchComponent()">Switch</button>-->
-<!--</div>-->
