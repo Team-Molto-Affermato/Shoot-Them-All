@@ -7,23 +7,25 @@
     <!--</ul>-->
   <!--</div>-->
 <!--</nav>-->
+<div id="container">
+  <mat-toolbar color="primary">
+    <!--<span class="fill-remaining-space"></span>-->
+    <div id="item-row" fxShow="false" fxShow.gt-xs>
+      <button mat-button routerLink="/home">Home</button>
+      <button mat-button routerLink="/leaderboard">Leaderboard</button>
+      <button mat-button routerLink="/matchConfiguration">New Match</button>
+      <button mat-button (click)="logout()">Logout</button>
+    </div>
+    <button mat-button [mat-menu-trigger-for]="menu" fxShow="true" fxHide.gt-xs>
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
 
-<mat-toolbar color="primary">
-  <!--<span class="fill-remaining-space"></span>-->
-  <div id="item-row" fxShow="false" fxShow.gt-xs>
+  <mat-menu x-position="before" #menu="matMenu">
     <button mat-button routerLink="/home">Home</button>
     <button mat-button routerLink="/leaderboard">Leaderboard</button>
     <button mat-button routerLink="/matchConfiguration">New Match</button>
     <button mat-button (click)="logout()">Logout</button>
-  </div>
-  <button mat-button [mat-menu-trigger-for]="menu" fxShow="true" fxHide.gt-xs>
-    <mat-icon>menu</mat-icon>
-  </button>
-</mat-toolbar>
+  </mat-menu>
+</div>
 
-<mat-menu x-position="before" #menu="matMenu">
-  <button mat-button routerLink="/home">Home</button>
-  <button mat-button routerLink="/leaderboard">Leaderboard</button>
-  <button mat-button routerLink="/matchConfiguration">New Match</button>
-  <button mat-button (click)="logout()">Logout</button>
-</mat-menu>
