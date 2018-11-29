@@ -44,7 +44,7 @@ export class MatchMapComponent implements OnInit {
       (data: Array<Match>) => {
         this.matches = data;
       },
-      error => alert(error)
+      // error => alert(error)
     );
   }
 

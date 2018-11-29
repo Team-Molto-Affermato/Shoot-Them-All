@@ -45,8 +45,13 @@ app-navbar {
   width: 70%;
   height: 100%;
 
-  background: rgba(66, 66, 66, 0.8);
-  padding: 2% 10%;
+  /*background: rgba(66, 66, 66, 0.8);*/
+  /*padding: 2% 10%;*/
+}
+
+.swiper-button-next, .swiper-button-prev {
+  position: fixed;
+  align-items: center;
 }
 
 .swiper-pagination {
@@ -60,4 +65,8 @@ app-description {
   text-align: justify;
   text-justify: inter-word;
   font-family: 'Orbitron', sans-serif;
+}
+
+app-match-map {
+  height: 100%;
 }
