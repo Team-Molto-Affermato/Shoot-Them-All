@@ -5,16 +5,31 @@ var configuration = JSON.parse(require('fs').readFileSync('./configuration.json'
 console.log(configuration.address);
 var io = require('socket.io-emitter')({ host: configuration.address, port: 6379 });
 
-exports.listUserInMatch = (req, res) => {
-    var query = UserInMatch.find({
-        roomName : req.params.roomName
-    });
-    query.exec(function(err, users){
-        if(err)
-            res.send(err);
-        else
-            res.json(users);
-    });
+exports.listUserInMatch = async (req, res) => {
+    // var query = UserInMatch.find({
+    //     roomName : req.params.roomName
+    // });
+    // query.exec(function(err, users){
+    //     if(err)
+    //         res.send(err);
+    //     else
+    //         res.json(users);
+    // });
+    const leaderboard = await UserInMatch
+        .find({
+            roomName : req.params.roomName
+        },{new:true})
+        .sort({score: -1})
+        .select({name:1,score:1,team:1})
+        .exec();
+    // console.log(leaderboard);
+    var usersScore = [];
+    for(i = 0;i< leaderboard.length;i++){
+        const temp = await mapUser(leaderboard[i]);
+        usersScore.push(temp);
+    }
+    console.log("emit",usersScore);
+    res.json(usersScore);
 };
 async function emitLeaderboard(roomName){
     // var find = UserInMatch
@@ -22,7 +37,7 @@ async function emitLeaderboard(roomName){
     //         roomName : roomName
     //     })
     //     .sort({score: -1})
-    //     .select({name:1,score:1,team:1})
+    //     .select({username:1,score:1,team:1})
     //     .exec(function(err, users){
     //         if(err){
     //         }

@@ -137,7 +137,7 @@ async function emitLeaderboardRoom(roomName){
     //         roomName : roomName
     //     })
     //     .sort({score: -1})
-    //     .select({name:1,score:1,team:1})
+    //     .select({username:1,score:1,team:1})
     //     .exec(function(err, users){
     //         if(err){
     //         }
@@ -178,7 +178,7 @@ async function mapUser(user){
 //             roomName : roomName
 //         })
 //         .sort({score: -1})
-//         .select({name:1,score:1,team:1})
+//         .select({username:1,score:1,team:1})
 //         .exec(function(err, users){
 //             if(err){
 //             }
@@ -307,7 +307,7 @@ exports.addUserToMatch = (req,res)=>{
                 //         io.to(req.params.roomName).emit('users',{users:room.users});
                 //         res.json(room)
                 //         var query1 = {
-                //             name: req.body.username,
+                //             username: req.body.username,
                 //             roomName: req.params.roomName
                 //         };
                 //         console.log(req.body);

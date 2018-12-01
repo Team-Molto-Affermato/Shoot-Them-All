@@ -33,7 +33,7 @@ var RoomSchema = new Schema({
 });
 
 // const UserInRoomSchema = new mongoose.Schema({
-//     name: String,
+//     username: String,
 //     roomName: String,
 //     location: {
 //         type: pointSchema,

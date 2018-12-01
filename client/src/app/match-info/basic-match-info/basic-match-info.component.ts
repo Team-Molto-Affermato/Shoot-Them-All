@@ -52,6 +52,7 @@ export class BasicMatchInfoComponent implements OnInit {
       (data: Array<UserScore>)=>{
         console.log("utenti: ",data);
         this.users = data.map(user=>user.username);
+        console.log("users: ",this.users);
       },err =>{
         console.log(err);
       });
@@ -136,7 +137,7 @@ export class BasicMatchInfoComponent implements OnInit {
   }
   ngOnDestroy() {
     clearInterval(this.countdownIntervalId);
-    // this.dataService.leaveRoom(this.match.name);
+    // this.dataService.leaveRoom(this.match.username);
   }
 
   updateCountdown() {
@@ -184,6 +185,7 @@ export class BasicMatchInfoComponent implements OnInit {
     return this.match.state !== MatchState.ENDED;
   }
   private userJoined(): boolean {
+    // console.log(this.users);
     return this.users.includes(this.username);
   }
   partecipationButtonText() {

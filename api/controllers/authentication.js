@@ -10,7 +10,7 @@ var sendJSONresponse = function(res, status, content) {
 module.exports.register = function(req, res) {
     var user = new User();
 
-    user.name = req.body.name;
+    user.username = req.body.name;
     user.email = req.body.email;
     user.username = req.body.username;
     user.surname = req.body.surname;
