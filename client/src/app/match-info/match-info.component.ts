@@ -32,6 +32,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   unlockRoomForm: FormGroup;
   savedPassword:string;
   isVisible= false;
+  // isVisible = true;
   topScore:number= 40000;
   username: string;
   match: Match;
