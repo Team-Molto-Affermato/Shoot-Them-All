@@ -9,7 +9,8 @@ import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
 import {LocalStorageHelper, StorageKey} from "../../../utilities/LocalStorageHelper";
 import {DateHelper} from "../../../utilities/DateHelper";
-
+import {UserInLeaderboard, UserScore} from "../../../models/user";
+import {ConditionUpdaterService} from "../../../services/condition-updater.service";
 @Component({
   selector: 'app-basic-match-info',
   templateUrl: './basic-match-info.component.html',
@@ -17,7 +18,7 @@ import {DateHelper} from "../../../utilities/DateHelper";
 })
 export class BasicMatchInfoComponent implements OnInit {
   users: Array<String> = [];
-  usersSub: Subscription;
+  userScoreSub: Subscription;
 
   match: Match;
   username: string;
@@ -32,6 +33,7 @@ export class BasicMatchInfoComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private conditionObserverService: ConditionUpdaterService,
     private dataService: DataService
   ) { }
 
@@ -39,22 +41,30 @@ export class BasicMatchInfoComponent implements OnInit {
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
     const savedData = LocalStorageHelper.getItem(StorageKey.MATCH_PASSWORD);
+    this.dataService.joinRoom(this.match.name,this.username);
+
     if(this.match.access === MatchAccess.PRIVATE) {
       if ((this.match.password === savedData.password) && (this.match.name === savedData.matchName)) {
         this.savedPassword = savedData.password;
       }
     }
-    this.users = this.match.users;
-    this.usersSub = this.dataService
-      .getUsers()
+    this.http.get('api/matches/'+this.match.name+'/users/').subscribe(
+      (data: Array<UserScore>)=>{
+        console.log("utenti: ",data);
+        this.users = data.map(user=>user.username);
+      },err =>{
+        console.log(err);
+      });
+    this.userScoreSub = this.dataService
+      .getScores()
       .subscribe(userList => {
         console.log(userList);
-        this.users = userList;
+        this.users = userList.map(user=>user.username);
         // this.checkUserInside();
         console.log(this.users[0]);
         console.log(this.users);
       });
-    this.dataService.joinRoom(this.match.name,this.username);
+
     this.teamVisible = this.match.organization === MatchOrganization.TEAM;
     if (this.teamVisible) {
       this.team = some(Team.TEAM1);
@@ -178,20 +188,26 @@ export class BasicMatchInfoComponent implements OnInit {
   }
   partecipationButtonText() {
     if (this.userJoined()) {
-      return "Exit"
+      return "Leave the battle"
     } else {
-      return "Join"
+      return "Join the battle"
     }
   }
   switchPartecipation() {
     const penality = 500;
     if (!this.userJoined()) {
       const teamV = this.team.isDefined?this.team.get:"NONE";
+      var position = this.conditionObserverService.position;
+      const location = {
+        type: 'Point',
+        coordinates: [position.latitude,position.longitude]
+      };
       var body = {
         username: this.username,
         password: this.savedPassword,
         team : teamV,
-        score: 0
+        score: 0,
+        location: location
       };
       if(this.match.state === MatchState.STARTED) {
         const now = new Date();
@@ -200,10 +216,10 @@ export class BasicMatchInfoComponent implements OnInit {
         console.log(remaining);
         body.score = -((this.match.duration-remaining)/this.match.duration)*penality;
         console.log(body.score);
-
       }
       this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
         data => {
+          console.log(data);
         }, error => {
           console.log(error)
         }

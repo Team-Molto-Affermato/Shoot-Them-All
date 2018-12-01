@@ -13,7 +13,7 @@ export class Match {
               public duration: number,
               public maxUser: number,
               public password: string,
-              public users: Array<string>,
+              // public users: Array<string>,
               public state: MatchState) {}
 }
 

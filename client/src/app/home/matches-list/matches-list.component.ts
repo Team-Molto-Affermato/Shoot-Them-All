@@ -61,7 +61,8 @@ export class MatchesListComponent implements OnInit {
     }
   }
   userJoined(match: Match): boolean {
-    return (match.state === MatchState.STARTED) &&
-      match.users.includes(this.username)
+    // return (match.state === MatchState.STARTED) &&
+    //   match.users.includes(this.username)
+    return false;
   }
 }

@@ -55,10 +55,10 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
   }
 
 
-  userJoined(match: Match): boolean {
-    return (match.state === MatchState.STARTED) &&
-      match.users.includes(this.username)
-  }
+  // userJoined(match: Match): boolean {
+  //   return (match.state === MatchState.STARTED) &&
+  //     match.users.includes(this.username)
+  // }
 
   ngOnDestroy(): void {
     this.destroy();

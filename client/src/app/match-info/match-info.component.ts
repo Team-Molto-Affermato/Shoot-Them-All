@@ -13,6 +13,7 @@ import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {drawParticles} from "../../assets/scripts/particles";
 import Swiper from 'swiper';
+import {ConditionUpdaterService} from "../../services/condition-updater.service";
 
 export class SpinnerOption {
   constructor(
@@ -74,8 +75,8 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       this.isVisible = true;
     }
     this.dataService.joinRoom(this.match.name,this.username);
-    this.users = this.match.users;
-
+    // this.users = this.match.users;
+    this.users = [];
     this.teamVisible = this.match.organization === MatchOrganization.TEAM;
 
     if (this.teamVisible) {

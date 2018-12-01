@@ -8,7 +8,7 @@
       [value]="spinnerOption.value">
       id="timer"
     </mat-progress-spinner>
-    <div style="position:relative; top: -20px; left: 35px;">
+    <div id="timer-text">
       {{ remainingTime}}
     </div>
   </div>
@@ -16,13 +16,15 @@
     <option>Team 1</option>
     <option>Team 2</option>
   </select>
-  <div id="team-container">
-    <div>
-      <img src="../../../assets/images/laser1.png" id="yoda">
-    </div>
-    <div>
-      <img src="../../../assets/images/laser2.png" id="darth">
+  <div id="team-container" *ngIf="teamVisible">
+    <h2>Choose your side</h2>
+    <div id="button-team-container">
+      <img src="../../../assets/images/yoda.png" id="yoda">
+      <img src="../../../assets/images/darth_vader.png" id="darth">
     </div>
   </div>
-  <button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
+  <div id="join-container">
+    <button mat-flat-button color="primary" id="join-button" (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
+  </div>
+  <!--<button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>-->
 </div>

@@ -8,18 +8,34 @@
   width: 100%;
   height: 100%;
 }
-#match-name,h2{
+#match-name,h2,h3{
   text-align: center;
   font-family: 'Orbitron', sans-serif;
 }
 #team-container{
+  width: 100%;
+}
+#join-container{
+  padding: 3%;
+  width: 100%;
+}
+#join-button{
+  text-align: center;
+  width: 100%;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 30px;
+}
+#button-team-container{
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
 }
 #yoda,#darth{
   width: 100px;
   height: 100px;
+}
+#timer-text{
+
 }
 

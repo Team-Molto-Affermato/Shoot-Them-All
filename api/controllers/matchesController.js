@@ -32,14 +32,14 @@ exports.deleteUserInMatch= (req,res)=>{
     var query1 = {
         roomName: req.params.roomName
     };
-    Room.findOneAndUpdate(query1, { $pull: {users: req.params.username} },{new:true}, function (err,room) {
-        if(err){
-            return res.send(err);
-        }else{
-            // console.log(room.users);
-            io.to(req.params.roomName).emit('users',{users:room.users});
-        }
-    });
+    // Room.findOneAndUpdate(query1, { $pull: {users: req.params.username} },{new:true}, function (err,room) {
+    //     if(err){
+    //         return res.send(err);
+    //     }else{
+    //         // console.log(room.users);
+    //         io.to(req.params.roomName).emit('users',{users:room.users});
+    //     }
+    // });
     //Notificare
     var query = UserInMatch.deleteMany({
         roomName : req.params.roomName,
@@ -82,8 +82,6 @@ exports.deleteUserInMatch= (req,res)=>{
     });
 };
 function startTimer(roomName) {
-    //Simulate stock data received by the server that needs
-    //to be pushed to clients
     setTimeout(() => {
         updateMatchState(roomName,"STARTED");
         io.to(roomName).emit('timeout',{message:"STARTED"});
@@ -207,7 +205,7 @@ function updateLeaderBoard(roomName) {
                 User.findOneAndUpdate(query, { $inc: {score: user.score} }, function (err,upUser) {
                 });
             });
-            emitLeaderboard();
+            emitLeaderboardRoom(roomName);
         }
     });
 }
@@ -250,7 +248,8 @@ exports.setMatchState = (req, res) => {
 };
 
 exports.addUserToMatch = (req,res)=>{
-
+        console.log(req.params);
+        console.log(req.body)
         var query = {
             roomName: req.params.roomName
         };
@@ -258,9 +257,6 @@ exports.addUserToMatch = (req,res)=>{
             if(err){
                 return res.send(err);
             }else{
-                if(room.users.includes(req.body.username)){
-                    return res.status(401).send({error:"User already registred"});
-                }
                 if(room.state==='CLOSED'){
                     return res.status(406).send({error:"The match is closed"});
                 }
@@ -269,31 +265,61 @@ exports.addUserToMatch = (req,res)=>{
                         return res.status(401).send({error:"Wrong Match Password"});
                     }
                 }
-                if(room.users.length >= room.max_user){
-                    return res.status(406).send({error:"The Room is full"});
+                var userQuery = {
+                    roomName: req.params.roomName,
                 }
-                var options = {new: true};
-                Room.findOneAndUpdate(query, { $push: {users: req.body.username} },options, function (err,room) {
-                    if (err) {
-                        return res.send(err)
-                    } else {
-                        console.log(room.users);
-                        io.to(req.params.roomName).emit('users',{users:room.users});
-                        res.json(room)
-                        var query1 = {
-                            name: req.body.username,
-                            roomName: req.params.roomName
-                        };
-                        console.log(req.body);
-                        UserInMatch.findOneAndUpdate(query1, { location: req.body.location ,score:req.body.score,team: req.body.team}, {upsert:true,new:true}, function (err,user) {
-                            if (err) {
-
-                            } else {
+                UserInMatch.find(userQuery,function (err,usersInMatch) {
+                   if(err){
+                   }else{
+                       const users = usersInMatch.map(u=> u.name);
+                       console.log(users)
+                       if(users.includes(req.body.username)){
+                           return res.status(401).send({error:"User already registred"});
+                       }
+                       if(users.length >= room.max_user){
+                           return res.status(406).send({error:"The Room is full"});
+                       }
+                       UserInMatch.create({
+                           name: req.body.username,
+                           roomName: req.params.roomName,
+                           location: req.body.location ,
+                           score:req.body.score,
+                           team: req.body.team
+                       },function (err,createdUser) {
+                           if(err){
+                               console.log(err);
+                           }
+                           else{
+                               console.log(createdUser);
                                 emitLeaderboardRoom(req.params.roomName);
-                            }
-                        });
-                    }
+                                res.json(createdUser);
+                           }
+                       });
+                   }
                 });
+
+                // var options = {new: true};
+                // Room.findOneAndUpdate(query, { $push: {users: req.body.username} },options, function (err,room) {
+                //     if (err) {
+                //         return res.send(err)
+                //     } else {
+                //         console.log(room.users);
+                //         io.to(req.params.roomName).emit('users',{users:room.users});
+                //         res.json(room)
+                //         var query1 = {
+                //             name: req.body.username,
+                //             roomName: req.params.roomName
+                //         };
+                //         console.log(req.body);
+                //         UserInMatch.findOneAndUpdate(query1, { location: req.body.location ,score:req.body.score,team: req.body.team}, {upsert:true,new:true}, function (err,user) {
+                //             if (err) {
+                //
+                //             } else {
+                //                 emitLeaderboardRoom(req.params.roomName);
+                //             }
+                //         });
+                //     }
+                // });
             }
         });
 

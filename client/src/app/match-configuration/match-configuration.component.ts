@@ -121,7 +121,7 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
       this.durationFormGroup.value.durationCtrl,
       this.playerFormGroup.value.playersCtrl,
       this.accessFormGroup.value.pwdCtrl,
-      [],
+      // [],
       MatchState.SETTING_UP);
 
     this.matchConfigurationService.createNewMatch(match).subscribe(

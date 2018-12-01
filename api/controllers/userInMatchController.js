@@ -4,6 +4,7 @@ var User = require('../models/users');
 var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
 console.log(configuration.address);
 var io = require('socket.io-emitter')({ host: configuration.address, port: 6379 });
+
 exports.listUserInMatch = (req, res) => {
     var query = UserInMatch.find({
         roomName : req.params.roomName
@@ -36,7 +37,7 @@ async function emitLeaderboard(roomName){
     const leaderboard = await UserInMatch
         .find({
             roomName : roomName
-        })
+        },{new:true})
         .sort({score: -1})
         .select({name:1,score:1,team:1})
         .exec();
@@ -115,7 +116,7 @@ exports.updateUserScore = (req, res) => {
         if (err) {
             return res.send(err)
         } else {
-            emitLeaderboard(req.params.roomName).then();
+            emitLeaderboard(req.params.roomName);
             res.json(mapToScore(users));
             // const usersScore = users.map(mapToScore);
             // io.to(req.params.roomName).emit('users-score',usersScore);

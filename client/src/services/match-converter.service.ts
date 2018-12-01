@@ -21,7 +21,7 @@ export class MatchConverterService {
       m.duration,
       m.max_user,
       m.password,
-      m.users,
+      // m.users,
       MatchState[<string>m.state])
   }
 }

@@ -25,7 +25,7 @@ var RoomSchema = new Schema({
        type: String,
        default : 'SETTING_UP'
    },
-   users:[String],
+   // users:[String],
    visibility:{type:String,required: true},
    password:{type:String,required: false},
    created_at: {type: Date},
