@@ -3,7 +3,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatchComponent} from "../../match.component";
 import {AngleHelper} from "../../../../utilities/AngleHelper";
 import {CoordinatesHelper} from "../../../../utilities/CoordinatesHelper";
-import {GameMap} from "../../../../models/GameMap";
+import {AbstractGameMap, GameMap} from "../../../../models/GameMap";
 import {UserInMatch} from "../../../../models/user";
 import {none, some} from "ts-option";
 
@@ -28,7 +28,7 @@ import {none, some} from "ts-option";
     ])
   ]
 })
-export class RadarComponent implements GameMap, OnInit, OnDestroy {
+export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy {
 
   deg: number = 0;
   radius: number;
@@ -42,8 +42,8 @@ export class RadarComponent implements GameMap, OnInit, OnDestroy {
   radarStyle;
 
   constructor(readonly matchComponent: MatchComponent) {
-    this.radius = this.matchComponent.match.radius;
-    this.matchComponent.gameMap = some(this);
+    super(matchComponent);
+    // this.radius = this.matchComponent.match.radius;
   }
 
   ngOnInit() {
@@ -56,30 +56,30 @@ export class RadarComponent implements GameMap, OnInit, OnDestroy {
   }
 
   updatePosition(userInArea: boolean) {
-    if (userInArea) {
-      this.radar_line = document.getElementById("radar_line");
-      const radarRadius = this.radar_line.offsetWidth/2;
-      this.ratio = radarRadius/this.radius;
-
-      this.radarStyle = {
-        'background': '#222 url("../../../../assets/images/radar_enabled.png") no-repeat',
-        'background-size': '40vh'
-      };
-
-      if (!this.rotateIntervalId){
-        this.rotateIntervalId = setInterval(() => this.rotate(), 25);
-      }
-    } else {
-      this.radarStyle = {
-        'background': '#222 url("../../../../assets/images/radar_disabled.png") no-repeat',
-        'background-size': '40vh'
-      };
-
-      if (this.rotateIntervalId) {
-        clearInterval(this.rotateIntervalId);
-        this.rotateIntervalId = null;
-      }
-    }
+    // if (userInArea) {
+    //   this.radar_line = document.getElementById("radar_line");
+    //   const radarRadius = this.radar_line.offsetWidth/2;
+    //   this.ratio = radarRadius/this.radius;
+    //
+    //   this.radarStyle = {
+    //     'background': '#222 url("../../../../assets/images/radar_enabled.png") no-repeat',
+    //     'background-size': '40vh'
+    //   };
+    //
+    //   if (!this.rotateIntervalId){
+    //     this.rotateIntervalId = setInterval(() => this.rotate(), 25);
+    //   }
+    // } else {
+    //   this.radarStyle = {
+    //     'background': '#222 url("../../../../assets/images/radar_disabled.png") no-repeat',
+    //     'background-size': '40vh'
+    //   };
+    //
+    //   if (this.rotateIntervalId) {
+    //     clearInterval(this.rotateIntervalId);
+    //     this.rotateIntervalId = null;
+    //   }
+    // }
   }
 
   rotate() {

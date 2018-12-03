@@ -1,1 +1,17 @@
+.slide-content {
+  width: 70%;
+  height: 50vh;
+}
 
+app-radar {
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
