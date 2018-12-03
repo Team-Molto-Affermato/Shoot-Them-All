@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../../models/match";
 import {Subscription} from "rxjs";
 import {none, Option, some} from "ts-option";
@@ -17,27 +17,34 @@ import {ConditionUpdaterService} from "../../../services/condition-updater.servi
   styleUrls: ['./basic-match-info.component.scss']
 })
 export class BasicMatchInfoComponent implements OnInit {
+  selectedSize = '200px';
+  normalSize = '175px';
   users: Array<String> = [];
   userScoreSub: Subscription;
-
+  teamType = Team;
   match: Match;
   username: string;
   savedPassword:string;
   timeoutSub: Subscription;
   remainingTime;
-  team: Option<Team> = none;
+  defaultTeam = Team.TEAM1
+  team: Option<Team> = some(Team.TEAM1);
   spinnerOption:SpinnerOption;
   teamVisible = false;
   countdownIntervalId;
-
+  // @ViewChild('yoda') yoda:ElementRef;
   constructor(
     private router: Router,
     private http: HttpClient,
     private conditionObserverService: ConditionUpdaterService,
-    private dataService: DataService
+    private dataService: DataService,
+    // private rd:Renderer2
   ) { }
 
   ngOnInit() {
+    // this.rd.setStyle(this.yoda,'width','200px');
+    // this.rd.setStyle(this.yoda,'height','200px');
+
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
     const savedData = LocalStorageHelper.getItem(StorageKey.MATCH_PASSWORD);
@@ -159,23 +166,21 @@ export class BasicMatchInfoComponent implements OnInit {
       if (difference && difference>0) {
         this.remainingTime = this.outputTime(difference, true);
       } else {
+        this.remainingTime= this.outputTime(0,true);
         clearInterval(this.countdownIntervalId);
       }
 
     } else {
+      this.remainingTime= this.outputTime(0,true);
       clearInterval(this.countdownIntervalId);
     }
 
   }
 
 
-  switchTeam() {
+  switchTeam(team:Team) {
     if (this.teamVisible) {
-      if (this.team.get === Team.TEAM1) {
-        this.team = some(Team.TEAM2);
-      } else {
-        this.team = some(Team.TEAM1);
-      }
+      this.team = some(team);
     }
   }
   showRemainingTime() {

@@ -24,7 +24,7 @@ export class DataService {
   userObserver: Array<Observer<Array<String>>> = [];
   timeoutObserver: Array<Observer<String>> = [];
   positionObserver: Observer<Array<UserPosition>>;
-  scoreObserver: Observer<Array<UserScore>>;
+  scoreObserver: Array<Observer<Array<UserScore>>> = [];
   leaderboardObserver: Observer<Array<UserScore>>;
   matchesObservers: Array<Observer<Array<Match>>> = [];
   constructor(private http:HttpClient,
@@ -47,10 +47,12 @@ export class DataService {
   }
   getScores():Observable<Array<UserScore>>{
     this.socket.on('users-score', (res) => {
-      var scores = res.map(score =>
-        new UserScore(score.username,score.score,Team[<string>score.team],score.scoreG));
-      console.log("Data ",scores);
-      this.scoreObserver.next(scores);
+      this.scoreObserver.forEach(o=>{
+        var scores = res.map(score =>
+          new UserScore(score.username,score.score,Team[<string>score.team],score.scoreG));
+        console.log("Data ",scores);
+        o.next(scores);
+      });
     });
     return this.createUserScoreObservable();
   }
@@ -126,7 +128,7 @@ export class DataService {
   }
   createUserScoreObservable() : Observable<Array<UserScore>> {
     return new Observable<Array<UserScore>>(observer => {
-      this.scoreObserver = observer;
+      this.scoreObserver.push(observer);
     });
   }
 

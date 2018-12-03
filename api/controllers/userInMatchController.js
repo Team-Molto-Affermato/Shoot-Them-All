@@ -4,7 +4,25 @@ var User = require('../models/users');
 var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
 console.log(configuration.address);
 var io = require('socket.io-emitter')({ host: configuration.address, port: 6379 });
-
+exports.getUsersPosition = (req,res) => {
+    UserInMatch
+        .find({
+            roomName : req.params.roomName,
+            location: { $ne: null }
+        })
+        .where()
+        .exec(function(error, users){
+            if(error)
+                res.send(error);
+            else{
+                var positions = [];
+                users.forEach(user =>{
+                    positions.push(mapToPosition(user));
+                });
+                res.json(positions);
+            }
+        });
+}
 exports.listUserInMatch = async (req, res) => {
     // var query = UserInMatch.find({
     //     roomName : req.params.roomName

@@ -14,15 +14,21 @@
         {{ remainingTime}}
       </div>
     </div>
-  <select (change)="switchTeam()" id="team" *ngIf="teamVisible">
-    <option>Team 1</option>
-    <option>Team 2</option>
-  </select>
+  <!--<select (change)="switchTeam()" id="team" *ngIf="teamVisible">-->
+    <!--<option>Team 1</option>-->
+    <!--<option>Team 2</option>-->
+  <!--</select>-->
   <div id="team-container" *ngIf="teamVisible">
     <h2>Choose your side</h2>
     <div id="button-team-container">
-      <img src="../../../assets/images/yoda.png" id="yoda">
-      <img src="../../../assets/images/darth_vader.png" id="darth">
+      <img [style.width]="team.get === defaultTeam ? selectedSize : normalSize"
+           [style.height]="team.get === defaultTeam ? selectedSize : normalSize"
+           (click)="switchTeam(teamType.TEAM1)"
+           src="../../../assets/images/yoda.png" id="yoda">
+      <img [style.width]="team.get !== defaultTeam ? selectedSize : normalSize"
+           [style.height]="team.get !== defaultTeam ? selectedSize : normalSize"
+           (click)="switchTeam(teamType.TEAM2)"
+           src="../../../assets/images/darth_vader.png" id="darth">
     </div>
   </div>
   <div id="join-container">

@@ -2,6 +2,12 @@
   <agm-marker *ngFor="let userPosition of userPositions"
               [latitude]="userPosition.position.latitude"
               [longitude]="userPosition.position.longitude"></agm-marker>
+  <agm-marker
+    [latitude]="positionOfUser.latitude"
+    [longitude]="positionOfUser.longitude"
+    [title]="'User Position'"
+  >
+  </agm-marker>
   <agm-circle
               [latitude]="match.centralPoint.latitude"
               [longitude]="match.centralPoint.longitude"

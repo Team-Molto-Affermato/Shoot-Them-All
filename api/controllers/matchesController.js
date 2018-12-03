@@ -17,6 +17,26 @@ exports.listMatches = (req, res) => {
             res.json(matches);
     });
 };
+function emitPositions(roomName){
+    UserInMatch
+        .find({
+            roomName : roomName,
+            location: { $ne: null }
+        })
+        .where()
+        .exec(function(error, users){
+            if(error) {
+
+            }
+            else{
+                var positions = [];
+                users.forEach(user =>{
+                    positions.push(mapToPosition(user));
+                });
+                io.to(roomName).emit('users-pos',positions);
+            }
+        });
+}
 function mapToPosition(item, index) {
     var position = item.location.coordinates
     return {
@@ -292,6 +312,7 @@ exports.addUserToMatch = (req,res)=>{
                            else{
                                console.log(createdUser);
                                 emitLeaderboardRoom(req.params.roomName);
+                                emitPositions(req.params.roomName);
                                 res.json(createdUser);
                            }
                        });

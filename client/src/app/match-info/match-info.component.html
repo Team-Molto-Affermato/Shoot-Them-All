@@ -3,8 +3,6 @@
   <div id="principle-container">
     <div id="particle-canvas"></div>
 
-
-
     <div id="contentContainer">
       <div id="centered-container" >
         <div id="img-container" *ngIf="!isVisible">
@@ -39,64 +37,18 @@
 
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <!--<div class="swiper-slide">-->
-                <!--<div id="old-info-container">-->
-                  <!--<label for="username">Name</label>-->
-                  <!--<p id="username">{{match.username}}</p>-->
-                  <!--<label for="state">State</label>-->
-                  <!--<p id="state">{{match.state}}</p>-->
-                  <!--<label for="access">Access</label>-->
-                  <!--<p id="access">{{match.access}}</p>-->
-                  <!--&lt;!&ndash;<label for="password" *ngIf="showPassword()">Password</label>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>&ndash;&gt;-->
-                  <!--<label for="radius">Radius</label>-->
-                  <!--<p id="radius">{{match.radius}}</p>-->
-                  <!--<label for="centralPoint">Center Point</label>-->
-                  <!--<p id="centralPoint">{{match.centralPoint.latitude}}, {{match.centralPoint.longitude}}</p>-->
-                  <!--<label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>-->
-                  <!--<p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>-->
-                  <!--<label for="organization">ORganization</label>-->
-                  <!--<p id="organization">{{match.organization}}</p>-->
 
-                  <!--<label for="users">Players</label>-->
-                  <!--<ul id="users">-->
-                    <!--<li *ngFor="let user of users">-->
-                      <!--{{user}}-->
-                    <!--</li>-->
-                  <!--</ul>-->
-                  <!--<label for="team">Choose Your Team</label>-->
-                  <!--<select (change)="switchTeam()" id="team" *ngIf="teamVisible">-->
-                    <!--<option>Team 1</option>-->
-                    <!--<option>Team 2</option>-->
-                  <!--</select>-->
-                  <!--<button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>-->
-                <!--</div>-->
-              <!--</div>-->
               <div class="swiper-slide">
                 <app-basic-match-info></app-basic-match-info>
-                <!--<div id="info-container">-->
-                  <!--<h1 class="mat-display-3" id="match-username">{{match.username}}</h1>-->
-                  <!--<h2>{{printState()}}</h2>-->
-                  <!--<div id="timer-container">-->
-                    <!--<mat-progress-spinner-->
-                      <!--[color]="spinnerOption.color"-->
-                      <!--[mode]="spinnerOption.mode"-->
-                      <!--[value]="spinnerOption.value">-->
-                      <!--id="timer"-->
-                    <!--</mat-progress-spinner>-->
-                    <!--<div style="position:relative; top: -20px; left: 35px;">-->
-                      <!--{{ remainingTime}}-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
               </div>
               <div class="swiper-slide">
-                <div id="leaderboard-container" *ngIf="false">
+                <div id="leaderboard-container" *ngIf="true">
                   <app-match-leaderboard></app-match-leaderboard>
                 </div>
               </div>
               <div class="swiper-slide">
-                <div id="map-container" *ngIf="false">
+                <div id="map-container" *ngIf="true">
+                  <app-earth-map></app-earth-map>
                 </div>
               </div>
             </div>
@@ -126,10 +78,37 @@
 
 
 
+<!--<div class="swiper-slide">-->
+<!--<div id="old-info-container">-->
+<!--<label for="username">Name</label>-->
+<!--<p id="username">{{match.username}}</p>-->
+<!--<label for="state">State</label>-->
+<!--<p id="state">{{match.state}}</p>-->
+<!--<label for="access">Access</label>-->
+<!--<p id="access">{{match.access}}</p>-->
+<!--&lt;!&ndash;<label for="password" *ngIf="showPassword()">Password</label>&ndash;&gt;-->
+<!--&lt;!&ndash;<input id="password" type="password" *ngIf="showPassword()" [(ngModel)]="password"/>&ndash;&gt;-->
+<!--<label for="radius">Radius</label>-->
+<!--<p id="radius">{{match.radius}}</p>-->
+<!--<label for="centralPoint">Center Point</label>-->
+<!--<p id="centralPoint">{{match.centralPoint.latitude}}, {{match.centralPoint.longitude}}</p>-->
+<!--<label for="remainingTime" *ngIf="showRemainingTime()">Remaining Time</label>-->
+<!--<p id="remainingTime" *ngIf="showRemainingTime()">{{remainingTime}}</p>-->
+<!--<label for="organization">ORganization</label>-->
+<!--<p id="organization">{{match.organization}}</p>-->
 
-
-
-
-
-<!--<app-game-map></app-game-map>-->
+<!--<label for="users">Players</label>-->
+<!--<ul id="users">-->
+<!--<li *ngFor="let user of users">-->
+<!--{{user}}-->
+<!--</li>-->
+<!--</ul>-->
+<!--<label for="team">Choose Your Team</label>-->
+<!--<select (change)="switchTeam()" id="team" *ngIf="teamVisible">-->
+<!--<option>Team 1</option>-->
+<!--<option>Team 2</option>-->
+<!--</select>-->
+<!--<button (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>-->
+<!--</div>-->
+<!--</div>-->
 
