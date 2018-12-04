@@ -1,4 +1,4 @@
-<agm-map [latitude]="43.12" [longitude]="12.34" [styles]="styles">
+<agm-map [latitude]="43.12" [longitude]="12.34" [styles]="styles" #matchMap>
   <agm-marker *ngFor="let match of matches"
               [latitude]="match.centralPoint.latitude"
               [longitude]="match.centralPoint.longitude">

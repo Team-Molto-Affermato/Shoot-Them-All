@@ -30,18 +30,17 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
 
   ngOnInit() {
 
-    const canvasDiv = document.getElementById('particle-canvas');
-    drawParticles(canvasDiv);
-
-
     this.init();
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
+
+    const canvasDiv = document.getElementById('particle-canvas');
+    drawParticles(canvasDiv);
   }
 
   ngAfterViewInit() {
     this.swiper = new Swiper('.swiper-container', {
       slidesPerView: 1,
-      loop: true,
+      loop: false,
       // spaceBetween: '20%',
       pagination: {
         el: '.swiper-pagination',

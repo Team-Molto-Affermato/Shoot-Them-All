@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Match, MatchState} from "../../models/match";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
@@ -14,6 +14,8 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./match-map.component.css']
 })
 export class MatchMapComponent implements OnInit {
+
+  @ViewChild('matchMap') mapId: ElementRef;
 
   username;
   matches: Array<Match> = [];

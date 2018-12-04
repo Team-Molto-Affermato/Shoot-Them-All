@@ -1,11 +1,14 @@
 <!--<app-navbar></app-navbar>-->
-<div>
+<div id="main-container">
   <!--<app-match-leaderboard *ngIf="showLeaderboard && !teamMode"></app-match-leaderboard>-->
   <!--<app-match-multi-leaderboard *ngIf="showLeaderboard && teamMode"></app-match-multi-leaderboard>-->
   <app-game-map *ngIf="!showLeaderboard"></app-game-map>
 
+  <div id="shoot">
+    <img src="../../assets/images/light-saber.png">
+    <button id="button" (click)="shoot()"></button>
+  </div>
 
-  <button (click)="shoot()">Shoot</button>
   <button (click)="exit()">Exit</button>
   <!--<button (click)="switchComponent()">Leaderboard</button>-->
 </div>

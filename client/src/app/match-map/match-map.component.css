@@ -1,4 +1,11 @@
 agm-map {
-  height: 75vh;
+  height: calc(99vh - 65px - 35px - 70px);
+}
+
+@media screen and (max-width: 599px) {
+
+  agm-map {
+    height: calc(99vh - 55px - 35px - 70px);
+  }
 }
 
