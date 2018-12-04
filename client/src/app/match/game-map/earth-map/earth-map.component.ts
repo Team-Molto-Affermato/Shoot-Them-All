@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {MatchComponent} from "../../match.component";
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Match} from "../../../../models/match";
 import {LocalStorageHelper, StorageKey} from 'src/utilities/LocalStorageHelper';
 import {Subscription} from "rxjs";
 import {DataService} from "../../../../services/data.service";
 import {ConditionUpdaterService} from "../../../../services/condition-updater.service";
-import {UserScore} from "../../../../models/user";
-import {UserPosition} from "../../../../models/point";
+import {Point, UserPosition} from "../../../../models/point";
+import {Role} from "../../../../models/RoleHelper";
 
 @Component({
   selector: 'app-earth-map',
@@ -17,6 +16,7 @@ import {UserPosition} from "../../../../models/point";
 export class EarthMapComponent implements OnInit {
   match: Match;
   positionOfUser;
+  positionAvailable:boolean;
   userPositions:Array<UserPosition>;
   styles;
   usersSub:Subscription;
@@ -29,7 +29,10 @@ export class EarthMapComponent implements OnInit {
   ngOnInit() {
     const username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
-    this.positionOfUser = this.conditionObserverService.position;
+    this.positionAvailable = LocalStorageHelper.getItem(StorageKey.COMPLETE_FUNCTIONALITIES);
+    this.positionOfUser = this.positionAvailable?
+      this.conditionObserverService.position:
+      new Point(0,0);
     this.http.get("../../../../assets/styles/earthMapStyles.json").subscribe(
       data => {
         this.styles = data;

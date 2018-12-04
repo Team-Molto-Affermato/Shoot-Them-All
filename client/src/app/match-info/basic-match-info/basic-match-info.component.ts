@@ -17,7 +17,9 @@ import {ConditionUpdaterService} from "../../../services/condition-updater.servi
   styleUrls: ['./basic-match-info.component.scss']
 })
 export class BasicMatchInfoComponent implements OnInit {
-  selectedSize = '200px';
+  selectedBorderStyle = '8px solid #00d51c';
+  unselectedBorderStyle = '';
+  selectedSize = '175px';
   normalSize = '175px';
   users: Array<String> = [];
   userScoreSub: Subscription;
@@ -32,6 +34,8 @@ export class BasicMatchInfoComponent implements OnInit {
   spinnerOption:SpinnerOption;
   teamVisible = false;
   countdownIntervalId;
+  innerWidth: any;
+  spinnerSize: number;
   // @ViewChild('yoda') yoda:ElementRef;
   constructor(
     private router: Router,
@@ -44,7 +48,8 @@ export class BasicMatchInfoComponent implements OnInit {
   ngOnInit() {
     // this.rd.setStyle(this.yoda,'width','200px');
     // this.rd.setStyle(this.yoda,'height','200px');
-
+    this.innerWidth = window.innerWidth;
+    this.spinnerSize = this.innerWidth*0.2;
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
     const savedData = LocalStorageHelper.getItem(StorageKey.MATCH_PASSWORD);
@@ -122,14 +127,16 @@ export class BasicMatchInfoComponent implements OnInit {
     if(this.match.state === MatchState.SETTING_UP){
       const difference = DateHelper.dateDifference(this.match.startingTime, now);
       if (difference && difference>0) {
-        return ((60000-difference)/60000)*100;
+        return 100-((60000-difference)/60000)*100;
       }else{
-        return 100;
+        return 0;
       }
-    }else{
+    }else if(this.match.state === MatchState.STARTED){
       const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
       const remaining = DateHelper.dateDifference(endingDate, now)/60000;
-      return ((this.match.duration-remaining)/this.match.duration)*100;
+      return 100-((this.match.duration-remaining)/this.match.duration)*100;
+    }else{
+      return 100;
     }
   }
   private getSpinnerColor():String {

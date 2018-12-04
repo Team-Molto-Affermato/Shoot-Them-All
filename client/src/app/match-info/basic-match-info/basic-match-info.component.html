@@ -1,12 +1,25 @@
 <div id="info-container">
-  <h1 id="match-name">{{match.name}}</h1>
-  <h2>{{printState()}}</h2>
-  <div id="timer-container">
+  <div id="div-title">
+    <h1 id="match-name">{{match.name}}</h1>
+  </div>
+  <div id="div-subtitle">
+    <h2>{{printState()}}</h2>
+    <h3>Jedi or Stormtrooper, which side of the force will you choose?</h3>
+  </div>
+  <div id="circle-container">
+    <div *ngIf="teamVisible" id="div-yoda">
+      <h4>Team Yoda</h4>
+      <img [style.border]="team.get === defaultTeam ? selectedBorderStyle : unselectedBorderStyle "
+           (click)="switchTeam(teamType.TEAM1)"
+           src="../../../assets/images/yoda.png" id="yoda">
+    </div>
+
+    <div id="timer-container">
       <mat-progress-spinner
         [color]="spinnerOption.color"
         [mode]="spinnerOption.mode"
         [value]="spinnerOption.value"
-        [diameter]="220"
+        [diameter]="spinnerSize"
         id="timer">
 
       </mat-progress-spinner>
@@ -14,23 +27,27 @@
         {{ remainingTime}}
       </div>
     </div>
+
+    <div *ngIf="teamVisible" id="div-darth">
+      <h4>Team Darth</h4>
+      <!--<div class="circleBase type1">-->
+        <img [style.border]="team.get !== defaultTeam ? selectedBorderStyle : unselectedBorderStyle "
+             (click)="switchTeam(teamType.TEAM2)"
+             src="../../../assets/images/darth_vader.png" id="darth">
+      <!--</div>-->
+    </div>
+  </div>
+
   <!--<select (change)="switchTeam()" id="team" *ngIf="teamVisible">-->
     <!--<option>Team 1</option>-->
     <!--<option>Team 2</option>-->
   <!--</select>-->
-  <div id="team-container" *ngIf="teamVisible">
-    <h2>Choose your side</h2>
-    <div id="button-team-container">
-      <img [style.width]="team.get === defaultTeam ? selectedSize : normalSize"
-           [style.height]="team.get === defaultTeam ? selectedSize : normalSize"
-           (click)="switchTeam(teamType.TEAM1)"
-           src="../../../assets/images/yoda.png" id="yoda">
-      <img [style.width]="team.get !== defaultTeam ? selectedSize : normalSize"
-           [style.height]="team.get !== defaultTeam ? selectedSize : normalSize"
-           (click)="switchTeam(teamType.TEAM2)"
-           src="../../../assets/images/darth_vader.png" id="darth">
-    </div>
-  </div>
+  <!--<div id="team-container" *ngIf="teamVisible">-->
+    <!--<h2>Choose your side</h2>-->
+    <!--<div id="button-team-container">-->
+
+    <!--</div>-->
+  <!--</div>-->
   <div id="join-container">
     <button mat-flat-button color="primary" id="join-button" (click)="switchPartecipation()" *ngIf="showJoin()">{{partecipationButtonText()}}</button>
   </div>

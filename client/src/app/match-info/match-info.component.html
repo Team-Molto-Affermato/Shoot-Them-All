@@ -39,15 +39,17 @@
             <div class="swiper-wrapper">
 
               <div class="swiper-slide">
-                <app-basic-match-info></app-basic-match-info>
+                <div class="slide-content">
+                  <app-basic-match-info></app-basic-match-info>
+                </div>
               </div>
               <div class="swiper-slide">
-                <div id="leaderboard-container" *ngIf="true">
+                <div id="leaderboard-container"  class="slide-content" *ngIf="true">
                   <app-match-leaderboard></app-match-leaderboard>
                 </div>
               </div>
               <div class="swiper-slide">
-                <div id="map-container" *ngIf="true">
+                <div id="map-container"  class="slide-content" *ngIf="true">
                   <app-earth-map></app-earth-map>
                 </div>
               </div>
