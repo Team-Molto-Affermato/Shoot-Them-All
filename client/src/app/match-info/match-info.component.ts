@@ -33,6 +33,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   savedPassword:string;
   isVisible= false;
   // isVisible = true;
+  showPassword:boolean = false;
   topScore:number= 40000;
   username: string;
   match: Match;
@@ -240,9 +241,9 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  showPassword() {
-    return this.match.access===MatchAccess.PRIVATE;
-  }
+  // showPassword() {
+  //   return this.match.access===MatchAccess.PRIVATE;
+  // }
 
   showRemainingTime() {
     return this.match.state !== MatchState.ENDED;

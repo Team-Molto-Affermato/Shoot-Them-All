@@ -1,25 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import {MatchComponent} from "../../match.component";
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Match} from "../../../../models/match";
-import {AbstractGameMap} from "../../../../models/GameMap";
+import {LocalStorageHelper, StorageKey} from 'src/utilities/LocalStorageHelper';
+import {Subscription} from "rxjs";
+import {DataService} from "../../../../services/data.service";
+import {ConditionUpdaterService} from "../../../../services/condition-updater.service";
+import {Point, UserPosition} from "../../../../models/point";
+import {Role} from "../../../../models/RoleHelper";
 
 @Component({
   selector: 'app-earth-map',
   templateUrl: './earth-map.component.html',
   styleUrls: ['./earth-map.component.css']
 })
-export class EarthMapComponent extends AbstractGameMap implements OnInit {
+export class EarthMapComponent implements OnInit {
   match: Match;
-  userPositions;
+  positionOfUser;
+  positionAvailable:boolean;
+  userPositions:Array<UserPosition>;
   styles;
-
-  constructor(private matchComponent: MatchComponent,
+  usersSub:Subscription;
+  constructor(private dataService:DataService,
+              private conditionObserverService: ConditionUpdaterService,
               private http: HttpClient) {
-    super(matchComponent);
+
   }
 
   ngOnInit() {
+    const username = LocalStorageHelper.getItem(StorageKey.USERNAME);
+    this.match = LocalStorageHelper.getCurrentMatch();
+    this.positionAvailable = LocalStorageHelper.getItem(StorageKey.COMPLETE_FUNCTIONALITIES);
+    this.positionOfUser = this.positionAvailable?
+      this.conditionObserverService.position:
+      new Point(0,0);
     this.http.get("../../../../assets/styles/earthMapStyles.json").subscribe(
       data => {
         this.styles = data;
@@ -27,15 +40,23 @@ export class EarthMapComponent extends AbstractGameMap implements OnInit {
         console.log(error)
       }
     )
-    this.match = this.matchComponent.match;
-
-    console.log(this.matchComponent.match);
-    console.log(this.matchComponent.match.centralPoint);
-
-    this.userPositions = this.matchComponent.players;
-  }
-
-  updatePosition(userInArea: boolean) {
-
+    this.http.get('api/matches/'+this.match.name+'/users/positions').subscribe(
+      (data: Array<UserPosition>)=>{
+        this.userPositions = data;
+        console.log("Mappa dati get: ",data);
+      },err =>{
+        console.log(err);
+      });
+    this.usersSub = this.dataService
+      .getPositions()
+      .subscribe(positions =>{
+        console.log("Mappa dati socket: ",positions);
+        this.userPositions = [];
+        positions.forEach(pos=>{
+          if (pos.username !== username) {
+            this.userPositions.push(pos);
+          }
+        });
+      });
   }
 }

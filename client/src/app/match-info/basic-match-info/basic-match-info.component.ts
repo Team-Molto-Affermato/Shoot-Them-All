@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../../models/match";
 import {Subscription} from "rxjs";
 import {none, Option, some} from "ts-option";
@@ -17,27 +17,39 @@ import {ConditionUpdaterService} from "../../../services/condition-updater.servi
   styleUrls: ['./basic-match-info.component.scss']
 })
 export class BasicMatchInfoComponent implements OnInit {
+  selectedBorderStyle = '8px solid #00d51c';
+  unselectedBorderStyle = '';
+  selectedSize = '175px';
+  normalSize = '175px';
   users: Array<String> = [];
   userScoreSub: Subscription;
-
+  teamType = Team;
   match: Match;
   username: string;
   savedPassword:string;
   timeoutSub: Subscription;
   remainingTime;
-  team: Option<Team> = none;
+  defaultTeam = Team.TEAM1
+  team: Option<Team> = some(Team.TEAM1);
   spinnerOption:SpinnerOption;
   teamVisible = false;
   countdownIntervalId;
-
+  innerWidth: any;
+  spinnerSize: number;
+  // @ViewChild('yoda') yoda:ElementRef;
   constructor(
     private router: Router,
     private http: HttpClient,
     private conditionObserverService: ConditionUpdaterService,
-    private dataService: DataService
+    private dataService: DataService,
+    // private rd:Renderer2
   ) { }
 
   ngOnInit() {
+    // this.rd.setStyle(this.yoda,'width','200px');
+    // this.rd.setStyle(this.yoda,'height','200px');
+    this.innerWidth = window.innerWidth;
+    this.spinnerSize = this.innerWidth*0.2;
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
     const savedData = LocalStorageHelper.getItem(StorageKey.MATCH_PASSWORD);
@@ -115,14 +127,16 @@ export class BasicMatchInfoComponent implements OnInit {
     if(this.match.state === MatchState.SETTING_UP){
       const difference = DateHelper.dateDifference(this.match.startingTime, now);
       if (difference && difference>0) {
-        return ((60000-difference)/60000)*100;
+        return 100-((60000-difference)/60000)*100;
       }else{
-        return 100;
+        return 0;
       }
-    }else{
+    }else if(this.match.state === MatchState.STARTED){
       const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
       const remaining = DateHelper.dateDifference(endingDate, now)/60000;
-      return ((this.match.duration-remaining)/this.match.duration)*100;
+      return 100-((this.match.duration-remaining)/this.match.duration)*100;
+    }else{
+      return 100;
     }
   }
   private getSpinnerColor():String {
@@ -159,23 +173,21 @@ export class BasicMatchInfoComponent implements OnInit {
       if (difference && difference>0) {
         this.remainingTime = this.outputTime(difference, true);
       } else {
+        this.remainingTime= this.outputTime(0,true);
         clearInterval(this.countdownIntervalId);
       }
 
     } else {
+      this.remainingTime= this.outputTime(0,true);
       clearInterval(this.countdownIntervalId);
     }
 
   }
 
 
-  switchTeam() {
+  switchTeam(team:Team) {
     if (this.teamVisible) {
-      if (this.team.get === Team.TEAM1) {
-        this.team = some(Team.TEAM2);
-      } else {
-        this.team = some(Team.TEAM1);
-      }
+      this.team = some(team);
     }
   }
   showRemainingTime() {
