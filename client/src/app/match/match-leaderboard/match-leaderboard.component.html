@@ -38,16 +38,19 @@
 </div>
 <div id="multi-player-leaderboard" *ngIf="teamVisible">
   <mat-card class="team-card">
-    <!--<mat-card-title-group>-->
-      <!--<mat-card-title>-->
-        <!--Leaderboards-->
-      <!--</mat-card-title>-->
-    <!--</mat-card-title-group>-->
+    <mat-card-title-group>
+      <mat-card-title id="mat-card-title">
+        Leaderboards
+      </mat-card-title>
+    </mat-card-title-group>
     <mat-card-content>
       <!--<img mat-card-md-image src="../../assets/images/laser1.png" alt="Team 1 Image">-->
-      <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
+      <mat-tab-group
+        mat-stretch-tabs class="example-stretched-tabs"
+        [selectedIndex]="1"
+      >
 
-        <mat-tab label="Team Yoda Leaderboard" class="mat-elevation-z8">
+        <mat-tab label="Team Yoda" class="mat-elevation-z8">
           <table mat-table [dataSource]="dataSourceTeam1">
             <!-- Name Column -->
             <ng-container matColumnDef="position">
@@ -78,7 +81,7 @@
         <mat-tab label="Team Ranking">
           <canvas #doughnutChart>{{ chart }}</canvas>
         </mat-tab>
-        <mat-tab label="Team Darth Leaderboard">
+        <mat-tab label="Team Darth Vader">
           <table mat-table [dataSource]="dataSourceTeam2">
             <!-- Name Column -->
             <ng-container matColumnDef="position">

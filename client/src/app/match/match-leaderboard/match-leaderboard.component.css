@@ -1,4 +1,13 @@
 table {
   width: 100%;
 }
-
+#multi-player-leaderboard{
+  width: 100%;
+}
+mat-card-title-group{
+  justify-content: center;
+}
+#mat-card-title{
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+}

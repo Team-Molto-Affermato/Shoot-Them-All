@@ -34,7 +34,7 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
   dataSourceTeam2 = new MatTableDataSource<UserInLeaderboard>(this.leaderboardTeam2);
   data = {
     datasets: [{
-      data: [this.scoreTeam1, this.scoreTeam2],
+      data: [1, 1],
       backgroundColor: ['#2980b9',
       '#e74c3c'],
       borderColor: ['#2980b9',

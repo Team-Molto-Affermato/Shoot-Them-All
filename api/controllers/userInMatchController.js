@@ -38,6 +38,9 @@ exports.listUserInMatch = async (req, res) => {
     //     usersScore.push(temp);
     //     // console.log("temp: ",temp);
     // }
+    if(leaderboard.length===0){
+        res.json(usersScore);
+    }
     for(i = 0;i< leaderboard.length;i++){
         mapUser(leaderboard[i]).then(temp=>{
             console.log(temp);
@@ -68,6 +71,9 @@ async function emitLeaderboard(roomName){
     //     const temp = await mapUser(leaderboard[i]);
     //     usersScore.push(temp);
     // }
+    if(leaderboard.length===0){
+        io.to(roomName).emit('users-score',usersScore);
+    }
     for(i = 0;i< leaderboard.length;i++){
         mapUser(leaderboard[i]).then(temp=>{
             // console.log(temp);
@@ -92,7 +98,11 @@ exports.leaderboard = async (req, res) => {
         .select({name:1,score:1,team:1})
         .exec();
     console.log("Leaderboard originale: ",leaderboard);
+
     var usersScore = [];
+    if(leaderboard.length===0){
+        res.json(usersScore);
+    }
     for(i = 0;i< leaderboard.length;i++){
         mapUser(leaderboard[i]).then(temp=>{
             console.log(temp);

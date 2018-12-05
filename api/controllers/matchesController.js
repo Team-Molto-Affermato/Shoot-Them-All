@@ -91,7 +91,7 @@ exports.deleteUserInMatch= (req,res)=>{
                                 positions.push(mapToPosition(user));
                             }
                         });
-                        // console.log(positions)
+                        console.log("Dopo canc: ",positions);
                         emitLeaderboardRoom(req.params.roomName);
                         io.to(req.params.roomName).emit('users-pos',positions);
                         res.json("ok");
@@ -161,13 +161,15 @@ async function emitLeaderboardRoom(roomName){
         .exec();
     // console.log(leaderboard);
     var usersScore = [];
-
+    if(leaderboard.length ===0){
+        io.to(roomName).emit('users-score',usersScore);
+    }
     for(i = 0;i< leaderboard.length;i++){
         mapUser(leaderboard[i]).then(temp=>{
             // console.log(temp);
             usersScore.push(temp);
             if(usersScore.length === leaderboard.length){
-                // console.log("Leaderboard: ",usersScore);
+                console.log("Leaderboard: ",usersScore);
                 io.to(roomName).emit('users-score',usersScore);
             }
         }).catch(err=>{
