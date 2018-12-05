@@ -3,40 +3,47 @@
     <h1 id="match-name">{{match.name}}</h1>
   </div>
   <div id="div-subtitle">
-    <h2>{{printState()}}</h2>
-    <h3>Jedi or Stormtrooper, which side of the force will you choose?</h3>
+    <h3 id="team-label">Which side of the force will you choose?</h3>
   </div>
+
   <div id="circle-container">
-    <div *ngIf="teamVisible" id="div-yoda">
-      <h4>Team Yoda</h4>
-      <img [style.border]="team.get === defaultTeam ? selectedBorderStyle : unselectedBorderStyle "
-           (click)="switchTeam(teamType.TEAM1)"
-           src="../../../assets/images/yoda.png" id="yoda">
+    <div *ngIf="teamVisible" id="div-yoda" class="circle-container-content">
+      <h4 class="team-title">Team Jedi</h4>
+      <div class="bottom-content">
+        <img [style.border]="team.get === defaultTeam ? selectedBorderStyle : unselectedBorderStyle "
+             (click)="switchTeam(teamType.TEAM1)"
+             src="../../../assets/images/yoda.png" id="yoda">
+      </div>
     </div>
 
-    <div id="timer-container">
+    <div id="timer-container" class="circle-container-content">
       <mat-progress-spinner
         [color]="spinnerOption.color"
         [mode]="spinnerOption.mode"
         [value]="spinnerOption.value"
         [diameter]="spinnerSize"
         id="timer">
-
       </mat-progress-spinner>
-      <div id="timer-text">
+
+      <div class="bottom-content" id="timer-text">
         {{ remainingTime}}
+        <!--00.00.00-->
       </div>
     </div>
 
-    <div *ngIf="teamVisible" id="div-darth">
-      <h4>Team Darth</h4>
+    <div *ngIf="teamVisible" id="div-darth" class="circle-container-content">
+      <h4 class="team-title">Team Sith</h4>
       <!--<div class="circleBase type1">-->
+      <div class="bottom-content">
         <img [style.border]="team.get !== defaultTeam ? selectedBorderStyle : unselectedBorderStyle "
              (click)="switchTeam(teamType.TEAM2)"
              src="../../../assets/images/darth_vader.png" id="darth">
+      </div>
       <!--</div>-->
     </div>
   </div>
+
+  <h2 id="state-label">{{printState()}}</h2>
 
   <!--<select (change)="switchTeam()" id="team" *ngIf="teamVisible">-->
     <!--<option>Team 1</option>-->
