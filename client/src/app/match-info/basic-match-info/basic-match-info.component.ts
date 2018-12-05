@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../../models/match";
 import {Subscription} from "rxjs";
 import {none, Option, some} from "ts-option";
@@ -48,8 +48,10 @@ export class BasicMatchInfoComponent implements OnInit {
   ngOnInit() {
     // this.rd.setStyle(this.yoda,'width','200px');
     // this.rd.setStyle(this.yoda,'height','200px');
+
     this.innerWidth = window.innerWidth;
-    this.spinnerSize = this.innerWidth*0.2;
+    this.spinnerSize = Math.round(this.innerWidth*0.2);
+
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
     const savedData = LocalStorageHelper.getItem(StorageKey.MATCH_PASSWORD);
@@ -105,6 +107,7 @@ export class BasicMatchInfoComponent implements OnInit {
 
     this.setSpinnerOption();
   }
+
   private printState():string{
     switch (this.match.state) {
       case MatchState.SETTING_UP:

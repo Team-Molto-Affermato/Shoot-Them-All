@@ -1,3 +1,8 @@
+* {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+}
+
 #info-container{
   /*background: rgba(66, 66, 66, 0.8);*/
   /*width: 66%;*/
@@ -7,77 +12,99 @@
   justify-content: center;
   width: 100%;
 }
-#h1,h2,h3,h4{
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-}
+
 #match-name{
-  font-size: 50px;
+  font-size: 5vw;
+
+  margin-top: 2vh;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
-h4{
+
+#team-label, #state-label {
+  margin-top: 7vh;
   font-size: 25px;
 }
-#timer-container{
-  position: relative;
-  padding: 1%;
-  display: flex;
+
+#circle-container {
   width: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-#circle-container{
-  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+}
+
+.circle-container-content {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: baseline;
+  align-items: stretch;
 }
-#timer-text{
-  //position: absolute;
-  //top: 30%;
-  //left: 50%;
-  //z-index: 3;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 4vh;
+
+.bottom-content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
-#match-name,h2,h3{
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
+
+#div-yoda, #div-darth {
+  width: 20%;
 }
-#match-name{
-  padding-top: 0px;
-  padding-bottom: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+
+#timer-container{
+  //position: relative;
+  //padding: 1%;
+  //display: flex;
+  //width: 100%;
+  //height: fit-content;
+  //flex-direction: column;
+  //justify-content: center;
+  //align-items: baseline;
 }
+
 #team-container{
   width: 100%;
 }
-#join-container{
-  padding-top: 3%;
-  width: 100%;
-}
-#join-button{
-  text-align: center;
-  width: 100%;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 30px;
-}
-#button-team-container{
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+
+
 #yoda,#darth{
-  width: 90%;
-  height: 90%;
+  width: 10vw;
+  height: 10vw;
+
+  min-width: 80px;
+  min-height: 80px;
+
   border-radius: 50%;
 }
-#timer-text{
 
+.team-title {
+  text-align: center;
+  font-size: 30px;
 }
+
+#timer-text{
+  font-size: 4vw;
+}
+
+
+#join-container{
+  margin-top: 7vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+#join-button{
+  width: 80%;
+
+  font-size: 30px;
+}
+
+
 //.circleBase {
 //  border-radius: 50%;
 //  //behavior: url(PIE.htc); /* remove if you don't care about IE8 */
@@ -89,8 +116,39 @@ h4{
 //  background: yellow;
 //  //border: 3px solid red;
 //}
+
 @media screen and (max-width: 599px) {
   //#join-button{
   //  padding-top: 5%;
   //}
+
+  #match-name {
+    font-size: 30px;
+  }
+
+  #team-label, #state-label {
+    font-size: 18px;
+  }
+
+  .team-title {
+    font-size: 20px;
+  }
+
+  #timer-text{
+    font-size: 20px;
+  }
+
+  #join-button{
+    font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  #match-name {
+    font-size: 60px;
+  }
+
+  #timer-text {
+    font-size: 50px;
+  }
 }
