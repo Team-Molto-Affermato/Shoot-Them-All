@@ -42,8 +42,8 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
     }],
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
-      'Team 1',
-      'Team 2'
+      'Team Jedi',
+      'Team Sith'
     ]
   };
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -114,7 +114,8 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
     this.chart = new Chart(this.chartRef.nativeElement, {
       type: 'doughnut',
       data: this.data,
-      option: Chart.defaults.doughnut
+      options:  {maintainAspectRatio : false,
+                 resposive:false}
     });
 
   }
@@ -138,7 +139,11 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
       // });
       console.log(this.chart.data);
       this.chart.data.datasets.forEach((dataset) => {
-        dataset.data = [this.scoreTeam1,this.scoreTeam2]
+        if(this.scoreTeam1===this.scoreTeam2 && this.scoreTeam1===0){
+          dataset.data = [1,1];
+        }else{
+          dataset.data = [this.scoreTeam1,this.scoreTeam2]
+        }
       });
       this.chart.update();
     }

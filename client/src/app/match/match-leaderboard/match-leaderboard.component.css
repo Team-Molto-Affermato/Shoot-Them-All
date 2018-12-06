@@ -1,13 +1,72 @@
 table {
   width: 100%;
 }
+.mat-card{
+  box-shadow: 0px 0px 0px 0px white;
+  background: transparent;
+}
+.tab-content-lb{
+  min-height: 60vh;
+}
+*{
+  /*text-align: center;*/
+  font-family: 'Orbitron', sans-serif;
+}
+::ng-deep .mat-tab-label {
+  font-family: Orbitron, sans-serif !important;
+}
+.mat-cell,.mat-header-cell{
+  font-family: Orbitron, sans-serif !important;
+  text-align: center;
+}
+#leaderboard-container{
+  width: 100%;
+}
 #multi-player-leaderboard{
   width: 100%;
 }
 mat-card-title-group{
   justify-content: center;
 }
-#mat-card-title{
+
+.mat-header-cell,.mat-cell {
   text-align: center;
-  font-family: 'Orbitron', sans-serif;
+}
+.mat-header-cell{
+  font-size: 100%;
+}
+.mat-cell{
+  font-size: 90%;
+}
+.mobile-label{
+  display: none;
+}
+@media(max-width: 600px) {
+  .mobile-label {
+    width: 80px;
+    display: inline-block;
+    font-weight: bold;
+  }
+
+  .mat-header-row {
+    display: none;
+  }
+  .mat-header-cell,.mat-cell {
+    text-align: start;
+  }
+  mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type {
+    padding-left: 0px;
+  }
+  .mat-row {
+    flex-direction: column;
+    align-items: start;
+    padding: 10px 24px;
+  }
+  mat-footer-row, mat-row {
+    min-height: 2.5vh;
+  }
+  /*#chartD{*/
+    /*height: 400px;*/
+    /*width: 400px;*/
+  /*}*/
 }
