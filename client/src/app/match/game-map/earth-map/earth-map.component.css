@@ -1,5 +1,13 @@
 agm-map {
-  height: 66vh;
+  height: 70vh;
 }
-
+*{
+  /*text-align: center;*/
+  font-family: 'Orbitron', sans-serif;
+}
+h1{
+  font-size: 3vh;
+  text-align: center;
+  font-weight: 500;
+}
 
