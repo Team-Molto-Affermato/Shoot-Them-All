@@ -72,6 +72,7 @@ import { MatchesMapComponent } from './home/matches-map/matches-map.component';
 import { MatchesListComponent } from './home/matches-list/matches-list.component';
 import { BasicMatchInfoComponent } from './match-info/basic-match-info/basic-match-info.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 export enum ComponentName {
   LOGIN = "login",
@@ -189,7 +190,8 @@ const appRoutes: Routes = [
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule
+    MatTreeModule,
+    ProgressbarModule.forRoot()
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]

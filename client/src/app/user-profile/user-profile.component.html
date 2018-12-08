@@ -7,7 +7,47 @@
       <div id="centered-container" >
         <div id="user-profile-container">
           <h1>diego1995</h1>
-          <img src="../../assets/images/ranks/chevron-1.png">
+          <div id="rank-info-container">
+            <div id="img-rank-c">
+              <img src="../../assets/images/ranks/chevron-1.png" id="rank-img" class="rank-pad">
+              <div id="progress-bar" class="rank-pad">
+                <progressbar max="200" [value]="166" type="success" [striped]="false" [animate]="true"><i>166 / 200</i></progressbar>
+              </div>
+              <h2 class="rank-pad">Sergent</h2>
+            </div>
+          </div>
+          <div id="personal-info-container">
+            <div id="info-container">
+
+              <!--<form class="example-form">-->
+              <div id="n-s-container" class="two-field-container">
+                <mat-form-field class="half-width" id="name-f">
+                  <input matInput type="text" readonly="true" placeholder="Nome" value="Diego">
+                </mat-form-field>
+                <mat-form-field readonly="true" class="half-width" id="surname-f">
+                  <input matInput type="text" placeholder="Cognome" value="Pergolini">
+                </mat-form-field>
+              </div>
+              <mat-form-field class="full-width">
+                <input matInput type="email" readonly="true" placeholder="E-Mail" value="diego.pergolini.95@gmail.com">
+              </mat-form-field>
+              <div class="two-field-container">
+                <mat-form-field class="one-third" id="battle-f">
+                  <input matInput type="number" readonly="true" placeholder="Match giocati" value="4">
+                </mat-form-field>
+                <mat-form-field readonly="true" class="one-third" id="rank-f">
+                  <input matInput type="text" placeholder="Posizione" value="1°">
+                </mat-form-field>
+                <mat-form-field readonly="true" class="one-third" id="level-f">
+                  <input matInput type="text" placeholder="Livello" value="1">
+                </mat-form-field>
+              </div>
+              <mat-checkbox>Edit informations</mat-checkbox>
+              <div id="button-container">
+                <button mat-flat-button color="primary" id="join-button"  *ngIf="true">Save informations</button>
+              </div><!--</form>-->
+            </div>
+          </div>
         </div>
       </div>
     </div>
