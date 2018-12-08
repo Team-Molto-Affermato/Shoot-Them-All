@@ -1,0 +1,45 @@
+#main-container{
+  position: relative;
+  width: 100%;
+  height: 99vh;
+}
+#principle-container{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#particle-canvas{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+#contentContainer{
+  margin-top: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /*height: 100%;*/
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+#centered-container{
+  background: rgba(66, 66, 66, 0.8);
+  width: 80%;
+  /*height: 70%;*/
+  position: relative;
+  top:0;
+  /*padding: 1% 1% 1% 1%;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+h1{
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 3vh;
+}

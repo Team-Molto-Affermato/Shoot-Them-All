@@ -125,7 +125,7 @@ app.use('/match', express.static(path.join(__dirname, 'client/dist/client')));
 app.use('/error', express.static(path.join(__dirname, 'client/dist/client')));
 app.use('/loading', express.static(path.join(__dirname, 'client/dist/client')));
 app.use('/leaderboard', express.static(path.join(__dirname, 'client/dist/client')));
-
+app.use('/userProfile', express.static(path.join(__dirname, 'client/dist/client')));
 
 app.use('/api', routesApi);
 // var http = require('http').Server(app);
