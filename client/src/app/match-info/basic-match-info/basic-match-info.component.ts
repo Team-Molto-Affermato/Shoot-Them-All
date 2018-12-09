@@ -231,7 +231,7 @@ export class BasicMatchInfoComponent implements OnInit {
         const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
         const remaining = DateHelper.dateDifference(endingDate, now)/60000;
         console.log(remaining);
-        body.score = -((this.match.duration-remaining)/this.match.duration)*penality;
+        body.score = Math.floor(-((this.match.duration-remaining)/this.match.duration)*penality);
         console.log(body.score);
       }
       this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(

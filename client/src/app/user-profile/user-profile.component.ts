@@ -41,6 +41,7 @@ export class UserProfileComponent implements OnInit {
     this.http.get('api/users/'+this.username).subscribe(
       (data: BasicUserInfo)=>{
         this.basicUserInfo = data;
+        this.basicUserInfo.score = Math.floor(this.basicUserInfo.score);
         this.level = this.getLevel(this.basicUserInfo.score);
         this.rank = this.getRankings(this.level);
         this.nextLevelScore = this.getNextLevelScore(this.level);
