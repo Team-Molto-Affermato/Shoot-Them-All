@@ -31,11 +31,21 @@ exports.readUser = (req, res) => {
         username: req.params.userId
     });
     query.exec(function(err, user){
-        if(err)
+        if(err){
             res.send(err);
-        console.log(user)
-        // If no errors are found, it responds with a JSON of all users
-        res.json(user);
+        }else{
+            if(user){
+                res.json({
+                    name: user.name,
+                    surname: user.surname,
+                    username: user.username,
+                    email: user.email,
+                    score: user.score
+                });
+            }else{
+                res.json("error");
+            }
+        }
     });
 };
 
@@ -57,7 +67,22 @@ exports.checkUser = (req,res) => {
     });
 }
 exports.updateUser = (req, res) => {
-
+    var query = {
+        username: req.params.userId,
+    };
+    User.findOneAndUpdate(query, {name:req.body.name,surname: req.body.surname,email: req.body.email}, function (err,user) {
+        if (err) {
+            return res.send(err)
+        } else {
+            res.json({
+                name: user.name,
+                surname: user.surname,
+                username: user.username,
+                email: user.email,
+                score: user.score
+            });
+        }
+    });
 };
 
 exports.userScore = (req,res) =>{

@@ -4,6 +4,17 @@ var User = require('../models/users');
 var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
 console.log(configuration.address);
 var io = require('socket.io-emitter')({ host: configuration.address, port: 6379 });
+exports.getUserMatches = (req,res) => {
+    UserInMatch.countDocuments({
+        name: req.params.userId
+    },function (err,count) {
+        if(err){
+            res.json(err)
+        }else{
+            res.json({count:count});
+        }
+    })
+}
 exports.getUsersPosition = (req,res) => {
     UserInMatch
         .find({

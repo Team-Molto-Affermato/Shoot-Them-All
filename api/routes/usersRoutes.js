@@ -1,6 +1,7 @@
 module.exports = (app) => {
 
     const usersController = require('../controllers/usersController');
+    const userInMatchController = require('../controllers/userInMatchController');
 
     app.route('/users')
         .get(usersController.listUsers)
@@ -8,6 +9,8 @@ module.exports = (app) => {
 
     app.route('/users/score')
         .get(usersController.leaderboard);
+    app.route('/users/:userId/matches')
+        .get(userInMatchController.getUserMatches);
     app.route('/users/:userId')
         .get(usersController.readUser)
         .put(usersController.updateUser)
