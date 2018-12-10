@@ -54,7 +54,7 @@ export class PlayersMapComponent implements OnInit {
     this.usersSub = this.dataService
       .getPositions()
       .subscribe(positions =>{
-        console.log("Mappa dati socket: ",positions);
+        // console.log("Mappa dati socket: ",positions);
         this.userPositions = [];
         positions.forEach(pos=>{
           if (pos.username !== username) {

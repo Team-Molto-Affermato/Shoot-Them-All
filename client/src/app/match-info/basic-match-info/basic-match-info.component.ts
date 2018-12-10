@@ -11,6 +11,7 @@ import {LocalStorageHelper, StorageKey} from "../../../utilities/LocalStorageHel
 import {DateHelper} from "../../../utilities/DateHelper";
 import {UserInLeaderboard, UserScore} from "../../../models/user";
 import {ConditionUpdaterService} from "../../../services/condition-updater.service";
+import {Point} from "../../../models/point";
 @Component({
   selector: 'app-basic-match-info',
   templateUrl: './basic-match-info.component.html',
@@ -66,6 +67,7 @@ export class BasicMatchInfoComponent implements OnInit {
       (data: Array<UserScore>)=>{
         console.log("utenti: ",data);
         this.users = data.map(user=>user.username);
+        this.checkUserInside();
         console.log("users: ",this.users);
       },err =>{
         console.log(err);
@@ -75,7 +77,7 @@ export class BasicMatchInfoComponent implements OnInit {
       .subscribe(userList => {
         console.log(userList);
         this.users = userList.map(user=>user.username);
-        // this.checkUserInside();
+        this.checkUserInside();
         console.log(this.users[0]);
         console.log(this.users);
       });
@@ -96,6 +98,7 @@ export class BasicMatchInfoComponent implements OnInit {
           case "STARTED":
             console.log("Started")
             this.match.state = MatchState.STARTED;
+            this.checkUserInside();
             break;
           case "ENDED":
             console.log("Ended")
@@ -200,7 +203,7 @@ export class BasicMatchInfoComponent implements OnInit {
     return this.match.state !== MatchState.ENDED;
   }
   private userJoined(): boolean {
-    // console.log(this.users);
+    // console.log("Nella user join: ",this.users,this.username);
     return this.users.includes(this.username);
   }
   partecipationButtonText() {
@@ -214,7 +217,10 @@ export class BasicMatchInfoComponent implements OnInit {
     const penality = 500;
     if (!this.userJoined()) {
       const teamV = this.team.isDefined?this.team.get:"NONE";
-      var position = this.conditionObserverService.position;
+      const positionAvailable:boolean = LocalStorageHelper.getItem(StorageKey.COMPLETE_FUNCTIONALITIES);
+      var position = positionAvailable?
+        this.conditionObserverService.position:
+        new Point(43,12);
       const location = {
         type: 'Point',
         coordinates: [position.latitude,position.longitude]
@@ -237,6 +243,7 @@ export class BasicMatchInfoComponent implements OnInit {
       this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
         data => {
           console.log(data);
+          this.checkUserInside();
         }, error => {
           console.log(error)
         }
@@ -274,5 +281,13 @@ export class BasicMatchInfoComponent implements OnInit {
     }
 
     return (withHour?(h + ":"):"") + m + ":" + s;
+  }
+  private checkUserInside() {
+    console.log("Stato check: ",this.match.state,this.userJoined())
+    if (this.match.state === MatchState.STARTED) {
+      if(this.userJoined()) {
+        this.router.navigateByUrl("/match");
+      }
+    }
   }
 }
