@@ -12,6 +12,8 @@ import {UserInMatch, UserScore} from "../../models/user";
 import {CoordinatesHelper} from "../../utilities/CoordinatesHelper";
 import {GameMap} from "../../models/GameMap";
 import {Option} from "ts-option";
+import set = Reflect.set;
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-match',
@@ -19,14 +21,20 @@ import {Option} from "ts-option";
   styleUrls: ['./match.component.css']
 })
 export class MatchComponent implements OnInit, OnDestroy {
+
+  MAX_SHOTS = 3;
+
   showLeaderboard = false;
-  teamMode= false;
+  showLaserBeam = false;
+  laserButtonEnabled = true;
 
   match: Match;
   userInMatch: UserInMatch;
   orientationAngle;
   players = [];
   userInArea = true;
+  teamMode= false;
+  shots = this.MAX_SHOTS;
 
   gameMap: Option<GameMap>;
 
@@ -35,11 +43,15 @@ export class MatchComponent implements OnInit, OnDestroy {
   userScoreSub: Subscription;
 
   positionIntervalId;
+  chargeIntervalId;
+  laserBeamTimeoutId;
+
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private dataService: DataService,
+    private authenticationService: AuthenticationService,
     private collisionDetectionService: CollisionsDetectionService
   ) {
   }
@@ -155,7 +167,7 @@ export class MatchComponent implements OnInit, OnDestroy {
 
       this.orientationAngle = (alpha+90)%360;
 
-      const radar = document.getElementById('container');
+      const radar = document.getElementById('radar-container');
       if (radar) {
         radar.style.transform = 'rotate(' + alpha + 'deg)';
       }
@@ -171,8 +183,44 @@ export class MatchComponent implements OnInit, OnDestroy {
   }
 
   shoot() {
-    this.collisionDetectionService.checkCollisions(this.userInMatch.position, this.orientationAngle,
-      this.players,this.match.name,this.userInMatch.username);
+
+    if(this.shots>0) {
+      this.shots--;
+
+      if(this.shots == 0) {
+        this.laserButtonEnabled = false;
+      }
+
+      if (this.chargeIntervalId) {
+        clearInterval(this.chargeIntervalId);
+      }
+
+      this.chargeIntervalId = setInterval(() => {
+        this.shots++;
+
+        if(this.shots == 1) {
+          this.laserButtonEnabled = true;
+        }
+
+        if (this.shots == this.MAX_SHOTS) {
+          clearInterval(this.chargeIntervalId);
+          this.chargeIntervalId = null;
+        }
+      }, 2000);
+
+      if (this.showLaserBeam) {
+        clearTimeout(this.laserBeamTimeoutId);
+      }
+      this.showLaserBeam = true;
+      this.laserBeamTimeoutId = setTimeout(() => this.showLaserBeam = false, 1000);
+
+      this.collisionDetectionService.checkCollisions(this.userInMatch.position, this.orientationAngle,
+        this.players,this.match.name,this.userInMatch.username);
+    }
+  }
+
+  shotsArray() {
+    return new Array(this.shots);
   }
 
   exit() {
@@ -186,5 +234,10 @@ export class MatchComponent implements OnInit, OnDestroy {
   }
   switchComponent() {
     this.showLeaderboard = !this.showLeaderboard;
+  }
+
+  logout() {
+    LocalStorageHelper.removeItem(StorageKey.USERNAME);
+    this.authenticationService.logout();
   }
 }

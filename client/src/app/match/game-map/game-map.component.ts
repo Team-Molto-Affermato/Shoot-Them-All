@@ -9,14 +9,11 @@ import {falseIfMissing} from "protractor/built/util";
 })
 export class GameMapComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('map') map: ElementRef;
-
   swiper: Swiper;
 
   constructor() { }
 
   ngOnInit() {
-
   }
 
   ngAfterViewInit() {

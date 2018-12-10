@@ -10,10 +10,10 @@ import {Role} from "../../../../models/RoleHelper";
 
 @Component({
   selector: 'app-earth-map',
-  templateUrl: './earth-map.component.html',
-  styleUrls: ['./earth-map.component.css']
+  templateUrl: './players-map.component.html',
+  styleUrls: ['./players-map.component.css']
 })
-export class EarthMapComponent implements OnInit {
+export class PlayersMapComponent implements OnInit {
   match: Match;
   positionOfUser;
   positionAvailable:boolean;

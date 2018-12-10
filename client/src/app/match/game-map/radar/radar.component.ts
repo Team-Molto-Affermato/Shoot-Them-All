@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatchComponent} from "../../match.component";
 import {AngleHelper} from "../../../../utilities/AngleHelper";
@@ -28,12 +28,14 @@ import {none, some} from "ts-option";
     ])
   ]
 })
-export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy {
+export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy, AfterViewInit {
 
   deg: number = 0;
   radius: number;
   ratio: number;
   radar_line: HTMLElement;
+
+  viewInit: boolean = false;
 
   activePoints = new Map<String, Boolean>();
 
@@ -43,11 +45,19 @@ export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy
 
   constructor(readonly matchComponent: MatchComponent) {
     super(matchComponent);
-    // this.radius = this.matchComponent.match.radius;
+    this.radius = this.matchComponent.match.radius;
   }
 
   ngOnInit() {
 
+  }
+
+  ngAfterViewInit() {
+    this.viewInit = true;
+
+    this.radar_line = document.getElementById("radar_line");
+    const radarRadius = this.radar_line.offsetWidth/2;
+    this.ratio = radarRadius/this.radius;
   }
 
   ngOnDestroy() {
@@ -56,30 +66,30 @@ export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy
   }
 
   updatePosition(userInArea: boolean) {
-    // if (userInArea) {
-    //   this.radar_line = document.getElementById("radar_line");
-    //   const radarRadius = this.radar_line.offsetWidth/2;
-    //   this.ratio = radarRadius/this.radius;
-    //
-    //   this.radarStyle = {
-    //     'background': '#222 url("../../../../assets/images/radar_enabled.png") no-repeat',
-    //     'background-size': '40vh'
-    //   };
-    //
-    //   if (!this.rotateIntervalId){
-    //     this.rotateIntervalId = setInterval(() => this.rotate(), 25);
-    //   }
-    // } else {
-    //   this.radarStyle = {
-    //     'background': '#222 url("../../../../assets/images/radar_disabled.png") no-repeat',
-    //     'background-size': '40vh'
-    //   };
-    //
-    //   if (this.rotateIntervalId) {
-    //     clearInterval(this.rotateIntervalId);
-    //     this.rotateIntervalId = null;
-    //   }
-    // }
+    if (this.viewInit) {
+      if (userInArea) {
+
+        this.radarStyle = {
+          'background': '#222 url("../../../../assets/images/radar_enabled.png") no-repeat',
+          'background-size': '40vh'
+        };
+
+        if (!this.rotateIntervalId){
+          this.rotateIntervalId = setInterval(() => this.rotate(), 25);
+        }
+      } else {
+        this.radarStyle = {
+          'background': '#222 url("../../../../assets/images/radar_disabled.png") no-repeat',
+          'background-size': '40vh'
+        };
+
+        if (this.rotateIntervalId) {
+          clearInterval(this.rotateIntervalId);
+          this.rotateIntervalId = null;
+        }
+      }
+    }
+
   }
 
   rotate() {

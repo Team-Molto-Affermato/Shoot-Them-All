@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EarthMapComponent } from './earth-map.component';
+import { PlayersMapComponent } from './players-map.component';
 
-describe('EarthMapComponent', () => {
-  let component: EarthMapComponent;
-  let fixture: ComponentFixture<EarthMapComponent>;
+describe('PlayersMapComponent', () => {
+  let component: PlayersMapComponent;
+  let fixture: ComponentFixture<PlayersMapComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EarthMapComponent ]
+      declarations: [ PlayersMapComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EarthMapComponent);
+    fixture = TestBed.createComponent(PlayersMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

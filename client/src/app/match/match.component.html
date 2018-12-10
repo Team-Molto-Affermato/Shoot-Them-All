@@ -1,16 +1,57 @@
-<!--<app-navbar></app-navbar>-->
+<div id="nav-container">
+  <mat-toolbar>
+    <!--<span class="fill-remaining-space"></span>-->
+    <div id="left-container">
+      <div id="item-row" fxShow="false" fxShow.gt-xs>
+        <button mat-button routerLink="/home">Home</button>
+        <button mat-button routerLink="/matchConfiguration">New Match</button>
+        <button mat-button (click)="logout()">Logout</button>
+      </div>
+      <button mat-button [mat-menu-trigger-for]="menu" fxShow="true" fxHide.gt-xs>
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <div id="right-container">
+      <button mat-button id="leave-button" (click)="exit()">Leave</button>
+    </div>
+  </mat-toolbar>
+
+  <mat-menu x-position="before" #menu="matMenu" class="nav-menu">
+    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/matchConfiguration">New Match</button>
+    <button mat-button (click)="logout()">Logout</button>
+  </mat-menu>
+</div>
+
 <div id="main-container">
   <!--<app-match-leaderboard *ngIf="showLeaderboard && !teamMode"></app-match-leaderboard>-->
   <!--<app-match-multi-leaderboard *ngIf="showLeaderboard && teamMode"></app-match-multi-leaderboard>-->
   <app-game-map *ngIf="!showLeaderboard"></app-game-map>
 
-  <div id="shoot">
-    <img src="../../assets/images/light-saber.png">
-    <button id="button" (click)="shoot()"></button>
+  <div id="shoot-container">
+    <div id="filler"></div>
+
+    <div id="laser-container">
+      <div id="laser-beam-container" *ngIf="showLaserBeam">
+        <img id="laser-beam" src="../../assets/images/laser-beam.png">
+      </div>
+
+      <div id="laser-gun-container">
+        <img id="laser" src="../../assets/images/light-saber.png">
+        <button id="shoot-button" (click)="shoot()" [disabled]="!laserButtonEnabled" ></button>
+      </div>
+    </div>
+
+    <div id="charger">
+      <div class="progress">
+        <div class="block-container">
+          <div class="block" *ngFor="let i of shotsArray()"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <button (click)="exit()">Exit</button>
-  <!--<button (click)="switchComponent()">Leaderboard</button>-->
 </div>
 
 
