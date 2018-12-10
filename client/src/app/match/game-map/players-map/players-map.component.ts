@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Match} from "../../../../models/match";
+import {Match, MatchOrganization} from "../../../../models/match";
 import {LocalStorageHelper, StorageKey} from 'src/utilities/LocalStorageHelper';
 import {Subscription} from "rxjs";
 import {DataService} from "../../../../services/data.service";
 import {ConditionUpdaterService} from "../../../../services/condition-updater.service";
 import {Point, UserPosition} from "../../../../models/point";
 import {Role} from "../../../../models/RoleHelper";
+import {Team} from "../../../../models/team";
 
 @Component({
   selector: 'app-earth-map',
@@ -16,6 +17,7 @@ import {Role} from "../../../../models/RoleHelper";
 export class PlayersMapComponent implements OnInit {
   match: Match;
   positionOfUser;
+  teamVisible:boolean = false;
   positionAvailable:boolean;
   userPositions:Array<UserPosition>;
   styles;
@@ -29,6 +31,8 @@ export class PlayersMapComponent implements OnInit {
   ngOnInit() {
     const username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
+    this.teamVisible = this.match.organization === MatchOrganization.TEAM;
+
     this.positionAvailable = LocalStorageHelper.getItem(StorageKey.COMPLETE_FUNCTIONALITIES);
     this.positionOfUser = this.positionAvailable?
       this.conditionObserverService.position:
@@ -58,5 +62,8 @@ export class PlayersMapComponent implements OnInit {
           }
         });
       });
+  }
+  getTeam(team:Team):string{
+    return team===Team.TEAM1?"Jedi":"Sith";
   }
 }
