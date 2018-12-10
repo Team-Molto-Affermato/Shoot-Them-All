@@ -71,6 +71,8 @@ import { DescriptionComponent } from './home/description/description.component';
 import { MatchesMapComponent } from './home/matches-map/matches-map.component';
 import { MatchesListComponent } from './home/matches-list/matches-list.component';
 import { BasicMatchInfoComponent } from './match-info/basic-match-info/basic-match-info.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 export enum ComponentName {
   LOGIN = "login",
@@ -81,7 +83,8 @@ export enum ComponentName {
   MATCH = "match",
   ERROR = "error",
   LOADING = "loading",
-  LEADERBOARD = "leaderboard"
+  LEADERBOARD = "leaderboard",
+  USER_PROFILE= "userProfile"
 }
 
 
@@ -98,7 +101,9 @@ const appRoutes: Routes = [
     data: {standardRole: Role.PLAYER}},
   {path: ComponentName.ERROR, component: ErrorComponent, canActivate: [AuthGuard]},
   {path: ComponentName.LOADING, component: LoadingComponent, canActivate: [AuthGuard]},
-  {path: ComponentName.LEADERBOARD, component: LeaderboardComponent, canActivate: [AuthGuard]}
+  {path: ComponentName.LEADERBOARD, component: LeaderboardComponent, canActivate: [AuthGuard]},
+  {path: ComponentName.USER_PROFILE, component: UserProfileComponent, canActivate: [AuthGuard]},
+
 ];
 
 
@@ -126,7 +131,8 @@ const appRoutes: Routes = [
     DescriptionComponent,
     MatchesMapComponent,
     MatchesListComponent,
-    BasicMatchInfoComponent
+    BasicMatchInfoComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -184,7 +190,8 @@ const appRoutes: Routes = [
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule
+    MatTreeModule,
+    ProgressbarModule.forRoot()
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]

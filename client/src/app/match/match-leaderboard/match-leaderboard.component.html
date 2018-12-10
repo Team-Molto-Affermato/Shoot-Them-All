@@ -1,116 +1,156 @@
-<div id="single-player-leaderboard" *ngIf="!teamVisible">
-  <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
-      <!-- Position Column -->
-      <!--<ng-container matColumnDef="position">-->
-      <!--<th mat-header-cell *matHeaderCellDef> No. </th>-->
-      <!--<td mat-cell *matCellDef="let element"> {{element.position}} </td>-->
-      <!--</ng-container>-->
+<div id="leaderboard-container">
+  <div id="single-player-leaderboard" *ngIf="!teamVisible">
+    <h1>{{match.name}} Leaderboard</h1>
+    <div>
+      <mat-table  [dataSource]="dataSource">
+        <!-- Name Column -->
+        <ng-container matColumnDef="position">
+          <mat-header-cell  *matHeaderCellDef>Position </mat-header-cell>
+          <mat-cell  *matCellDef="let element">
+            <span class="mobile-label single">Position</span>
+            {{element.position}}
+          </mat-cell>
+        </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef>Position </th>
-        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-      </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="username">
+          <mat-header-cell  *matHeaderCellDef> Username </mat-header-cell>
+          <mat-cell  *matCellDef="let element">
+            <span class="mobile-label single">Username</span>
+            {{element.username}}
+          </mat-cell>
+        </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef> Username </th>
-        <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-      </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="score">
+          <mat-header-cell  *matHeaderCellDef> Score </mat-header-cell>
+          <mat-cell  *matCellDef="let element">
+            <span class="mobile-label single">Score</span>
+            {{element.score}}
+          </mat-cell>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="score">
-        <th mat-header-cell *matHeaderCellDef> Score </th>
-        <td mat-cell *matCellDef="let element"> {{element.score}} </td>
-      </ng-container>
+        <ng-container matColumnDef="ranking">
+          <mat-header-cell  *matHeaderCellDef> Ranking </mat-header-cell>
+          <mat-cell  *matCellDef="let element">
+            <span class="mobile-label single">Ranking</span>
+            {{element.ranking}}
+          </mat-cell>
+        </ng-container>
+        <mat-header-row  *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row  *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
 
-      <ng-container matColumnDef="ranking">
-        <th mat-header-cell *matHeaderCellDef> Ranking </th>
-        <td mat-cell *matCellDef="let element"> {{element.ranking}} </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
-</div>
-<div id="multi-player-leaderboard" *ngIf="teamVisible">
-  <mat-card class="team-card">
-    <mat-card-title-group>
-      <mat-card-title id="mat-card-title">
-        Leaderboards
-      </mat-card-title>
-    </mat-card-title-group>
-    <mat-card-content>
-      <!--<img mat-card-md-image src="../../assets/images/laser1.png" alt="Team 1 Image">-->
-      <mat-tab-group
-        mat-stretch-tabs class="example-stretched-tabs"
-        [selectedIndex]="1"
-      >
+  <div id="multi-player-leaderboard" *ngIf="teamVisible">
+    <mat-card class="team-card">
+      <mat-card-title-group>
+        <mat-card-title id="mat-card-title">
+          {{match.name}} Leaderboards
+        </mat-card-title>
+      </mat-card-title-group>
+      <mat-card-content>
+        <!--<img mat-card-md-image src="../../assets/images/laser1.png" alt="Team 1 Image">-->
+        <mat-tab-group
+          mat-stretch-tabs class="example-stretched-tabs"
+          [selectedIndex]="1"
+        >
 
-        <mat-tab label="Team Yoda" class="mat-elevation-z8">
-          <table mat-table [dataSource]="dataSourceTeam1">
-            <!-- Name Column -->
-            <ng-container matColumnDef="position">
-              <th mat-header-cell *matHeaderCellDef>Position </th>
-              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-            </ng-container>
+          <mat-tab label="Team Yoda" >
+            <div class="tab-content-lb">
+              <mat-table  [dataSource]="dataSourceTeam1">
+              <!-- Name Column -->
+              <ng-container matColumnDef="position">
+                <mat-header-cell *matHeaderCellDef>Position</mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                  <span class="mobile-label">Position</span>
+                  {{element.position}}
+                </mat-cell>
+              </ng-container>
 
-            <!-- Weight Column -->
-            <ng-container matColumnDef="username">
-              <th mat-header-cell *matHeaderCellDef> Username </th>
-              <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-            </ng-container>
+              <!-- Weight Column -->
+              <ng-container matColumnDef="username">
+                <mat-header-cell  *matHeaderCellDef>Username</mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                  <span class="mobile-label">Username</span>
+                  {{element.username}}
+                </mat-cell>
+              </ng-container>
 
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="score">
-              <th mat-header-cell *matHeaderCellDef> Score </th>
-              <td mat-cell *matCellDef="let element"> {{element.score}} </td>
-            </ng-container>
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="score">
+                <mat-header-cell  *matHeaderCellDef>Score</mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                  <span class="mobile-label">Score</span>
+                  {{element.score}}
+                </mat-cell>
+              </ng-container>
 
-            <ng-container matColumnDef="ranking">
-              <th mat-header-cell *matHeaderCellDef> Ranking </th>
-              <td mat-cell *matCellDef="let element"> {{element.ranking}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-        </mat-tab>
-        <mat-tab label="Team Ranking">
-          <canvas #doughnutChart>{{ chart }}</canvas>
-        </mat-tab>
-        <mat-tab label="Team Darth Vader">
-          <table mat-table [dataSource]="dataSourceTeam2">
-            <!-- Name Column -->
-            <ng-container matColumnDef="position">
-              <th mat-header-cell *matHeaderCellDef>Position </th>
-              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-            </ng-container>
+              <ng-container matColumnDef="ranking">
+                <mat-header-cell  *matHeaderCellDef>Ranking</mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                  <span class="mobile-label">Ranking</span>
+                  {{element.ranking}}
+                </mat-cell>
+              </ng-container>
+              <mat-header-row  *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row  *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+            </div>
+          </mat-tab>
+          <mat-tab label="Team Ranking">
+            <div class="tab-content-lb">
+              <canvas #doughnutChart id="chartD">{{ chart }}</canvas>
+            </div>
+          </mat-tab>
+          <mat-tab label="Team Darth Vader">
+            <div class="tab-content-lb">
+              <mat-table mat-table [dataSource]="dataSourceTeam2">
+                <ng-container matColumnDef="position">
+                  <mat-header-cell *matHeaderCellDef>Position</mat-header-cell>
+                  <mat-cell  *matCellDef="let element">
+                    <span class="mobile-label">Position</span>
+                    {{element.position}}
+                  </mat-cell>
+                </ng-container>
 
-            <!-- Weight Column -->
-            <ng-container matColumnDef="username">
-              <th mat-header-cell *matHeaderCellDef> Username </th>
-              <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-            </ng-container>
+                <!-- Weight Column -->
+                <ng-container matColumnDef="username">
+                  <mat-header-cell  *matHeaderCellDef>Username</mat-header-cell>
+                  <mat-cell  *matCellDef="let element">
+                    <span class="mobile-label">Username</span>
+                    {{element.username}}
+                  </mat-cell>
+                </ng-container>
 
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="score">
-              <th mat-header-cell *matHeaderCellDef> Score </th>
-              <td mat-cell *matCellDef="let element"> {{element.score}} </td>
-            </ng-container>
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="score">
+                  <mat-header-cell  *matHeaderCellDef>Score</mat-header-cell>
+                  <mat-cell  *matCellDef="let element">
+                    <span class="mobile-label">Score</span>
+                    {{element.score}}
+                  </mat-cell>
+                </ng-container>
 
-            <ng-container matColumnDef="ranking">
-              <th mat-header-cell *matHeaderCellDef> Ranking </th>
-              <td mat-cell *matCellDef="let element"> {{element.ranking}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-        </mat-tab>
-      </mat-tab-group>
+                <ng-container matColumnDef="ranking">
+                  <mat-header-cell  *matHeaderCellDef>Ranking</mat-header-cell>
+                  <mat-cell  *matCellDef="let element">
+                    <span class="mobile-label">Ranking</span>
+                    {{element.ranking}}
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row  *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row  *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
 
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

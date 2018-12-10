@@ -42,8 +42,8 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
     }],
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
-      'Team 1',
-      'Team 2'
+      'Team Jedi',
+      'Team Sith'
     ]
   };
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -61,20 +61,20 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
       scores=>{
         this.leaderboard = scores.map(
           (v,index)=>new UserInLeaderboard(
-            index+1,v.username,v.score,this.getRankings(v.scoreG))
+            index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
         );
         if(this.match.organization === MatchOrganization.TEAM) {
           this.leaderboardTeam1 =
             scores
             .filter(s=>s.team===Team.TEAM1)
             .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
             );
           this.leaderboardTeam2 =
             scores
               .filter(s=>s.team===Team.TEAM2)
               .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
               );
         }
           this.refresh();
@@ -89,7 +89,7 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
         console.log("Dati get: ",dataR);
         this.leaderboard = dataR.map(
           (v,index)=>new UserInLeaderboard(
-            index+1,v.username,v.score,this.getRankings(v.scoreG)
+            index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG)
           )
         );
         if(this.match.organization === MatchOrganization.TEAM) {
@@ -97,13 +97,13 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
             dataR
               .filter(s=>s.team===Team.TEAM1)
               .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
               );
           this.leaderboardTeam2 =
             dataR
               .filter(s=>s.team===Team.TEAM2)
               .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
               );
         }
         this.refresh();
@@ -114,7 +114,8 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
     this.chart = new Chart(this.chartRef.nativeElement, {
       type: 'doughnut',
       data: this.data,
-      option: Chart.defaults.doughnut
+      options:  {maintainAspectRatio : false,
+                 resposive:false}
     });
 
   }
@@ -138,7 +139,11 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
       // });
       console.log(this.chart.data);
       this.chart.data.datasets.forEach((dataset) => {
-        dataset.data = [this.scoreTeam1,this.scoreTeam2]
+        if(this.scoreTeam1===this.scoreTeam2 && this.scoreTeam1===0){
+          dataset.data = [1,1];
+        }else{
+          dataset.data = [this.scoreTeam1,this.scoreTeam2]
+        }
       });
       this.chart.update();
     }

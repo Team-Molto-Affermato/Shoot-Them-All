@@ -3,7 +3,8 @@
     <h1 id="match-name">{{match.name}}</h1>
   </div>
   <div id="div-subtitle">
-    <h3 id="team-label">Which side of the force will you choose?</h3>
+    <h3 id="team-label" *ngIf="teamVisible">Which side of the force will you choose?</h3>
+    <h3 id="single-label" *ngIf="!teamVisible">Join the battle, the force will be with you</h3>
   </div>
 
   <div id="circle-container">

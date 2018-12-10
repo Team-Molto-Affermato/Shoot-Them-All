@@ -1,23 +1,28 @@
-<agm-map [latitude]="match.centralPoint.latitude" [longitude]="match.centralPoint.longitude" [styles]="styles">
-  <agm-marker *ngFor="let userPosition of userPositions"
-              [latitude]="userPosition.position.latitude"
-              [longitude]="userPosition.position.longitude"></agm-marker>
-  <div *ngIf="positionAvailable">
-    <agm-marker
-      [latitude]="positionOfUser.latitude"
-      [longitude]="positionOfUser.longitude"
-      [title]="'User Position'"
-    >
-    </agm-marker>
-  </div>
+<div id="map-earth-container">
+  <h1>Map of {{match.name}}</h1>
 
-  <agm-circle
-              [latitude]="match.centralPoint.latitude"
-              [longitude]="match.centralPoint.longitude"
-              [circleDraggable]="false"
-              [editable]="false"
-              [fillColor]="'#red'"
-              [radius]="match.radius"
-  >
-  </agm-circle>
-</agm-map>
+  <agm-map [latitude]="match.centralPoint.latitude" [longitude]="match.centralPoint.longitude" [styles]="styles">
+    <agm-marker *ngFor="let userPosition of userPositions"
+                [latitude]="userPosition.position.latitude"
+                [longitude]="userPosition.position.longitude"></agm-marker>
+    <div *ngIf="positionAvailable">
+      <agm-marker
+        [latitude]="positionOfUser.latitude"
+        [longitude]="positionOfUser.longitude"
+        [title]="'User Position'"
+      >
+      </agm-marker>
+    </div>
+
+    <agm-circle
+      [latitude]="match.centralPoint.latitude"
+      [longitude]="match.centralPoint.longitude"
+      [circleDraggable]="false"
+      [editable]="false"
+      [fillColor]="'#red'"
+      [radius]="match.radius"
+    >
+    </agm-circle>
+  </agm-map>
+</div>
+

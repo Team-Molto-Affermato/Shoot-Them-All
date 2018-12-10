@@ -1,0 +1,135 @@
+#main-container{
+  position: relative;
+  width: 100%;
+  height: 99vh;
+}
+#principle-container{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#particle-canvas{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+#contentContainer{
+  margin-top: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /*height: 100%;*/
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+*{
+  font-family: 'Orbitron', sans-serif;
+
+}
+#centered-container{
+  background: rgba(66, 66, 66, 0.8);
+  width: 66%;
+  //height: 90vh;
+  /*height: 70%;*/
+  position: relative;
+  top:0;
+  /*padding: 1% 1% 1% 1%;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+h1{
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 4vh;
+}
+#rank-info-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#img-rank-c{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#rank-img{
+  width: 30%;
+  height: auto;
+}
+#progress-bar{
+  width: 40%;
+  color: black;
+}
+.rank-pad{
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+#personal-info-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#info-container{
+  width: 80%;
+}
+.half-width{
+  width: 40%;
+}
+
+.two-field-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.one-third{
+  width: 30%;
+}
+.full-width{
+  width: 100%;
+}
+#button-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 3%;
+  padding-bottom: 4%;
+}
+//#rank-f,#battles-f{
+//  text-align: center;
+//}
+/*#name-f{
+  padding-right: 3%;
+}*/
+@media screen and (max-width: 599px) {
+  h1 {
+    padding-top: 4%;
+    font-size: 30px;
+  }
+
+  .login-form {
+    width: 80%;
+    font-size: 70%;
+  }
+
+  #centered-container{
+    width: 99%;
+  }
+
+  #contentContainer{
+    margin-top: 55px;
+  }
+  #progress-bar{
+    width: 50%;
+  }
+}

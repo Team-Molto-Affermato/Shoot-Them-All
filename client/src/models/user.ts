@@ -9,6 +9,29 @@ export class User {
   password: String;
   email: String;
 }
+export class BasicUserInfo {
+  constructor(
+    public name: String,
+    public surname: String,
+    public username: String,
+    public email: String,
+    public score: number,
+  ){
+  }
+}
+export class MatchCount {
+  constructor(
+    public count:number
+  ){}
+}
+export class CompleteUserInfo {
+  constructor(
+      public basicUserInfo:BasicUserInfo,
+      public numMatches: number,
+      public leaderboardPosition: number,
+      public level:number){
+  }
+}
 export class UserScore {
   constructor(public username:String,
               public score: number,

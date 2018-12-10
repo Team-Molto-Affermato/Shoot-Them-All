@@ -30,7 +30,7 @@ export class LeaderboardComponent implements OnInit {
             new UserInLeaderboard(
             index+1,
             v.username,
-            v.score,
+            Math.floor(v.score),
             this.getRankings(v.score)
           )
         );
@@ -44,7 +44,7 @@ export class LeaderboardComponent implements OnInit {
             v,index)=>new UserInLeaderboard(
             index+1,
                     v.username,
-                    v.score,
+                    Math.floor(v.score),
             this.getRankings(v.score)
           )
         );
