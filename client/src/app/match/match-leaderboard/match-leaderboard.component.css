@@ -8,6 +8,9 @@ table {
 .tab-content-lb{
   min-height: 60vh;
 }
+h1{
+  text-align: center;
+}
 *{
   /*text-align: center;*/
   font-family: 'Orbitron', sans-serif;
@@ -44,6 +47,11 @@ mat-card-title-group{
 @media(max-width: 600px) {
   .mobile-label {
     width: 80px;
+    display: inline-block;
+    font-weight: bold;
+  }
+  .single {
+    width: 100px;
     display: inline-block;
     font-weight: bold;
   }

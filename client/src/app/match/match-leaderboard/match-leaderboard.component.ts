@@ -61,20 +61,20 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
       scores=>{
         this.leaderboard = scores.map(
           (v,index)=>new UserInLeaderboard(
-            index+1,v.username,v.score,this.getRankings(v.scoreG))
+            index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
         );
         if(this.match.organization === MatchOrganization.TEAM) {
           this.leaderboardTeam1 =
             scores
             .filter(s=>s.team===Team.TEAM1)
             .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
             );
           this.leaderboardTeam2 =
             scores
               .filter(s=>s.team===Team.TEAM2)
               .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
               );
         }
           this.refresh();
@@ -89,7 +89,7 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
         console.log("Dati get: ",dataR);
         this.leaderboard = dataR.map(
           (v,index)=>new UserInLeaderboard(
-            index+1,v.username,v.score,this.getRankings(v.scoreG)
+            index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG)
           )
         );
         if(this.match.organization === MatchOrganization.TEAM) {
@@ -97,13 +97,13 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
             dataR
               .filter(s=>s.team===Team.TEAM1)
               .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
               );
           this.leaderboardTeam2 =
             dataR
               .filter(s=>s.team===Team.TEAM2)
               .map((v,index)=>new UserInLeaderboard(
-                index+1,v.username,v.score,this.getRankings(v.scoreG))
+                index+1,v.username,Math.floor(v.score),this.getRankings(v.scoreG))
               );
         }
         this.refresh();
