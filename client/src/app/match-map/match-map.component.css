@@ -1,7 +1,9 @@
 agm-map {
   height: calc(99vh - 65px - 35px - 70px);
 }
-
+.info-text{
+  color: #303030;
+}
 @media screen and (max-width: 599px) {
 
   agm-map {

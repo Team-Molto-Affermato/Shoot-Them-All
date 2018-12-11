@@ -4,7 +4,20 @@
   <agm-map [latitude]="match.centralPoint.latitude" [longitude]="match.centralPoint.longitude" [styles]="styles">
     <agm-marker *ngFor="let userPosition of userPositions"
                 [latitude]="userPosition.position.latitude"
-                [longitude]="userPosition.position.longitude"></agm-marker>
+                [longitude]="userPosition.position.longitude">
+      <div class="si-content-wrapper">
+        <agm-snazzy-info-window [maxWidth]="300" [closeWhenOthersOpen]="true">
+          <ng-template>
+            <div class="info-text">
+              <strong>Username: </strong>{{userPosition.username}}<br>
+              <div *ngIf="teamVisible"><strong>Team: </strong>{{getTeam(userPosition.team)}}<br></div>
+            </div>
+            <!--<a (click)="showInfo(match)">-->
+            <!--</a>-->
+          </ng-template>
+        </agm-snazzy-info-window>
+      </div>
+    </agm-marker>
     <div *ngIf="positionAvailable">
       <agm-marker
         [latitude]="positionOfUser.latitude"

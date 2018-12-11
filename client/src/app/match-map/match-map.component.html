@@ -6,10 +6,12 @@
       <agm-snazzy-info-window [maxWidth]="300" [closeWhenOthersOpen]="true">
         <ng-template>
           <a (click)="showInfo(match)">
-          <strong>Match Informations:</strong><br>
-          <strong>Match name: </strong>{{match.name}}<br>
-          <strong>Match state: </strong>{{match.state}}<br>
-          <strong>Match access: </strong>{{match.access}}
+            <div class="info-text">
+              <strong>Match Informations:</strong><br>
+              <strong>Match name: </strong>{{match.name}}<br>
+              <strong>Match state: </strong>{{match.state}}<br>
+              <strong>Match access: </strong>{{match.access}}
+            </div>
           </a>
         </ng-template>
       </agm-snazzy-info-window>

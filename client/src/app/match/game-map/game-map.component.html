@@ -2,7 +2,15 @@
 
   <div id="container">
 
-    <mat-tab-group mat-stretch-tabs>
+    <mat-tab-group mat-stretch-tabs [selectedIndex]="1"aa>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <img src="https://cdn2.iconfinder.com/data/icons/app-icons-2/100/icon_56209-512.png" width="30px">
+        </ng-template>
+        <div class="content">
+          <app-match-leaderboard></app-match-leaderboard>
+        </div>
+      </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
           <img src="https://cdn0.iconfinder.com/data/icons/modern-life/512/radar-512.png" width="30px">
