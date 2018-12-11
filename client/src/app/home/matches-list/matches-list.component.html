@@ -17,13 +17,13 @@
       <!-- Weight Column -->
       <ng-container matColumnDef="state">
         <th mat-header-cell *matHeaderCellDef> Match State </th>
-        <td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.state}} </td>
+        <td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{getMatchState(element.state)}} </td>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="access">
         <th mat-header-cell *matHeaderCellDef> Match Access </th>
-        <td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{element.access}} </td>
+        <td mat-cell *matCellDef="let element" (click)="showInfo(element)"> {{getMatchAccess(element.access)}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

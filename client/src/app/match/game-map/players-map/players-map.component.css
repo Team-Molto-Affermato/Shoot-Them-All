@@ -6,14 +6,19 @@ agm-map {
   /*text-align: center;*/
   font-family: 'Orbitron', sans-serif;
 }
-
+.info-text{
+  /*color: #303030;*/
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+}
+.si-content-wrapper{
+  border: 0px solid #303030;
+  opacity: 0.8;
+  background-color: #303030;
+}
 h1{
   font-size: 3vh;
   text-align: center;
   font-weight: 500;
-}
-
-.info-text{
-  color: #303030;
 }
 

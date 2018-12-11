@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Match, MatchState} from "../../models/match";
+import {Match, MatchAccess, MatchState} from "../../models/match";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
@@ -49,7 +49,19 @@ export class MatchMapComponent implements OnInit {
       // error => alert(error)
     );
   }
-
+  getMatchState(state:MatchState):string{
+    switch (state) {
+      case MatchState.SETTING_UP : return "Setting Up";
+      case MatchState.STARTED : return "Started";
+      case MatchState.ENDED : return "Ended";
+    }
+  }
+  getMatchAccess(access:MatchAccess):string{
+    switch (access) {
+      case MatchAccess.PRIVATE : return "Private";
+      case MatchAccess.PUBLIC : return "Public";
+    }
+  }
   showInfo(match: Match) {
     LocalStorageHelper.setItem(StorageKey.MACTH, match);
 

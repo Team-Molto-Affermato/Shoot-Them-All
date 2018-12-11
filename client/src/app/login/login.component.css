@@ -1,4 +1,7 @@
-* {
+*{
+  font-family: Orbitron, 'arial', sans-serif;
+}
+h1,button {
   font-family: 'centauri', 'arial', sans-serif;
 }
 

@@ -1,12 +1,22 @@
 <div id="map-earth-container">
   <!--<h1>Map of {{match.name}}</h1>-->
 
-  <agm-map [latitude]="match.centralPoint.latitude" [longitude]="match.centralPoint.longitude" [styles]="styles">
+  <agm-map
+    [latitude]="match.centralPoint.latitude"
+    [longitude]="match.centralPoint.longitude"
+    [styles]="styles"
+    [draggable]="true"
+  >
     <agm-marker *ngFor="let userPosition of userPositions"
                 [latitude]="userPosition.position.latitude"
                 [longitude]="userPosition.position.longitude">
       <div class="si-content-wrapper">
-        <agm-snazzy-info-window [maxWidth]="300" [closeWhenOthersOpen]="true">
+        <agm-snazzy-info-window
+          [maxWidth]="300"
+          [closeWhenOthersOpen]="true"
+          [border]="false"
+          [backgroundColor]="'#303030'"
+        >
           <ng-template>
             <div class="info-text">
               <strong>Username: </strong>{{userPosition.username}}<br>

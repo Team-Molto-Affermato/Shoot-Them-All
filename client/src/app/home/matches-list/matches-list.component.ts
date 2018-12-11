@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {HomeService} from "../../../services/home.service";
 import {DataService} from "../../../services/data.service";
-import {Match, MatchState} from "../../../models/match";
+import {Match, MatchAccess, MatchState} from "../../../models/match";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {Subscription} from "rxjs";
 import {LocalStorageHelper, StorageKey} from "../../../utilities/LocalStorageHelper";
@@ -64,5 +64,18 @@ export class MatchesListComponent implements OnInit {
     // return (match.state === MatchState.STARTED) &&
     //   match.users.includes(this.username)
     return false;
+  }
+  getMatchState(state:MatchState):string{
+    switch (state) {
+      case MatchState.SETTING_UP : return "Setting Up";
+      case MatchState.STARTED : return "Started";
+      case MatchState.ENDED : return "Ended";
+    }
+  }
+  getMatchAccess(access:MatchAccess):string{
+    switch (access) {
+      case MatchAccess.PRIVATE : return "Private";
+      case MatchAccess.PUBLIC : return "Public";
+    }
   }
 }

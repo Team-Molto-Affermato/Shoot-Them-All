@@ -1,8 +1,25 @@
 agm-map {
   height: calc(99vh - 65px - 35px - 70px);
 }
+
+#title{
+  text-align: center;
+  padding-bottom: 8%;
+}
 .info-text{
-  color: #303030;
+  /*color: #303030;*/
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+}
+.si-content-wrapper{
+  border: 0px solid #303030;
+  opacity: 0.8;
+  background-color: #303030;
+}
+agm-snazzy-info-window{
+  border: 0px solid #303030;
+  opacity: 0.8;
+  background-color: #303030;
 }
 @media screen and (max-width: 599px) {
 
