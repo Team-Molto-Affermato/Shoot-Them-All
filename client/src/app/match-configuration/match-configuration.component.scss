@@ -1,0 +1,82 @@
+#main-container {
+  position: relative;
+
+  width: 100%;
+  height: 99vh;
+
+  overflow: hidden;
+}
+
+#container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#particle-canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+mat-horizontal-stepper, mat-vertical-stepper {
+  width: 100%;
+  height: 60%;
+
+  background: rgba(66, 66, 66, 0.8);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+
+  margin-top: 65px;
+
+  overflow: auto;
+}
+
+
+mat-horizontal-stepper {
+  padding-top: 10vh;
+  margin-top: 15vh;
+}
+
+.mat-button {
+  margin-left: 20px;
+}
+
+.mat-button[matStepperNext], .confirm-button {
+  background: #06a533;
+}
+
+.mat-button[matStepperPrevious] {
+  background: rgb(30, 30, 30);
+}
+
+#central-position-v {
+  margin-top: 15px;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-fields-h {
+  width: 30%;
+
+  max-width: 180px;
+  min-width: 150px;
+}
+
+.form-h {
+  margin-left: 5%;
+  margin-top: 5vh;
+}
+
+@media screen and (max-width: 599px) {
+
+  mat-horizontal-stepper, mat-vertical-stepper {
+    margin-top: 55px;
+  }
+}

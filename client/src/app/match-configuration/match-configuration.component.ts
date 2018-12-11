@@ -12,7 +12,7 @@ import {drawParticles} from "../../assets/scripts/particles";
 @Component({
   selector: 'app-match-configuration',
   templateUrl: './match-configuration.component.html',
-  styleUrls: ['./match-configuration.component.css']
+  styleUrls: ['./match-configuration.component.scss']
 })
 export class MatchConfigurationComponent extends AbstractObserverComponent implements OnInit, OnDestroy {
   nameFormGroup: FormGroup;

@@ -60,7 +60,7 @@ var MatchConfigurationComponent = /** @class */ (function () {
         Component({
             selector: 'app-match-configuration',
             templateUrl: './match-configuration.component.html',
-            styleUrls: ['./match-configuration.component.css']
+            styleUrls: ['./match-configuration.component.scss']
         }),
         __metadata("design:paramtypes", [Router,
             FormBuilder,

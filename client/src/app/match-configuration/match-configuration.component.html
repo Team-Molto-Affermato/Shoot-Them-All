@@ -9,12 +9,16 @@
     <mat-horizontal-stepper linear #stepperh fxShow="false" fxShow.gt-xs>
       <mat-step [stepControl]="nameFormGroup">
         <form [formGroup]="nameFormGroup">
-          <ng-template matStepLabel>Match name</ng-template>
-          <mat-form-field>
-            <input matInput placeholder="Match name" formControlName="nameCtrl" required id ="name-h">
-          </mat-form-field>
-          <div>
-            <button mat-button matStepperNext>Next</button>
+          <div class="form-h">
+            <ng-template matStepLabel>Match name</ng-template>
+            <div class="form-fields form-fields-h">
+              <mat-form-field>
+                <input matInput placeholder="Match name" formControlName="nameCtrl" required id ="name-h">
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-button matStepperNext>Next</button>
+            </div>
           </div>
         </form>
       </mat-step>
@@ -22,23 +26,25 @@
         <form [formGroup]="accessFormGroup">
           <ng-template matStepLabel>Access policy</ng-template>
           <!--<label for="access" class=".sr-only">Access</label>-->
-          <mat-form-field>
-            <mat-select placeholder="Access Policy" [(value)]="defaultPolicy" (valueChange)="switchAccess()">
-              <mat-option *ngFor="let policy of policies" [value]="policy" id="access-h" >
-                {{policy}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <div id="pwdField" [hidden]="!passwordVisible">
-            <mat-form-field >
-              <input matInput type="password" placeholder="Password" formControlName="pwdCtrl" id ="pwd-h">
+          <div class="form-fields form-fields-h">
+            <mat-form-field>
+              <mat-select placeholder="Access Policy" [(value)]="defaultPolicy" (valueChange)="switchAccess()">
+                <mat-option *ngFor="let policy of policies" [value]="policy" id="access-h" >
+                  {{policy}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
+            <div id="pwdField" [hidden]="!passwordVisible">
+              <mat-form-field >
+                <input matInput type="password" placeholder="Password" formControlName="pwdCtrl" [required]="passwordVisible" id ="pwd-h">
+              </mat-form-field>
+            </div>
           </div>
           <!--<mat-form-field>-->
           <!--<input matInput placeholder="Address" formControlName="secondCtrl" required>-->
           <!--</mat-form-field>-->
           <div>
-            <button mat-button matStepperPrevious>Back</button>
+            <button class="mat-button next-button" mat-button matStepperPrevious>Back</button>
             <button mat-button matStepperNext>Next</button>
           </div>
         </form>
@@ -46,16 +52,19 @@
       <mat-step [stepControl]="playerFormGroup">
         <form [formGroup]="playerFormGroup">
           <ng-template matStepLabel>Settings for players</ng-template>
-          <mat-form-field>
-            <mat-select placeholder="Match Organization" [(value)]="defaultOrganization" (valueChange)="switchOrganization()">
-              <mat-option *ngFor="let org of organizations" [value]="org" id="organization-h" >
-                {{org}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput type="number" placeholder="Max Players Number" formControlName="playersCtrl" required id ="maxPlayers-h">
-          </mat-form-field>
+          <div class="player-fields" id="player-fields-h">
+            <mat-form-field>
+              <mat-select placeholder="Match Organization" [(value)]="defaultOrganization" (valueChange)="switchOrganization()">
+                <mat-option *ngFor="let org of organizations" [value]="org" id="organization-h" >
+                  {{org}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Max Players Number" formControlName="playersCtrl" required id ="maxPlayers-h">
+            </mat-form-field>
+          </div>
+
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button matStepperNext>Next</button>
@@ -66,7 +75,7 @@
         <form [formGroup]="durationFormGroup">
           <ng-template matStepLabel>Match Duration</ng-template>
           <mat-form-field>
-            <input matInput type="number" placeholder="Match duration" formControlName="durationCtrl" required id ="duration-h">
+            <input matInput type="number" placeholder="Duration (minutes)" formControlName="durationCtrl" required id ="duration-h">
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
@@ -75,20 +84,20 @@
         </form>
       </mat-step>
       <mat-step [stepControl]="positionFormGroup">
-        <form [formGroup]="positionFormGroup">
-          <ng-template matStepLabel>Match radius</ng-template>
+        <form [formGroup]="positionFormGroup" id="location-form-h">
+          <ng-template matStepLabel>Match location</ng-template>
           <mat-form-field>
             <input matInput type="number" placeholder="Match radius" formControlName="areaCtrl" required id ="areaRadius-h">
           </mat-form-field>
-          <label for="centralPosition" *ngIf="!completeFunctionalities">Central Position</label>
-          <div id="centralPosition-h" [hidden]="completeFunctionalities">
-            <mat-form-field>
-              <input matInput type="number" placeholder="Latitude" formControlName="latitudeCtrl" id ="latitude-h">
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput type="number" placeholder="Longitude" formControlName="longitudeCtrl" id ="longitude-h">
-            </mat-form-field>
-          </div>
+            <label for="centralPosition" *ngIf="!completeFunctionalities" id="centralPositionLabel">Central Position</label>
+            <div id="centralPosition-h" [hidden]="completeFunctionalities">
+              <mat-form-field>
+                <input matInput type="number" placeholder="Latitude" formControlName="latitudeCtrl" id ="latitude-h">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="Longitude" formControlName="longitudeCtrl" id ="longitude-h">
+              </mat-form-field>
+            </div>
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button matStepperNext>Next</button>
@@ -100,7 +109,7 @@
         You are now done.
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="createMatch()">Create Match</button>
+          <button mat-button (click)="createMatch()" class="confirm-button">Create Match</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>
@@ -109,7 +118,7 @@
       <mat-step [stepControl]="nameFormGroup">
         <form [formGroup]="nameFormGroup">
           <ng-template matStepLabel>Match name</ng-template>
-          <mat-form-field>
+          <mat-form-field id="match-name-label">
             <input matInput placeholder="Match name" formControlName="nameCtrl" required id ="name-v">
           </mat-form-field>
           <div>
@@ -144,17 +153,19 @@
       </mat-step>
       <mat-step [stepControl]="playerFormGroup">
         <form [formGroup]="playerFormGroup">
-          <ng-template matStepLabel>Settings for players</ng-template>
-          <mat-form-field>
-            <mat-select placeholder="Match Organization" [(value)]="defaultOrganization" (valueChange)="switchOrganization()">
-              <mat-option *ngFor="let org of organizations" [value]="org" id="organization-v" >
-                {{org}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput type="number" placeholder="Max Players Number" formControlName="playersCtrl" required id ="maxPlayers-v">
-          </mat-form-field>
+          <div class="player-fields">
+            <ng-template matStepLabel>Settings for players</ng-template>
+            <mat-form-field>
+              <mat-select placeholder="Match Organization" [(value)]="defaultOrganization" (valueChange)="switchOrganization()">
+                <mat-option *ngFor="let org of organizations" [value]="org" id="organization-v" >
+                  {{org}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Max Players Number" formControlName="playersCtrl" required id ="maxPlayers-v">
+            </mat-form-field>
+          </div>
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button matStepperNext>Next</button>
@@ -165,7 +176,7 @@
         <form [formGroup]="durationFormGroup">
           <ng-template matStepLabel>Match Duration</ng-template>
           <mat-form-field>
-            <input matInput type="number" placeholder="Match duration" formControlName="durationCtrl" required id ="duration-v">
+            <input matInput type="number" placeholder="Duration (minutes)" formControlName="durationCtrl" required id ="duration-v">
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
@@ -175,13 +186,13 @@
       </mat-step>
       <mat-step [stepControl]="positionFormGroup">
         <form [formGroup]="positionFormGroup">
-          <ng-template matStepLabel>Match radius</ng-template>
+          <ng-template matStepLabel>Match location</ng-template>
           <mat-form-field>
             <input matInput type="number" placeholder="Match radius" formControlName="areaCtrl" required id ="areaRadius-v">
           </mat-form-field>
-          <label for="centralPosition" *ngIf="!completeFunctionalities">Central Position</label>
+          <label for="centralPosition" *ngIf="!completeFunctionalities" id="central-position-v">Central Position</label>
           <div id="centralPosition" [hidden]="completeFunctionalities">
-            <mat-form-field>
+            <mat-form-field id="latitude-form">
               <input matInput type="number" placeholder="Latitude" formControlName="latitudeCtrl" id ="latitude-v">
             </mat-form-field>
             <mat-form-field>
@@ -199,7 +210,7 @@
         You are now done.
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="createMatch()">Create Match</button>
+          <button mat-button (click)="createMatch()" class="confirm-button">Create Match</button>
         </div>
       </mat-step>
     </mat-vertical-stepper>

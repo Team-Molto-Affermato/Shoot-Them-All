@@ -41,6 +41,7 @@ export class HomeComponent extends AbstractObserverComponent implements OnInit, 
     this.swiper = new Swiper('.swiper-container', {
       slidesPerView: 1,
       loop: false,
+      initialSlide: 1,
       // spaceBetween: '20%',
       pagination: {
         el: '.swiper-pagination',
