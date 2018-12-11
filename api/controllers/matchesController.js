@@ -49,9 +49,7 @@ function mapToPosition(item, index) {
     };
 }
 exports.deleteUserInMatch= (req,res)=>{
-    var query1 = {
-        roomName: req.params.roomName
-    };
+
     // Room.findOneAndUpdate(query1, { $pull: {users: req.params.username} },{new:true}, function (err,room) {
     //     if(err){
     //         return res.send(err);
@@ -65,7 +63,7 @@ exports.deleteUserInMatch= (req,res)=>{
         roomName : req.params.roomName,
         name: req.params.username
     });
-    query.exec({new:true},function (err,raw) {
+    query.exec(function (err,raw) {
         if(err)
             res.send(err)
         else{
@@ -92,9 +90,11 @@ exports.deleteUserInMatch= (req,res)=>{
                             }
                         });
                         console.log("Dopo canc: ",positions);
-                        emitLeaderboardRoom(req.params.roomName);
-                        io.to(req.params.roomName).emit('users-pos',positions);
-                        res.json("ok");
+                        emitLeaderboardRoom(req.params.roomName).then(data=>{
+                            io.to(req.params.roomName).emit('users-pos',positions);
+                            res.json("ok");
+                        },err=>res.json("err"));
+
                     }
                 }
             );
@@ -261,7 +261,7 @@ function updateMatchState(roomName,state){
     var query = {
         roomName: roomName
     };
-    Room.findOneAndUpdate(query, { state:state }, {upsert:true,new:true}, function (err,room) {
+    Room.findOneAndUpdate(query, { state:state }, {upsert:false,new:true}, function (err,room) {
         if(err){
 
         }else{
@@ -284,7 +284,7 @@ exports.setMatchState = (req, res) => {
     var query = {
         roomName: req.params.roomName
     };
-    Room.findOneAndUpdate(query, { state: req.body.state }, {upsert:true}, function (err,user) {
+    Room.findOneAndUpdate(query, { state: req.body.state }, {upsert:false}, function (err,user) {
         if (err) {
             return res.send(err)
         } else {

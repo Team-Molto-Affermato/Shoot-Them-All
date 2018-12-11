@@ -18,7 +18,7 @@ export class UserProfileComponent implements OnInit {
   isReadMode:boolean=true;
   updateUserInfoForm: FormGroup;
   username: string;
-  basicUserInfo:BasicUserInfo;
+  basicUserInfo:BasicUserInfo = new BasicUserInfo("","","","",0);
   playedMatches:number = 0;
   level:number = 0;
   nextLevelScore:number = 0;

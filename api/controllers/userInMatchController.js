@@ -173,7 +173,7 @@ exports.updateUserScore = (req, res) => {
         name: req.params.username,
         roomName: req.params.roomName
     };
-    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:true,new:true}, function (err,users) {
+    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:false,new:true}, function (err,users) {
         if (err) {
             return res.send(err)
         } else {
@@ -212,7 +212,7 @@ exports.updateUserPos = (req, res) => {
         roomName: req.params.roomName
     };
     // console.log(req.body.location);
-    UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:true,new:true}, function (err,userPos) {
+    UserInMatch.findOneAndUpdate(query, { location: req.body.location }, {upsert:false,new:true}, function (err,userPos) {
         if (err) {
             return res.send(err)
         } else {
