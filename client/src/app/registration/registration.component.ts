@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
 import {DefaultErrorStateMatcher} from "../../models/DefaultErrorStateMatcher";
+import {MaterialDialog} from "../login/login.component";
+import {MatDialog} from "@angular/material";
 
 @Component({
   selector: 'app-registration',
@@ -31,7 +33,8 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
-              private registrationService: RegistrationService) {
+              private registrationService: RegistrationService,
+              private dialog:MatDialog) {
     this.registrationForm = this.createFormGroup();
   }
 
@@ -56,8 +59,16 @@ export class RegistrationComponent implements OnInit {
       LocalStorageHelper.setItem(StorageKey.USERNAME, user.username);
       this.router.navigateByUrl('/home');
     }, (err) => {
-      alert(err);
+      // alert(err);
+        this.openDialog("Registration Error",err);
     });
+  }
+  openDialog(error:string,message:string): void {
+    const dialogRef = this.dialog.open(MaterialDialog, {
+      width: '250px',
+      data: {error: error, message: message}
+    });
+
   }
 
 }
