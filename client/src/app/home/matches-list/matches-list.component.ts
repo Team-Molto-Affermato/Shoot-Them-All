@@ -6,6 +6,9 @@ import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {Subscription} from "rxjs";
 import {LocalStorageHelper, StorageKey} from "../../../utilities/LocalStorageHelper";
 import {Router} from "@angular/router";
+import {CoordinatesHelper} from "../../../utilities/CoordinatesHelper";
+import {ConditionUpdaterService} from "../../../services/condition-updater.service";
+import {Point} from "../../../models/point";
 
 @Component({
   selector: 'app-matches-list',
@@ -22,7 +25,8 @@ export class MatchesListComponent implements OnInit {
 
   constructor(private homeService: HomeService,
               private router: Router,
-              private dataService: DataService) {
+              private dataService: DataService,
+              private conditionObserverService: ConditionUpdaterService) {
 
   }
 
@@ -37,7 +41,29 @@ export class MatchesListComponent implements OnInit {
       });
     this.dataService.sendMessage();
     this.updateMatches();
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (data, filter) => {
+      console.log("Filtro: ",filter, filter.charAt(0));
+      if(filter!=="R" && filter!=="N"){
+        if(filter.charAt(0) === 'N'){
+          console.log("Per nome");
+          return data.name.toLowerCase().startsWith(filter.slice(1).trim().toLowerCase());
+        }else{
+          const number = filter.slice(1);
+          console.log(number);
+          const range = Number(filter.slice(1));
+          console.log("Per range: ",range);
+          const positionAvailable:boolean = LocalStorageHelper.getItem(StorageKey.COMPLETE_FUNCTIONALITIES);
+          var position = positionAvailable?
+            this.conditionObserverService.position:
+            new Point(43,12);
+          return CoordinatesHelper.pointDistance(position,data.centralPoint)<range;
+        }
+      }else{
+        return true;
+      }
+      // return data.name === filter
+    }
+      this.dataSource.paginator = this.paginator;
   }
   refresh() {
     this.dataSource.data = this.matches;
@@ -77,5 +103,25 @@ export class MatchesListComponent implements OnInit {
       case MatchAccess.PRIVATE : return "Private";
       case MatchAccess.PUBLIC : return "Public";
     }
+  }
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue;
+  }
+  applyFilterDistance(filterValue: number) {
+    const positionAvailable:boolean = LocalStorageHelper.getItem(StorageKey.COMPLETE_FUNCTIONALITIES);
+    var position = positionAvailable?
+      this.conditionObserverService.position:
+      new Point(43,12);
+    const location = {
+      type: 'Point',
+      coordinates: [position.latitude,position.longitude]
+    };
+    this.dataSource.data = this.dataSource.data.filter(match=>{
+      return CoordinatesHelper.pointDistance(position,match.centralPoint)<filterValue;
+    });
+    // this.dataSource.filter = "";
+    console.log("Filter value: ",filterValue);
+    console.log(this.dataSource.data);
+      //CoordinatesHelper.pointDistance(new Point())
   }
 }

@@ -4,3 +4,18 @@ table {
 *{
   font-family: 'Orbitron', sans-serif;
 }
+#filters{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+@media screen and (max-width: 599px) {
+  mat-form-field{
+    font-size: 12px;
+    width: 40%;
+
+  }
+}
+

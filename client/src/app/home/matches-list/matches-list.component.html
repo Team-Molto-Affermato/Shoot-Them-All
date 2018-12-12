@@ -1,5 +1,13 @@
 <div id="match-list">
   <div>
+    <div id="filters">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter('N'+$event.target.value)" placeholder="Filter by Name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="number" (keyup)="applyFilter('R'+$event.target.value)" placeholder="Filter by Range">
+      </mat-form-field>
+    </div>
     <table mat-table [dataSource]="dataSource">
 
       <!-- Position Column -->
