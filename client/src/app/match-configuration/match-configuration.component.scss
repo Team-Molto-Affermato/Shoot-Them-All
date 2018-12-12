@@ -1,3 +1,8 @@
+* {
+  text-justify: inter-word;
+  font-family: 'Orbitron', sans-serif;
+}
+
 #main-container {
   position: relative;
 
@@ -20,29 +25,58 @@
   z-index: 1;
 }
 
-mat-horizontal-stepper, mat-vertical-stepper {
+.title {
+  text-align: center;
   width: 100%;
-  height: 60%;
+}
 
-  background: rgba(66, 66, 66, 0.8);
+#match-configuration-container {
+
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 2;
+
+
+  width: 100%;
+  height: calc(100% - 65px);
+
+  display: flex;
+  justify-content: center;
 
   margin-top: 65px;
 
-  overflow: auto;
+  z-index: 2;
 }
 
+#match-configuration-content {
 
-mat-horizontal-stepper {
-  padding-top: 10vh;
-  margin-top: 15vh;
+  position: relative;
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: auto;
+
+  background: rgba(66, 66, 66, 0.8);
+
+  padding-left: 8%;
+  padding-right: 8%;
+}
+
+mat-vertical-stepper {
+  position: relative;
+
+  margin-top: 4vh;
+
+  //overflow: auto;
+
+  background-color: transparent;
 }
 
 .mat-button {
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .mat-button[matStepperNext], .confirm-button {
@@ -53,7 +87,9 @@ mat-horizontal-stepper {
   background: rgb(30, 30, 30);
 }
 
-#central-position-v {
+#central-position-label {
+  font-size: 17.5px;
+
   margin-top: 15px;
 }
 
@@ -62,21 +98,40 @@ mat-horizontal-stepper {
   flex-direction: column;
 }
 
-.form-fields-h {
-  width: 30%;
-
-  max-width: 180px;
-  min-width: 150px;
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-.form-h {
-  margin-left: 5%;
-  margin-top: 5vh;
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 @media screen and (max-width: 599px) {
 
-  mat-horizontal-stepper, mat-vertical-stepper {
+  .title {
+    font-size: 28px;
+  }
+
+  #match-configuration-container {
     margin-top: 55px;
+  }
+
+  #match-configuration-content {
+    width: 100%;
+
+    padding-left: 0;
+    padding-right: 0;
   }
 }

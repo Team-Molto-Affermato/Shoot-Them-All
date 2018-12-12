@@ -11,19 +11,19 @@ mat-toolbar, mat-menu {
   color: #06a533
 }
 
->>> .nav-menu .mat-menu-content {
+::ng-deep .nav-menu .mat-menu-content {
   display: flex;
   flex-direction: column;
   background: rgba(30, 30, 30, 0.9);
-  color: #06a533
+  color: #06a533;
 }
 
->>> .nav-menu .mat-menu-content > button {
+::ng-deep .nav-menu .mat-menu-content > button {
   text-align: left;
 }
 
 
-#container {
+#nav-container {
   position: fixed;
   width: 100%;
   height: 65px;
@@ -33,7 +33,7 @@ mat-toolbar, mat-menu {
 }
 
 @media screen and (max-width: 599px) {
-  #container {
+  #nav-container {
     height: 55px;
   }
 }
