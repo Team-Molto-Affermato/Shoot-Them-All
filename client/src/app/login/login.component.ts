@@ -1,13 +1,16 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {UserData} from "../../models/user";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
-import {ErrorStateMatcher} from "@angular/material";
+import {ErrorStateMatcher, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import {animate, animation, state, style, transition, trigger} from "@angular/animations";
 import {DefaultErrorStateMatcher} from "../../models/DefaultErrorStateMatcher";
-
+export interface DialogData {
+  error: string;
+  message: string;
+}
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -45,7 +48,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              private dialog:MatDialog) {
   }
 
   ngOnInit() {
@@ -67,7 +71,8 @@ export class LoginComponent implements OnInit {
       LocalStorageHelper.setItem(StorageKey.USERNAME, userData.username);
       this.router.navigateByUrl('/home');
     }, (err) => {
-      alert(err);
+      this.openDialog("Login Error",err);
+      // alert(err);''
     });
 
   }
@@ -87,6 +92,29 @@ export class LoginComponent implements OnInit {
   stopScan() {
     window.clearTimeout(this.scanTimeoutId);
     this.scanning = false;
+  }
+
+  openDialog(error:string,message:string): void {
+    const dialogRef = this.dialog.open(MaterialDialog, {
+      width: '250px',
+      data: {error: error, message: message}
+    });
+
+  }
+}
+@Component({
+  selector: 'material-dialog',
+  templateUrl: 'material-dialog.html',
+  styleUrls: ['./material-dialog.css']
+})
+export class MaterialDialog{
+
+  constructor(
+    public dialogRef: MatDialogRef<MaterialDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

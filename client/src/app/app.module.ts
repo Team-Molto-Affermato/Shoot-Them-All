@@ -9,7 +9,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent, MaterialDialog } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 
 import {RouterModule, Routes} from "@angular/router";
@@ -132,7 +132,8 @@ const appRoutes: Routes = [
     MatchesMapComponent,
     MatchesListComponent,
     BasicMatchInfoComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    MaterialDialog
   ],
   imports: [
     BrowserModule,
@@ -193,6 +194,7 @@ const appRoutes: Routes = [
     MatTreeModule,
     ProgressbarModule.forRoot()
   ],
+  entryComponents: [MaterialDialog],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
 })
