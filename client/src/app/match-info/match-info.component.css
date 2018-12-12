@@ -1,3 +1,4 @@
+
 #main-container{
   position: relative;
   width: 100%;
@@ -143,6 +144,11 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+#map-title{
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
 }
 
 @media screen and (max-width: 599px) {
