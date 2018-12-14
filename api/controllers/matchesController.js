@@ -398,7 +398,7 @@ exports.createMatch = (req, res) => {
 
     newMatch.save(function(err){
         if(err)
-            res.status(400).send(err);
+            res.status(400).send("Match name already exists, choose another one");
         else {
             getMatchesAndEmit();
             startTimer(req.body.roomName);

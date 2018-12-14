@@ -10,12 +10,15 @@ table {
   justify-content: space-between;
   padding-left: 2%;
   padding-right: 2%;
+  padding-top: 2%;
 }
 @media screen and (max-width: 599px) {
   mat-form-field{
     font-size: 12px;
     width: 40%;
-
+  }
+  #filters{
+    padding-top: 1%;
   }
 }
 

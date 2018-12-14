@@ -8,6 +8,8 @@ import {Point} from "../../models/point";
 import {ConditionUpdaterService} from "../../services/condition-updater.service";
 import {AbstractObserverComponent} from "../ObserverComponent";
 import {drawParticles} from "../../assets/scripts/particles";
+import {MatDialog} from "@angular/material";
+import {MaterialDialog} from "../login/login.component";
 
 @Component({
   selector: 'app-match-configuration',
@@ -34,7 +36,8 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
               private matchConfigurationService: MatchConfigurationService,
               router: Router,
               conditionObserverService: ConditionUpdaterService,
-              route: ActivatedRoute) {
+              route: ActivatedRoute,
+              private dialog:MatDialog) {
     super(router, conditionObserverService, route);
   }
 
@@ -129,8 +132,9 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
         LocalStorageHelper.setItem(StorageKey.MACTH, data);
         this.router.navigateByUrl("/matchInfo");
       },
-      error =>
-        alert(error)
+      (error) =>{
+        this.openDialog("Match Configuration Error","Match name already exists, choose another one");
+      }
     );
 
   }
@@ -138,5 +142,11 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
   ngOnDestroy(): void {
     this.destroy();
   }
+  openDialog(error:string,message:string): void {
+    const dialogRef = this.dialog.open(MaterialDialog, {
+      width: '250px',
+      data: {error: error, message: message}
+    });
 
+  }
 }
