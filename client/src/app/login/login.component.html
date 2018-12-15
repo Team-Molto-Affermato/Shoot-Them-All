@@ -5,7 +5,7 @@
   <div class="form-container">
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
       <mat-form-field class="login-input">
-        <input matInput type="text" placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
+        <input aria-label="Username" matInput type="text" placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
         <mat-hint></mat-hint>
         <mat-error *ngIf="username.hasError('maxLength')">
           Username is required
@@ -16,7 +16,7 @@
       </mat-form-field>
 
       <mat-form-field class="login-input">
-        <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" [errorStateMatcher]="matcher">
+        <input aria-label="Password" matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" [errorStateMatcher]="matcher">
         <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
         <mat-hint></mat-hint>
         <mat-error *ngIf="password.hasError('required')">
@@ -28,11 +28,11 @@
         <div id="scanner" *ngIf="showScanner">
           <div id="scanner-beam" [hidden]="!scanning"
                [@scan]="scanning ? 'active' : 'inactive'"></div>
-          <div id="fingerprint" (press)="startScan()" (pressup)="stopScan()" (pan)="stopScan()"></div>
+          <div id="fingerprint" role="button" (press)="startScan()" (pressup)="stopScan()" (pan)="stopScan()"></div>
         </div>
 
-        <button id="login-button" type="submit" mat-flat-button color="primary" *ngIf="!showScanner">Login</button>
-        <button id="registration-button" mat-flat-button routerLink="/registration">Register</button>
+        <button  aria-label="Login" id="login-button" type="submit" mat-flat-button color="primary" *ngIf="!showScanner">Login</button>
+        <button  aria-label="Registration" id="registration-button" mat-flat-button routerLink="/registration">Register</button>
       </div>
     </form>
   </div>
