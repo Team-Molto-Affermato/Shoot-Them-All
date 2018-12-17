@@ -11,7 +11,17 @@
             <div id="img-rank-c">
               <img src="{{rankImgPath}}" id="rank-img" class="rank-pad">
               <div id="progress-bar" class="rank-pad">
-                <progressbar max="{{nextLevelScore}}" [value]="basicUserInfo.score" type="success" [striped]="false" [animate]="true"><i>{{basicUserInfo.score}} / {{nextLevelScore}}</i></progressbar>
+                <progressbar
+                  aria-valuemin="0"
+                  aria-valuemax="nextLevelScore"
+                  aria-valuenow="adjustedScore(basicUserInfo.score)"
+                  max="{{nextLevelScore}}"
+                  [value]="adjustedScore(basicUserInfo.score)"
+                  type="success"
+                  [striped]="true"
+                  [animate]="false">
+                  <b id="progress-text">{{basicUserInfo.score}} / {{nextLevelScore}}</b>
+                </progressbar>
               </div>
               <h2 class="rank-pad">{{rank}}</h2>
             </div>
@@ -22,27 +32,27 @@
               <form class="example-form" [formGroup]="updateUserInfoForm" (ngSubmit)="updateUserInfo()" novalidate>
               <div id="n-s-container" class="two-field-container">
                 <mat-form-field class="half-width" id="name-f">
-                  <input matInput readonly="{{isReadMode}}" type="text"  placeholder="Name" value="{{basicUserInfo.name}}" formControlName="name">
+                  <input aria-label="Name" matInput readonly="{{isReadMode}}" type="text"  placeholder="Name" value="{{basicUserInfo.name}}" formControlName="name">
                 </mat-form-field>
                 <mat-form-field class="half-width" id="surname-f">
-                  <input matInput readonly="{{isReadMode}}" type="text" placeholder="Surname" value="{{basicUserInfo.surname}}" formControlName="surname">
+                  <input aria-label="Surname" matInput readonly="{{isReadMode}}" type="text" placeholder="Surname" value="{{basicUserInfo.surname}}" formControlName="surname">
                 </mat-form-field>
               </div>
               <mat-form-field class="full-width">
-                <input matInput readonly="{{isReadMode}}" type="email" placeholder="E-Mail" value="{{basicUserInfo.email}}" formControlName="email">
+                <input aria-label="Email" matInput readonly="{{isReadMode}}" type="email" placeholder="E-Mail" value="{{basicUserInfo.email}}" formControlName="email">
               </mat-form-field>
               <div class="two-field-container">
                 <mat-form-field class="one-third" id="battle-f">
-                  <input matInput readonly="true" type="number" readonly="true" placeholder="Matches" value="{{playedMatches}}">
+                  <input aria-label="Played Matches" matInput readonly="true" type="number" readonly="true" placeholder="Matches" value="{{playedMatches}}">
                 </mat-form-field>
                 <mat-form-field class="one-third" id="rank-f">
-                  <input matInput readonly="true" type="text" placeholder="Position" value="{{position}}">
+                  <input aria-label="User Rank" matInput readonly="true" type="text" placeholder="Position" value="{{position}}">
                 </mat-form-field>
                 <mat-form-field class="one-third" id="level-f">
-                  <input matInput readonly="true" type="text" placeholder="Level" value="{{level}}">
+                  <input aria-label="User Level" matInput readonly="true" type="text" placeholder="Level" value="{{level}}">
                 </mat-form-field>
               </div>
-              <mat-checkbox (change)="switchMode()">Edit informations</mat-checkbox>
+              <mat-checkbox  *ngIf="personalInfoMode" (change)="switchMode()">Edit informations</mat-checkbox>
               <div id="button-container">
                 <button mat-flat-button type="submit" color="primary" id="join-button"  *ngIf="true">Save informations</button>
               </div>

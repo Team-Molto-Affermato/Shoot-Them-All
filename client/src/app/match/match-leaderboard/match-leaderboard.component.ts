@@ -3,11 +3,12 @@ import {Subscription} from "rxjs";
 import {DataService} from "../../../services/data.service";
 import {rankings, UserInLeaderboard, UserScore} from "../../../models/user";
 import {HttpClient} from "@angular/common/http";
-import {LocalStorageHelper} from "../../../utilities/LocalStorageHelper";
+import {LocalStorageHelper, StorageKey} from "../../../utilities/LocalStorageHelper";
 import {Match, MatchOrganization} from "../../../models/match";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {Chart} from 'chart.js';
 import {Team} from "../../../models/team";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-match-leaderboard',
@@ -48,7 +49,8 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
   };
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private dataService: DataService,private http:HttpClient) { }
+  constructor(private dataService: DataService,private http:HttpClient,
+              private router: Router) { }
 
   ngOnInit() {
     this.match = LocalStorageHelper.getCurrentMatch();
@@ -142,7 +144,13 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
         if(this.scoreTeam1===this.scoreTeam2 && this.scoreTeam1===0){
           dataset.data = [1,1];
         }else{
-          dataset.data = [this.scoreTeam1,this.scoreTeam2]
+          if(this.scoreTeam1 < 0 && this.scoreTeam2 >=0){
+            dataset.data = [0,this.scoreTeam2-this.scoreTeam1]
+          }else if(this.scoreTeam2 < 0 && this.scoreTeam1 >=0){
+            dataset.data = [this.scoreTeam1-this.scoreTeam2,0]
+          }else{
+            dataset.data = [this.scoreTeam1,this.scoreTeam2]
+          }
         }
       });
       this.chart.update();
@@ -152,5 +160,9 @@ export class MatchLeaderboardComponent implements OnInit, AfterViewInit {
     var level =  Math.floor(score/(this.topScore/14));
     level = level>14?14:level<0?0:level;
     return rankings[level];
+  }
+  showUserInfo(username:string) {
+    LocalStorageHelper.setItem(StorageKey.CLICKED_USER, username);
+    this.router.navigateByUrl("/userProfile");
   }
 }

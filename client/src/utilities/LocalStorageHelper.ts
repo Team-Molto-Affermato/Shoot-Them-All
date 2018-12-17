@@ -28,6 +28,7 @@ export class LocalStorageHelper {
 }
 
 export enum StorageKey {
+  CLICKED_USER = "clicked_user",
   USERNAME = "username",
   MACTH =  "match",
   ROLE =  "role",
