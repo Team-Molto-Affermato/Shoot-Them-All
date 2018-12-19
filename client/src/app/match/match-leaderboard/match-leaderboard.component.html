@@ -15,7 +15,7 @@
         <!-- Weight Column -->
         <ng-container matColumnDef="username">
           <mat-header-cell  *matHeaderCellDef> Username </mat-header-cell>
-          <mat-cell  *matCellDef="let element">
+          <mat-cell  (click)="showUserInfo(element.username)" *matCellDef="let element">
             <span class="mobile-label single">Username</span>
             {{element.username}}
           </mat-cell>
@@ -73,7 +73,7 @@
               <!-- Weight Column -->
               <ng-container matColumnDef="username">
                 <mat-header-cell  *matHeaderCellDef>Username</mat-header-cell>
-                <mat-cell  *matCellDef="let element">
+                <mat-cell (click)="showUserInfo(element.username)" *matCellDef="let element">
                   <span class="mobile-label">Username</span>
                   {{element.username}}
                 </mat-cell>
@@ -105,6 +105,10 @@
             <div class="tab-content-lb">
               <canvas #doughnutChart id="chartD">{{ chart }}</canvas>
             </div>
+            <div id="multi-score">
+              <div id="jedi-score"><h3>Jedi: {{scoreTeam1}}</h3> </div>
+              <div id="sith-score"><h3>Sith: {{scoreTeam2}}</h3> </div>
+            </div>
           </mat-tab>
           <mat-tab label="Team Darth Vader">
             <div class="tab-content-lb">
@@ -120,7 +124,7 @@
                 <!-- Weight Column -->
                 <ng-container matColumnDef="username">
                   <mat-header-cell  *matHeaderCellDef>Username</mat-header-cell>
-                  <mat-cell  *matCellDef="let element">
+                  <mat-cell (click)="showUserInfo(element.username)" *matCellDef="let element">
                     <span class="mobile-label">Username</span>
                     {{element.username}}
                   </mat-cell>

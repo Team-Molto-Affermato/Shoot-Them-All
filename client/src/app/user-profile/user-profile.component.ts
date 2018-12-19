@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {drawParticles} from "../../assets/scripts/particles";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
-import {BasicUserInfo, MatchCount, UserInLeaderboard, UserScore} from "../../models/user";
-import {rankings} from "../../models/user";
+import {BasicUserInfo, MatchCount, rankings, UserScore} from "../../models/user";
 
 @Component({
   selector: 'app-user-profile',
@@ -12,6 +11,7 @@ import {rankings} from "../../models/user";
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
+  personalInfoMode:boolean = true;
   rankImgPath = "../../assets/images/ranks/chevron-1.png";
   topScore:number = 35000;
   position:string ="";
@@ -37,7 +37,15 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     const canvasDiv = document.getElementById('particle-canvas');
     drawParticles(canvasDiv);
-    this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
+    if(LocalStorageHelper.hasItem(StorageKey.CLICKED_USER)){
+      this.personalInfoMode = false;
+      this.username = LocalStorageHelper.getItem(StorageKey.CLICKED_USER);
+      LocalStorageHelper.removeItem(StorageKey.CLICKED_USER);
+    }else{
+      this.personalInfoMode = true;
+      this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
+    }
+
     this.http.get('api/users/'+this.username).subscribe(
       (data: BasicUserInfo)=>{
         this.basicUserInfo = data;
@@ -74,7 +82,9 @@ export class UserProfileComponent implements OnInit {
     return pos+"°";
   }
   private switchMode(){
-    this.isReadMode = !this.isReadMode;
+    if(this.personalInfoMode){
+      this.isReadMode = !this.isReadMode;
+    }
   }
   updateUserInfo(){
     console.log(this.updateUserInfoForm.value);
@@ -108,5 +118,7 @@ export class UserProfileComponent implements OnInit {
     const uLevel = level+1;
     return '../../assets/images/ranks/chevron-'+uLevel+'.png'
   }
-
+  adjustedScore(score:number):number{
+    return score>0?score:0;
+  }
 }

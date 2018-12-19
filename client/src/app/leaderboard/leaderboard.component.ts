@@ -7,6 +7,8 @@ import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {Match} from "../../models/match";
 import {Team} from "../../models/team";
 import {rankings} from "../../models/user";
+import {LocalStorageHelper, StorageKey} from "../../utilities/LocalStorageHelper";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-leaderboard',
@@ -20,7 +22,11 @@ export class LeaderboardComponent implements OnInit {
   leaderboard: Array<UserInLeaderboard> = [];
   dataSource = new MatTableDataSource<UserInLeaderboard>(this.leaderboard);
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private dataService:DataService,private http:HttpClient) { }
+  constructor(
+    private dataService:DataService,
+    private http:HttpClient,
+    private router: Router
+  ) { }
 
   ngOnInit(){
     this.leaderBoardSub = this.dataService.getLeaderboard().subscribe(
@@ -63,4 +69,9 @@ export class LeaderboardComponent implements OnInit {
   refresh() {
     this.dataSource.data = this.leaderboard;
   };
+
+  showUserInfo(username:string) {
+    LocalStorageHelper.setItem(StorageKey.CLICKED_USER, username);
+    this.router.navigateByUrl("/userProfile");
+  }
 }
