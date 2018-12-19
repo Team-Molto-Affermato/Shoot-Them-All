@@ -18,13 +18,15 @@
     </div>
 
     <div id="timer-container" class="circle-container-content">
-      <mat-progress-spinner
-        [color]="spinnerOption.color"
-        [mode]="spinnerOption.mode"
-        [value]="spinnerOption.value"
-        [diameter]="spinnerSize"
-        id="timer">
-      </mat-progress-spinner>
+      <div id="spinner-container">
+        <mat-progress-spinner
+          [color]="spinnerOption.color"
+          [mode]="spinnerOption.mode"
+          [value]="spinnerOption.value"
+          [diameter]="spinnerSize"
+          id="timer">
+        </mat-progress-spinner>
+      </div>
 
       <div class="bottom-content" id="timer-text">
         {{ remainingTime}}

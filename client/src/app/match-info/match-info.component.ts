@@ -14,6 +14,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {drawParticles} from "../../assets/scripts/particles";
 import Swiper from 'swiper';
 import {ConditionUpdaterService} from "../../services/condition-updater.service";
+import {Point} from "../../models/point";
 
 export class SpinnerOption {
   constructor(
@@ -59,7 +60,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // LocalStorageHelper.setItem(StorageKey.MACTH, new Match("prova", MatchAccess.PUBLIC, MatchOrganization.TEAM,
+    // LocalStorageHelper.setItem(StorageKey.MACTH, new Match("prova", MatchAccess.PUBLIC, MatchOrganization.SINGLE_PLAYER,
     //   new Point(0,0), 20, new Date(), new Date(), 60, 20, "",
     //   MatchState.SETTING_UP));
 

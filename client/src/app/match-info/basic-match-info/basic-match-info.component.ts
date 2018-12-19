@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../../models/match";
 import {Subscription} from "rxjs";
 import {none, Option, some} from "ts-option";
@@ -38,6 +38,13 @@ export class BasicMatchInfoComponent implements OnInit {
   innerWidth: any;
   spinnerSize: number;
   // @ViewChild('yoda') yoda:ElementRef;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.innerWidth = window.innerWidth;
+    this.spinnerSize = this.innerWidth > 599 ? 150 : 100;
+  }
+
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -51,7 +58,7 @@ export class BasicMatchInfoComponent implements OnInit {
     // this.rd.setStyle(this.yoda,'height','200px');
 
     this.innerWidth = window.innerWidth;
-    this.spinnerSize = Math.round(this.innerWidth*0.2);
+    this.spinnerSize = this.innerWidth > 599 ? 150 : 100;
 
     this.username = LocalStorageHelper.getItem(StorageKey.USERNAME);
     this.match = LocalStorageHelper.getCurrentMatch();
