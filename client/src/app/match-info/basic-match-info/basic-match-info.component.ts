@@ -4,7 +4,7 @@ import {Subscription} from "rxjs";
 import {none, Option, some} from "ts-option";
 import {Team} from "../../../models/team";
 import {SpinnerOption} from "../match-info.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
 import {LocalStorageHelper, StorageKey} from "../../../utilities/LocalStorageHelper";
@@ -12,12 +12,13 @@ import {DateHelper} from "../../../utilities/DateHelper";
 import {UserInLeaderboard, UserScore} from "../../../models/user";
 import {ConditionUpdaterService} from "../../../services/condition-updater.service";
 import {Point} from "../../../models/point";
+import {AbstractObserverComponent} from "../../ObserverComponent";
 @Component({
   selector: 'app-basic-match-info',
   templateUrl: './basic-match-info.component.html',
   styleUrls: ['./basic-match-info.component.scss']
 })
-export class BasicMatchInfoComponent implements OnInit {
+export class BasicMatchInfoComponent extends AbstractObserverComponent implements OnInit {
   selectedBorderStyle = '8px solid #00d51c';
   unselectedBorderStyle = '';
   selectedSize = '175px';
@@ -46,16 +47,23 @@ export class BasicMatchInfoComponent implements OnInit {
   }
 
   constructor(
-    private router: Router,
+    router: Router,
+    route: ActivatedRoute,
+    conditionUpdaterService: ConditionUpdaterService,
     private http: HttpClient,
-    private conditionObserverService: ConditionUpdaterService,
     private dataService: DataService,
     // private rd:Renderer2
-  ) { }
+  ) {
+    super(router, conditionUpdaterService, route);
+  }
 
   ngOnInit() {
+    this.init();
+
     // this.rd.setStyle(this.yoda,'width','200px');
     // this.rd.setStyle(this.yoda,'height','200px');
+
+
 
     this.innerWidth = window.innerWidth;
     this.spinnerSize = this.innerWidth > 599 ? 150 : 100;
@@ -128,6 +136,7 @@ export class BasicMatchInfoComponent implements OnInit {
         return "The match is ended";
     }
   }
+
   private setSpinnerOption(){
     this.spinnerOption = new SpinnerOption(
       this.getSpinnerColor(),
@@ -135,6 +144,7 @@ export class BasicMatchInfoComponent implements OnInit {
       this.getElapsedPercentage()
     );
   }
+
   private getElapsedPercentage():number{
     const now = new Date();
     if(this.match.state === MatchState.SETTING_UP){
@@ -152,6 +162,7 @@ export class BasicMatchInfoComponent implements OnInit {
       return 100;
     }
   }
+
   private getSpinnerColor():String {
     switch (this.match.state) {
       case MatchState.SETTING_UP:
@@ -162,7 +173,9 @@ export class BasicMatchInfoComponent implements OnInit {
         return "warn";
     }
   }
+
   ngOnDestroy() {
+    this.destroy();
     clearInterval(this.countdownIntervalId);
     // this.dataService.leaveRoom(this.match.username);
   }
@@ -207,7 +220,7 @@ export class BasicMatchInfoComponent implements OnInit {
     return this.match.state !== MatchState.ENDED;
   }
   showJoin() {
-    return this.match.state !== MatchState.ENDED;
+    return this.completeFunctionalities && this.match.state !== MatchState.ENDED ;
   }
   private userJoined(): boolean {
     // console.log("Nella user join: ",this.users,this.username);
@@ -226,7 +239,7 @@ export class BasicMatchInfoComponent implements OnInit {
       const teamV = this.team.isDefined?this.team.get:"NONE";
       const positionAvailable:boolean = LocalStorageHelper.getItem(StorageKey.COMPLETE_FUNCTIONALITIES);
       var position = positionAvailable?
-        this.conditionObserverService.position:
+        this.conditionUpdaterService.position:
         new Point(43,12);
       const location = {
         type: 'Point',

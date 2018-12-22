@@ -15,9 +15,6 @@ export class RoleGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-    LocalStorageHelper.setItem(StorageKey.COMPLETE_FUNCTIONALITIES, false);
-    return true;
-
     if(this.conditionUpdaterService.ready) {
       const standardRole: Role = route.data["standardRole"];
       const restrictedRole: Role = route.data["restrictedRole"];

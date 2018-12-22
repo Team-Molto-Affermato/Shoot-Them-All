@@ -11,6 +11,9 @@ import {AbstractObserverComponent} from "../ObserverComponent";
 })
 export class LoadingComponent extends AbstractObserverComponent implements OnInit, OnDestroy {
 
+  percentage: number = 0;
+  progressStep:number = 25;
+
   constructor(router: Router,
               conditionObserverService: ConditionUpdaterService,
               route: ActivatedRoute) {
@@ -19,12 +22,20 @@ export class LoadingComponent extends AbstractObserverComponent implements OnIni
 
   ngOnInit() {
     this.init();
+
+    setInterval(() => this.updatePercentage(), 450);
   }
 
   update(standardRoleConditions: boolean, restrictedRoleConditions) {
     if (LocalStorageHelper.hasItem(StorageKey.POINTED_COMPONENT)) {
       this.router.navigateByUrl(LocalStorageHelper.getItem(StorageKey.POINTED_COMPONENT));
     }
+  }
+
+  updatePercentage() {
+    this.percentage = this.percentage<(100-this.progressStep) ? this.percentage+this.progressStep : 100;
+
+    document.getElementById('progress-bar').style.width = '' +  this.percentage + '%';
   }
 
   ngOnDestroy(): void {

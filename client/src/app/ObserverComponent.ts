@@ -34,7 +34,7 @@ export abstract class AbstractObserverComponent implements ObserverComponent {
     const standardRoleConditions = standardRole && this.conditionUpdaterService.checkConditions(standardRole);
     const restrictedRoleConditions = restrictedRole && this.conditionUpdaterService.checkConditions(restrictedRole);
 
-    // this.update(standardRoleConditions, restrictedRoleConditions);
+    this.update(standardRoleConditions, restrictedRoleConditions);
   }
 
   update(standardRoleConditions: boolean, restrictedRoleConditions: boolean) {

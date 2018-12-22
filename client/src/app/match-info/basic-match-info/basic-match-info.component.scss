@@ -144,6 +144,10 @@
   #join-button{
     font-size: 20px;
   }
+
+  #timer-container{
+    width: 120px;
+  }
 }
 
 @media screen and (min-width: 1200px) {
@@ -153,10 +157,6 @@
 
   #timer-text {
     font-size: 40px;
-  }
-
-  #timer-container{
-    width: 150px;
   }
 
 }

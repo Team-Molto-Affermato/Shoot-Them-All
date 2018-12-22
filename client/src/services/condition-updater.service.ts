@@ -63,7 +63,7 @@ export class ConditionUpdaterService {
       }
       this.conditions = conditions;
       this.observerComponent.map(_ => _.notifyUpdate());
-    }, 2000);
+    }, 2500);
   }
 
   setObserver(observerComponent: ObserverComponent) {

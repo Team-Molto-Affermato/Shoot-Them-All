@@ -35,10 +35,10 @@ export class MatchConfigurationComponent extends AbstractObserverComponent imple
   constructor(private formBuilder: FormBuilder,
               private matchConfigurationService: MatchConfigurationService,
               router: Router,
-              conditionObserverService: ConditionUpdaterService,
+              conditionUpdaterService: ConditionUpdaterService,
               route: ActivatedRoute,
               private dialog:MatDialog) {
-    super(router, conditionObserverService, route);
+    super(router, conditionUpdaterService, route);
   }
 
   ngOnInit() {

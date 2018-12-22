@@ -1,5 +1,5 @@
 import {ComponentName} from "../app/app.module";
-import {CollectionsHelper} from "../utilities/CollectionsHelper";
+
 export class RoleHelper {
   static roleConditions: Map<Role, Set<Condition>>;
   
@@ -14,9 +14,18 @@ export class RoleHelper {
   }
 
   static checkConditions(role: Role, conditions: Set<Condition>) {
+    console.log(this.roleConditions.get(role));
+    console.log(conditions);
 
-    return CollectionsHelper.setsEqual(this.roleConditions.get(role), conditions);
+    var result = true;
 
+    this.roleConditions.get(role).forEach(c => {
+      if (!conditions.has(c)) {
+        result = false;
+      }
+    });
+
+    return result;
   }
 
 }
@@ -28,6 +37,6 @@ export enum Role {
 }
 
 export enum Condition {
-  POSITION,
-  ORIENTATION
+  POSITION = "position",
+  ORIENTATION = "orientation"
 }
