@@ -10,7 +10,7 @@ import {Role} from "../../../../models/RoleHelper";
 import {Team} from "../../../../models/team";
 
 @Component({
-  selector: 'app-earth-map',
+  selector: 'app-players-map',
   templateUrl: './players-map.component.html',
   styleUrls: ['./players-map.component.css']
 })

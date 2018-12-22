@@ -93,6 +93,10 @@
   opacity: 0.5;
 }
 
+::ng-deep agm-map {
+  height: calc(98vh - 65px - 35px - 70px) !important;
+}
+
 .form-container {
   display: flex;
   justify-content: center;
@@ -174,5 +178,9 @@
   }
   .slide-content {
     height: calc(98vh - 55px - 35px);
+  }
+
+  ::ng-deep agm-map {
+    height: calc(98vh - 55px - 35px - 50px) !important;
   }
 }

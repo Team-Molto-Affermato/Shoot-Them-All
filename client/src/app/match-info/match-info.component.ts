@@ -119,4 +119,5 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
       },
     });
   }
+
 }
