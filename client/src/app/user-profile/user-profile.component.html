@@ -54,7 +54,7 @@
               </div>
               <mat-checkbox  *ngIf="personalInfoMode" (change)="switchMode()">Edit informations</mat-checkbox>
               <div id="button-container">
-                <button mat-flat-button type="submit" color="primary" id="join-button"  *ngIf="true">Save informations</button>
+                <button  mat-flat-button type="submit" color="primary" id="join-button"  *ngIf="personalInfoMode && !isReadMode">Save informations</button>
               </div>
               </form>
             </div>
