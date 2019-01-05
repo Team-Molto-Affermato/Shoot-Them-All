@@ -107,7 +107,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.swiper = new Swiper('.swiper-container', {
       slidesPerView: 1,
-      loop: true,
+      loop: false,
       // spaceBetween: '20%',
       pagination: {
         el: '.swiper-pagination',

@@ -47,6 +47,12 @@
 
 .slide-content {
   width: 80%;
+
+  /* Firefox */
+  height: -moz-calc(99vh - 65px - 35px);
+  /* WebKit */
+  height: -webkit-calc(99vh - 65px - 35px);
+  /* Standard */
   height: calc(99vh - 65px - 35px);
 
   overflow: auto;
@@ -98,10 +104,6 @@
     margin-top: 55px;
   }
 
-  .slide-content {
-    width: 100%;
-  }
-
   .swiper-pagination {
     position: fixed;
 
@@ -110,6 +112,14 @@
   }
 
   .slide-content {
+    width: 100%;
+
+    /* Firefox */
+    height: -moz-calc(99vh - 55px - 35px);
+    /* WebKit */
+    height: -webkit-calc(99vh - 55px - 35px);
+    /* Standard */
     height: calc(99vh - 55px - 35px);
+
   }
 }
