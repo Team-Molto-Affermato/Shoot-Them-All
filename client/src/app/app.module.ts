@@ -68,11 +68,11 @@ import {
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { ParticleCanvasComponent } from './particle-canvas/particle-canvas.component';
 import { DescriptionComponent } from './home/description/description.component';
-import { MatchesMapComponent } from './home/matches-map/matches-map.component';
 import { MatchesListComponent } from './home/matches-list/matches-list.component';
 import { BasicMatchInfoComponent } from './match-info/basic-match-info/basic-match-info.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { MatchInfoMapComponent } from './match-info/match-info-map/match-info-map.component';
 
 export enum ComponentName {
   LOGIN = "login",
@@ -130,11 +130,11 @@ const appRoutes: Routes = [
     ErrorComponent,
     ParticleCanvasComponent,
     DescriptionComponent,
-    MatchesMapComponent,
     MatchesListComponent,
     BasicMatchInfoComponent,
     UserProfileComponent,
-    MaterialDialog
+    MaterialDialog,
+    MatchInfoMapComponent
   ],
   imports: [
     BrowserModule,

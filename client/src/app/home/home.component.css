@@ -100,6 +100,11 @@
 
 @media screen and (max-width: 599px) {
 
+  #main-container {
+    height: 90vh;
+  }
+
+
   #menu {
     margin-top: 55px;
   }
@@ -113,13 +118,7 @@
 
   .slide-content {
     width: 100%;
-
-    /* Firefox */
-    height: -moz-calc(99vh - 55px - 35px);
-    /* WebKit */
-    height: -webkit-calc(99vh - 55px - 35px);
-    /* Standard */
-    height: calc(99vh - 55px - 35px);
+    height: calc(90vh - 55px - 35px);
 
   }
 }

@@ -14,6 +14,8 @@ export class LoadingComponent extends AbstractObserverComponent implements OnIni
   percentage: number = 0;
   progressStep:number = 25;
 
+  intervalId;
+
   constructor(router: Router,
               conditionObserverService: ConditionUpdaterService,
               route: ActivatedRoute) {
@@ -23,7 +25,7 @@ export class LoadingComponent extends AbstractObserverComponent implements OnIni
   ngOnInit() {
     this.init();
 
-    setInterval(() => this.updatePercentage(), 450);
+    this.intervalId = setInterval(() => this.updatePercentage(), 450);
   }
 
   update(standardRoleConditions: boolean, restrictedRoleConditions) {
@@ -36,6 +38,10 @@ export class LoadingComponent extends AbstractObserverComponent implements OnIni
     this.percentage = this.percentage<(100-this.progressStep) ? this.percentage+this.progressStep : 100;
 
     document.getElementById('progress-bar').style.width = '' +  this.percentage + '%';
+
+    if(this.percentage == 100) {
+      clearInterval(this.intervalId);
+    }
   }
 
   ngOnDestroy(): void {

@@ -6,7 +6,6 @@ import {CoordinatesHelper} from "../../../../utilities/CoordinatesHelper";
 import {AbstractGameMap, GameMap} from "../../../../models/GameMap";
 import {UserInMatch} from "../../../../models/user";
 import {none, some} from "ts-option";
-import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-radar',
@@ -44,8 +43,7 @@ export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy
 
   radarStyle;
 
-  constructor(readonly matchComponent: MatchComponent,
-              public snackBar: MatSnackBar) {
+  constructor(readonly matchComponent: MatchComponent) {
     super(matchComponent);
     this.radius = this.matchComponent.match.radius;
   }
@@ -71,32 +69,22 @@ export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy
     if (this.viewInit) {
       if (userInArea) {
 
+
         this.radarStyle = {
           'background': '#222 url("../../../../assets/images/radar_enabled.png") no-repeat',
-          'background-size': '40vh'
+          'background-size': 'contain'
         };
-
-        if(!this.matchComponent.laserButtonEnabled) {
-          this.matchComponent.laserButtonEnabled = true;
-        }
 
         if (!this.rotateIntervalId){
           this.rotateIntervalId = setInterval(() => this.rotate(), 25);
         }
 
-
       } else {
         this.radarStyle = {
           'background': '#222 url("../../../../assets/images/radar_disabled.png") no-repeat',
-          'background-size': '40vh'
+          'background-size': 'contain'
         };
 
-        if(this.matchComponent.laserButtonEnabled) {
-          this.matchComponent.laserButtonEnabled = false;
-          this.snackBar.open("You're out from the game area", null, {
-            duration: 2000,
-          });
-        }
 
         if (this.rotateIntervalId) {
           clearInterval(this.rotateIntervalId);

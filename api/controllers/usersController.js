@@ -16,6 +16,8 @@ exports.createUser = (req, res) => {
         // Creates a new User based on the Mongoose schema and the post bo.dy
         var newuser = new User(req.body);
 
+        console.log(req.body);
+
         // New User is saved in the db.
         newuser.save(function(err){
             if(err){
