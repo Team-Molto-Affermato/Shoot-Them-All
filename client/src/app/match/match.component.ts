@@ -138,7 +138,7 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.userInMatch.position = new Point(position.coords.latitude, position.coords.longitude);
     this.userInArea = CoordinatesHelper.pointDistance(this.userInMatch.position, this.match.centralPoint) < this.match.radius;
 
-    this.gameMap.map((g) => g.updatePosition(this.userInArea));
+    // this.gameMap.map((g) => g.updatePosition(this.userInArea));
 
     this.laserButtonEnabled = this.userInArea && this.shots>0;
 
@@ -190,6 +190,9 @@ export class MatchComponent implements OnInit, OnDestroy {
   updateScore(score: number) {
     if (score < this.userInMatch.score) {
       navigator.vibrate(200);
+      this.snackBar.open("You have been hit", null, {
+        duration: 2000,
+      });
     }
     this.userInMatch.score = score;
 
@@ -243,7 +246,8 @@ export class MatchComponent implements OnInit, OnDestroy {
       }, error => {
         console.log(error)
       }
-    )
+    );
+    this.dataService.leaveRoom(this.match.name);
   }
   switchComponent() {
     this.showLeaderboard = !this.showLeaderboard;
