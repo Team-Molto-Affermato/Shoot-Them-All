@@ -1,5 +1,5 @@
 agm-map {
-  height: calc(99vh - 65px - 35px - 70px);
+  height: calc(99vh - 65px - 35px - 110px);
 }
 
 #title{
@@ -24,7 +24,7 @@ agm-snazzy-info-window{
 @media screen and (max-width: 599px) {
 
   agm-map {
-    height: calc(99vh - 55px - 35px - 70px);
+    height: calc(99vh - 55px - 35px - 110px);
   }
 }
 

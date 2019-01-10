@@ -14,6 +14,7 @@ import {GameMap} from "../../models/GameMap";
 import {Option} from "ts-option";
 import set = Reflect.set;
 import {AuthenticationService} from "../../services/authentication.service";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-match',
@@ -52,7 +53,8 @@ export class MatchComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private dataService: DataService,
     private authenticationService: AuthenticationService,
-    private collisionDetectionService: CollisionsDetectionService
+    private collisionDetectionService: CollisionsDetectionService,
+    public snackBar: MatSnackBar
   ) {
   }
 
@@ -130,10 +132,20 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   updatePosition(position) {
 
+    const wasInArea = this.userInArea;
+
     this.userInMatch.position = new Point(position.coords.latitude, position.coords.longitude);
     this.userInArea = CoordinatesHelper.pointDistance(this.userInMatch.position, this.match.centralPoint) < this.match.radius;
 
     this.gameMap.map((g) => g.updatePosition(this.userInArea));
+
+    this.laserButtonEnabled = this.userInArea && this.shots>0;
+
+    if (!this.userInArea && wasInArea) {
+      this.snackBar.open("You're out from the game area", null, {
+        duration: 2000,
+      });
+    }
 
     const body = {
       location: {
@@ -198,7 +210,7 @@ export class MatchComponent implements OnInit, OnDestroy {
       this.chargeIntervalId = setInterval(() => {
         this.shots++;
 
-        if(this.shots == 1) {
+        if(this.shots == 1 && this.userInArea) {
           this.laserButtonEnabled = true;
         }
 

@@ -124,6 +124,10 @@ mat-form-field {
 
 @media screen and (max-width: 599px) {
 
+  #main-container {
+    height: 90vh;
+  }
+
   .title {
     font-size: 28px;
   }
