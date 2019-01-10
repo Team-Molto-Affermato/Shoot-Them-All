@@ -4,6 +4,8 @@ import {Point, UserPosition} from "../models/point";
 import {CoordinatesHelper} from "../utilities/CoordinatesHelper";
 import {AngleHelper} from "../utilities/AngleHelper";
 import {HttpClient} from "@angular/common/http";
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,8 @@ export class CollisionsDetectionService {
   private maxVerticalDistance = 500;
 
   constructor(
-    private http:HttpClient
+    private http:HttpClient,
+    public snackBar: MatSnackBar
   ) { }
 
   checkCollisions(position: Point, orientationAngle: number, players: Array<UserPosition>,roomName:String,username:String) {
@@ -47,7 +50,11 @@ export class CollisionsDetectionService {
     }
 
     hitPlayers.forEach(p =>{
-      alert(p.username);
+      const config = new MatSnackBarConfig();
+      config.panelClass = ['background-red'];
+      config.duration = 1000;
+      this.snackBar.open("You hit "+p.username, null, config);
+      //alert(p.username);
       this.http.put('api/matches/'+roomName+'/'+username+'/score',{score:100}).subscribe(
         data=>{
           this.http.put('api/matches/'+roomName+'/'+p.username+'/score',{score:-100}).subscribe(

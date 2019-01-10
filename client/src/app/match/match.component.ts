@@ -89,6 +89,7 @@ export class MatchComponent implements OnInit, OnDestroy {
             this.players.push(pos);
           }
         });
+        console.log(positions);
       });
     this.userScoreSub = this.dataService
       .getScores()

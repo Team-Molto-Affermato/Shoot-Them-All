@@ -54,13 +54,16 @@ export class PlayersMapComponent implements OnInit {
     this.usersSub = this.dataService
       .getPositions()
       .subscribe(positions =>{
-        // console.log("Mappa dati socket: ",positions);
-        this.userPositions = [];
+        const newPositions = [];
         positions.forEach(pos=>{
           if (pos.username !== username) {
-            this.userPositions.push(pos);
+            newPositions.push(pos);
           }
         });
+        // console.log("Mappa dati socket: ",positions);
+        if(!(this.userPositions===newPositions)){
+          this.userPositions = newPositions;
+        }
       });
   }
   getTeam(team:Team):string{

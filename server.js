@@ -3,7 +3,7 @@ const fs = require('fs');
 
 // var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
 const ip = require("ip");
-const address = ip.address("Wi-Fi");
+const address = ip.address("Ethernet");
 
 fs.writeFileSync('./configuration.json', "{\"address\": \"" + address + "\"}");
 console.log(address)

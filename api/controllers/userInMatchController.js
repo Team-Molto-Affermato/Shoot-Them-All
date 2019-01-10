@@ -90,7 +90,10 @@ async function emitLeaderboard(roomName){
             // console.log(temp);
             usersScore.push(temp);
             if(usersScore.length === leaderboard.length){
-                // console.log("Leaderboard: ",usersScore);
+                console.log("Leaderboard: ",usersScore);
+                usersScore = usersScore.sort(function (a,b) {
+                    return b.score - a.score;
+                });
                 io.to(roomName).emit('users-score',usersScore);
             }
         }).catch(err=>{
@@ -120,6 +123,9 @@ exports.leaderboard = async (req, res) => {
             usersScore.push(temp);
             if(usersScore.length === leaderboard.length){
                 console.log("Leaderboard: ",usersScore);
+                usersScore = usersScore.sort(function (a,b) {
+                    return b.score - a.score;
+                });
                 res.json(usersScore);
             }
         }).catch(err=>{
@@ -169,20 +175,35 @@ exports.userScore = (req,res) =>{
     });
 }
 exports.updateUserScore = (req, res) => {
-    var query = {
+    var queryUpdate = {
         name: req.params.username,
         roomName: req.params.roomName
     };
-    UserInMatch.findOneAndUpdate(query, { $inc: {score: req.body.score} }, {upsert:false,new:true}, function (err,users) {
-        if (err) {
-            return res.send(err)
-        } else {
-            emitLeaderboard(req.params.roomName);
-            res.json(mapToScore(users));
-            // const usersScore = users.map(mapToScore);
-            // io.to(req.params.roomName).emit('users-score',usersScore);
-        }
+    var query = UserInMatch.findOne({
+        name: req.params.username,
+        roomName: req.params.roomName
     });
+    query.exec(function (err,user) {
+        if(err){
+            res.send(err)
+        }else{
+            const sum = user.score +req.body.score;
+            const newScore = sum >= 0? sum : 0;
+            UserInMatch.findOneAndUpdate(queryUpdate, {score: newScore}, {upsert:false,new:true}, function (err,users) {
+                if (err) {
+                    return res.send(err)
+                } else {
+                    emitLeaderboard(req.params.roomName).then(ok=>{
+                        res.json(mapToScore(users));
+                    });
+                    // const usersScore = users.map(mapToScore);
+                    // io.to(req.params.roomName).emit('users-score',usersScore);
+                }
+            });
+        }
+    })
+
+
 };
 function mapToScore(item, index) {
     var score = item.score

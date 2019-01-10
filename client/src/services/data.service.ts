@@ -23,9 +23,9 @@ export class DataService {
   observer: Observer<number>;
   userObserver: Array<Observer<Array<String>>> = [];
   timeoutObserver: Array<Observer<String>> = [];
-  positionObserver: Observer<Array<UserPosition>>;
+  positionObserver: Array<Observer<Array<UserPosition>>> = [];
   scoreObserver: Array<Observer<Array<UserScore>>> = [];
-  leaderboardObserver: Observer<Array<UserScore>>;
+  leaderboardObserver: Array<Observer<Array<UserScore>>> = [];
   matchesObservers: Array<Observer<Array<Match>>> = [];
   constructor(private http:HttpClient,
               private matchConverter:MatchConverterService){
@@ -41,7 +41,9 @@ export class DataService {
   }
   getLeaderboard():Observable<Array<UserScore>>{
     this.socket.on('users-leaderboard', (res) => {
-      this.leaderboardObserver.next(res);
+      this.leaderboardObserver.forEach(o =>{
+        o.next(res);
+      });
     });
     return this.createLeaderboardObservable();
   }
@@ -59,7 +61,9 @@ export class DataService {
 
   getPositions():Observable<Array<UserPosition>>{
     this.socket.on('users-pos', (res) => {
-      this.positionObserver.next(res);
+      this.positionObserver.forEach(o=>{
+        o.next(res);
+      });
     });
     return this.createUserPosObservable();
   }
@@ -123,7 +127,7 @@ export class DataService {
   }
   createLeaderboardObservable() : Observable<Array<UserScore>> {
     return new Observable<Array<UserScore>>(observer => {
-      this.leaderboardObserver = observer;
+      this.leaderboardObserver.push(observer);
     });
   }
   createUserScoreObservable() : Observable<Array<UserScore>> {
@@ -134,7 +138,7 @@ export class DataService {
 
   createUserPosObservable() : Observable<Array<UserPosition>> {
     return new Observable<Array<UserPosition>>(observer => {
-      this.positionObserver = observer;
+      this.positionObserver.push(observer);
     });
   }
 
