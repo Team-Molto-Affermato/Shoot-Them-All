@@ -41,8 +41,6 @@ export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy
 
   rotateIntervalId;
 
-  radarStyle;
-
   constructor(readonly matchComponent: MatchComponent) {
     super(matchComponent);
     this.radius = this.matchComponent.match.radius;
@@ -53,11 +51,7 @@ export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy
   }
 
   ngAfterViewInit() {
-    this.viewInit = true;
-
-    this.radar_line = document.getElementById("radar_line");
-    const radarRadius = this.radar_line.offsetWidth/2;
-    this.ratio = radarRadius/this.radius;
+    this.rotate();
   }
 
   ngOnDestroy() {
@@ -66,50 +60,35 @@ export class RadarComponent extends AbstractGameMap implements OnInit, OnDestroy
   }
 
   updatePosition(userInArea: boolean) {
-    if (this.viewInit) {
-      if (userInArea) {
-
-
-        this.radarStyle = {
-          'background': '#222 url("../../../../assets/images/radar_enabled.png") no-repeat',
-          'background-size': 'contain'
-        };
-
-        if (!this.rotateIntervalId){
-          this.rotateIntervalId = setInterval(() => this.rotate(), 25);
-        }
-
-      } else {
-        this.radarStyle = {
-          'background': '#222 url("../../../../assets/images/radar_disabled.png") no-repeat',
-          'background-size': 'contain'
-        };
-
-
-        if (this.rotateIntervalId) {
-          clearInterval(this.rotateIntervalId);
-          this.rotateIntervalId = null;
-        }
-      }
-    }
-
   }
 
   rotate() {
-    this.radar_line.style.transform = 'rotate(' + this.deg + 'deg)';
-    const radarRadius = this.radar_line.offsetWidth/2;
-    this.ratio = radarRadius/this.radius;
+    if (this.matchComponent.userInArea) {
 
-    this.matchComponent.players.forEach(p => {
+      if (!this.radar_line) {
+        this.radar_line = document.getElementById("radar_line");
+      }
 
-      const atan = Math.atan2((this.longitudeDistanceFromCenter(p.position.longitude))*this.ratio,
-        (this.latitudeDistanceFromCenter(p.position.latitude))*this.ratio);
-      const deg = (AngleHelper.radiusToDegrees(-atan)+180) | 0;
+      this.radar_line.style.transform = 'rotate(' + this.deg + 'deg)';
+      const radarRadius = this.radar_line.offsetWidth/2;
+      this.ratio = radarRadius/this.radius;
 
-      this.activePoints.set(p.username, this.deg === deg);
-    });
+      this.matchComponent.players.forEach(p => {
 
-    this.deg = ++this.deg%360;
+        const atan = Math.atan2((this.longitudeDistanceFromCenter(p.position.longitude))*this.ratio,
+          (this.latitudeDistanceFromCenter(p.position.latitude))*this.ratio);
+        const deg = (AngleHelper.radiusToDegrees(-atan)+180) | 0;
+
+        this.activePoints.set(p.username, this.deg === deg);
+      });
+
+      this.deg = ++this.deg%360;
+    } else {
+      if (this.radar_line) {
+        this.radar_line = null;
+      }
+    }
+    setTimeout(() => this.rotate(), 25);
   }
 
   getPositionStyle(position) {

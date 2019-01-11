@@ -3,7 +3,7 @@ const fs = require('fs');
 
 // var configuration = JSON.parse(require('fs').readFileSync('./configuration.json', 'utf8'));
 const ip = require("ip");
-const address = ip.address("Ethernet");
+const address = ip.address("Wi-Fi");
 
 fs.writeFileSync('./configuration.json', "{\"address\": \"" + address + "\"}");
 console.log(address)
@@ -50,6 +50,7 @@ io.on('connection', socket => {
 
     socket.on('leave',function (room) {
         socket.leave(room);
+        console.log("Leave Room");
     })
     // sockets.add(socket);
     console.log(`Socket ${socket.id} added`);

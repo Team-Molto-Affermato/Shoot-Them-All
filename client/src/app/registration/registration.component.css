@@ -31,7 +31,12 @@ h1 {
 }
 
 #registration-button {
-  margin-top: 10vh;
+  margin-top: 8vh;
+}
+
+#login-button {
+  background: #535656;
+  margin-top: 10px;
 }
 
 @media screen and (max-width: 599px) {

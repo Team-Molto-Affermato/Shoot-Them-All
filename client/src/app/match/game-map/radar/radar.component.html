@@ -1,9 +1,12 @@
-<div id="radar" [ngStyle]="radarStyle">
-  <div id="radar-container" *ngIf="matchComponent.userInArea">
+<div class="radar" id="enabled-radar" *ngIf="matchComponent.userInArea">
+  <div id="radar-container">
     <div id="radar_line"></div>
     <div *ngFor="let player of matchComponent.players">
       <div (click)="showPlayerInfo(player)" class="point" [ngStyle]="getPositionStyle(player.position)"
            [@switch]="activePoints.get(player.username) ? 'active' : 'inactive'" ></div>
     </div>
   </div>
+</div>
+
+<div class="radar" id="disabled-radar" *ngIf="!matchComponent.userInArea">
 </div>
