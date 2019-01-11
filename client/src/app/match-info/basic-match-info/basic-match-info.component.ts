@@ -252,14 +252,14 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
         score: 0,
         location: location
       };
-      if(this.match.state === MatchState.STARTED) {
-        const now = new Date();
-        const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
-        const remaining = DateHelper.dateDifference(endingDate, now)/60000;
-        console.log(remaining);
-        body.score = Math.floor(-((this.match.duration-remaining)/this.match.duration)*penality);
-        console.log(body.score);
-      }
+      // if(this.match.state === MatchState.STARTED) {
+      //   const now = new Date();
+      //   const endingDate = new Date(this.match.startingTime.getTime()+this.match.duration*60000);
+      //   const remaining = DateHelper.dateDifference(endingDate, now)/60000;
+      //   console.log(remaining);
+      //   body.score = Math.floor(-((this.match.duration-remaining)/this.match.duration)*penality);
+      //   console.log(body.score);
+      // }
       this.http.post("/api/matches/" + this.match.name + "/users", body).subscribe(
         data => {
           console.log(data);
