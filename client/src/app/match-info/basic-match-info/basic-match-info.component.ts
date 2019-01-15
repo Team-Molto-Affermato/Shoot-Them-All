@@ -189,7 +189,7 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
       difference = DateHelper.dateDifference(this.match.startingTime, now);
 
       if (difference && difference>0) {
-        this.remainingTime = this.outputTime(difference, false);
+        this.remainingTime = DateHelper.outputTime(difference, false);
       }
 
     } else if (this.match.state === MatchState.STARTED) {
@@ -197,14 +197,14 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
       difference = DateHelper.dateDifference(endingDate, now);
 
       if (difference && difference>0) {
-        this.remainingTime = this.outputTime(difference, true);
+        this.remainingTime = DateHelper.outputTime(difference, true);
       } else {
-        this.remainingTime= this.outputTime(0,true);
+        this.remainingTime= DateHelper.outputTime(0,true);
         clearInterval(this.countdownIntervalId);
       }
 
     } else {
-      this.remainingTime= this.outputTime(0,true);
+      this.remainingTime= DateHelper.outputTime(0,true);
       clearInterval(this.countdownIntervalId);
     }
 
@@ -280,28 +280,6 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
 
   }
 
-
-  outputTime(time: number, withHour: boolean): string {
-
-    if (withHour) {
-      var h = DateHelper.hoursFromTime(time)+"";
-      if (h.length < 2) {
-        h = "0" + h;
-      }
-    }
-
-    var m = DateHelper.minutesFromTime(time)+"";
-    if (m.length < 2) {
-      m = "0" + m;
-    }
-
-    var s = DateHelper.secondsFromTime(time)+"";
-    if (s.length < 2) {
-      s = "0" + s;
-    }
-
-    return (withHour?(h + ":"):"") + m + ":" + s;
-  }
   private checkUserInside() {
     console.log("Stato check: ",this.match.state,this.userJoined())
     if (this.match.state === MatchState.STARTED) {

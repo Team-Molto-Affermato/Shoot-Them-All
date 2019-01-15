@@ -26,13 +26,18 @@
   </mat-menu>
 </div>
 
+<label id="remainingTimeLabel">{{printableRemainingTime}}</label>
+
 <div id="main-container">
   <!--<app-match-leaderboard *ngIf="showLeaderboard && !teamMode"></app-match-leaderboard>-->
   <!--<app-match-multi-leaderboard *ngIf="showLeaderboard && teamMode"></app-match-multi-leaderboard>-->
   <app-game-map *ngIf="!showLeaderboard"></app-game-map>
 
   <div id="shoot-container">
-    <div id="filler"></div>
+    <div id="score-container">
+      <div id="score-label">Score</div>
+      <div id="score">{{userInMatch.score}}</div>
+    </div>
 
     <div id="laser-container">
       <div id="laser-beam-container" *ngIf="showLaserBeam">

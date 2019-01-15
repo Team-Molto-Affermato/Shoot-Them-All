@@ -37,13 +37,6 @@ export class CollisionsDetectionService {
       const lateralDistance = Math.abs(distance * Math.sin(rad));
       const verticalDistance = Math.abs(distance * Math.cos(rad));
 
-      // alert("player: " + player.username +
-      //   "\nangle: " + angle +
-      //   "\norientationAngle: " + orientationAngle +
-      //   "\ndeg: " + deg +
-      //   "\nlateral distance: " + lateralDistance +
-      //   "\nvertical distance: " + verticalDistance);
-
       if (lateralDistance<this.maxLateralDistance && verticalDistance<this.maxVerticalDistance && deg<45) {
         hitPlayers.push(player);
       }

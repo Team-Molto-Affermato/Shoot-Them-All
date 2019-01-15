@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
 import {MotionSensors} from "../../assets/scripts/motion-sensors.js"
@@ -15,6 +15,7 @@ import {Option} from "ts-option";
 import set = Reflect.set;
 import {AuthenticationService} from "../../services/authentication.service";
 import {MatSnackBar} from "@angular/material";
+import {DateHelper} from "../../utilities/DateHelper";
 
 @Component({
   selector: 'app-match',
@@ -36,6 +37,8 @@ export class MatchComponent implements OnInit, OnDestroy {
   userInArea = true;
   teamMode= false;
   shots = this.MAX_SHOTS;
+  endingTime;
+  printableRemainingTime;
 
   gameMap: Option<GameMap>;
 
@@ -46,6 +49,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   positionIntervalId;
   chargeIntervalId;
   laserBeamTimeoutId;
+  countdownIntervalId;
 
 
   constructor(
@@ -116,10 +120,25 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     this.positionIntervalId = setInterval(() => this.getPosition(), 500);
 
+    this.endingTime = new Date(this.match.startingTime.getTime() + this.match.duration*60*1000);
+    this.countdownIntervalId = setInterval(()=> this.updateCountdown(), 1000);
+    this.updateCountdown();
+  }
+
+  updateCountdown() {
+    const now = new Date();
+    const remainingTime = DateHelper.dateDifference(this.endingTime, now);
+    if(remainingTime && remainingTime>=0) {
+      this.printableRemainingTime = DateHelper.outputTime(remainingTime, true);
+    } else {
+      this.printableRemainingTime = "00:00:00";
+    }
+
   }
 
   ngOnDestroy(): void {
     clearInterval(this.positionIntervalId);
+    clearInterval(this.countdownIntervalId);
     this.dataService.leaveRoom(this.match.name);
   }
 

@@ -24,5 +24,26 @@ export class DateHelper {
     return Math.trunc(time/MS_PER_SECONDS)%60;
   }
 
+  static outputTime(time: number, withHour: boolean): string {
+
+    if (withHour) {
+      var h = DateHelper.hoursFromTime(time)+"";
+      if (h.length < 2) {
+        h = "0" + h;
+      }
+    }
+
+    var m = DateHelper.minutesFromTime(time)+"";
+    if (m.length < 2) {
+      m = "0" + m;
+    }
+
+    var s = DateHelper.secondsFromTime(time)+"";
+    if (s.length < 2) {
+      s = "0" + s;
+    }
+
+    return (withHour?(h + ":"):"") + m + ":" + s;
+  }
 
 }
