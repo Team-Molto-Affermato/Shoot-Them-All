@@ -18,7 +18,7 @@
               <form class="login-form" [formGroup]="unlockRoomForm" (ngSubmit)="savePassword()">
 
                 <mat-form-field class="login-input">
-                  <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" >
+                  <input id="password" matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" >
                   <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
                   <mat-hint></mat-hint>
                   <!--<mat-error *ngIf="password.hasError('required')">-->

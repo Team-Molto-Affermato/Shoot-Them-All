@@ -52,6 +52,12 @@
   font-size: 30px;
   font-family: 'Orbitron', sans-serif;
 }
+
+mat-form-field {
+  font-size: 15px !important;
+  font-family: 'Orbitron', sans-serif;
+}
+
 .slide-content{
   height: calc(98vh - 65px - 35px);
 }
