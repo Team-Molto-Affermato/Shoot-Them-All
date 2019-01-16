@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Match, MatchAccess, MatchState} from "../../models/match";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
@@ -13,7 +13,7 @@ import {HttpClient} from "@angular/common/http";
   templateUrl: './match-map.component.html',
   styleUrls: ['./match-map.component.css']
 })
-export class MatchMapComponent implements OnInit {
+export class MatchMapComponent implements OnInit, OnDestroy {
 
   @ViewChild('matchMap') mapId: ElementRef;
 
@@ -70,5 +70,9 @@ export class MatchMapComponent implements OnInit {
   showInfo(match: Match) {
     LocalStorageHelper.setItem(StorageKey.MACTH, match);
     this.router.navigateByUrl("/matchInfo");
+  }
+
+  ngOnDestroy() {
+    this.matchesSub.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Match, MatchOrganization} from "../../../models/match";
 import {Point, UserPosition} from "../../../models/point";
 import {Subscription} from "rxjs";
@@ -13,7 +13,7 @@ import {Team} from "../../../models/team";
   templateUrl: './match-info-map.component.html',
   styleUrls: ['./match-info-map.component.scss']
 })
-export class MatchInfoMapComponent implements OnInit {
+export class MatchInfoMapComponent implements OnInit, OnDestroy {
 
   match: Match;
   positionOfUser;
@@ -63,8 +63,13 @@ export class MatchInfoMapComponent implements OnInit {
         });
       });
   }
+
   getTeam(team:Team):string{
     return team===Team.TEAM1?"Jedi":"Sith";
+  }
+
+  ngOnDestroy() {
+    this.usersSub.unsubscribe();
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HomeService} from "../../../services/home.service";
 import {DataService} from "../../../services/data.service";
 import {Match, MatchAccess, MatchState} from "../../../models/match";
@@ -15,7 +15,7 @@ import {Point} from "../../../models/point";
   templateUrl: './matches-list.component.html',
   styleUrls: ['./matches-list.component.scss']
 })
-export class MatchesListComponent implements OnInit {
+export class MatchesListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'state', 'access'];
   matches: Array<Match> = [];
   username;
@@ -117,5 +117,9 @@ export class MatchesListComponent implements OnInit {
     console.log("Filter value: ",filterValue);
     console.log(this.dataSource.data);
       //CoordinatesHelper.pointDistance(new Point())
+  }
+
+  ngOnDestroy() {
+    this.matchesSub.unsubscribe();
   }
 }

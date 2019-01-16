@@ -73,6 +73,7 @@ import { BasicMatchInfoComponent } from './match-info/basic-match-info/basic-mat
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { MatchInfoMapComponent } from './match-info/match-info-map/match-info-map.component';
+import { MatchSummaryComponent } from './match/match-summary/match-summary.component';
 
 export enum ComponentName {
   LOGIN = "login",
@@ -134,7 +135,8 @@ const appRoutes: Routes = [
     BasicMatchInfoComponent,
     UserProfileComponent,
     MaterialDialog,
-    MatchInfoMapComponent
+    MatchInfoMapComponent,
+    MatchSummaryComponent
   ],
   imports: [
     BrowserModule,

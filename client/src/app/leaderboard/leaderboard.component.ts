@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../../services/data.service";
 import {HttpClient} from "@angular/common/http";
 import {Subscription} from "rxjs";
@@ -15,7 +15,7 @@ import {Router} from "@angular/router";
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
 })
-export class LeaderboardComponent implements OnInit {
+export class LeaderboardComponent implements OnInit, OnDestroy {
   topScore:number = 35000;
   displayedColumns: string[] = ['position', 'username', 'score',"ranking"];
   leaderBoardSub: Subscription;
@@ -73,5 +73,9 @@ export class LeaderboardComponent implements OnInit {
   showUserInfo(username:string) {
     LocalStorageHelper.setItem(StorageKey.CLICKED_USER, username);
     this.router.navigateByUrl("/userProfile");
+  }
+
+  ngOnDestroy() {
+    this.leaderBoardSub.unsubscribe();
   }
 }
