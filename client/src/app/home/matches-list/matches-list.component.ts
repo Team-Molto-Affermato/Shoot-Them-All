@@ -65,9 +65,11 @@ export class MatchesListComponent implements OnInit {
     }
       this.dataSource.paginator = this.paginator;
   }
+
   refresh() {
     this.dataSource.data = this.matches;
-  };
+  }
+
   updateMatches() {
     this.homeService.getMatches().subscribe(
       (data: Array<Match>) => {
@@ -77,20 +79,12 @@ export class MatchesListComponent implements OnInit {
       // error => alert(error)
     );
   }
+
   showInfo(match: Match) {
     LocalStorageHelper.setItem(StorageKey.MACTH, match);
+    this.router.navigateByUrl("/matchInfo");
+  }
 
-    if (this.userJoined(match)) {
-      this.router.navigateByUrl("/match");
-    } else {
-      this.router.navigateByUrl("/matchInfo");
-    }
-  }
-  userJoined(match: Match): boolean {
-    // return (match.state === MatchState.STARTED) &&
-    //   match.users.includes(this.username)
-    return false;
-  }
   getMatchState(state:MatchState):string{
     switch (state) {
       case MatchState.SETTING_UP : return "Setting Up";
