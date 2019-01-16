@@ -5,8 +5,8 @@
 
 #remainingTimeLabel {
   position: fixed;
-  top: 17px;
-  width: 100%;
+  top: 19px;
+  left: 70%;
   text-align: center;
   color: #06a533;
   z-index: 15;
@@ -191,5 +191,10 @@ mat-toolbar, mat-menu {
 
   #nav-container {
     height: 55px;
+  }
+
+  #remainingTimeLabel {
+    top: 17px;
+    left: 40%;
   }
 }
