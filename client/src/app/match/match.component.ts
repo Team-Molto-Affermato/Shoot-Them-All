@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
 import {MotionSensors} from "../../assets/scripts/motion-sensors.js"
@@ -12,7 +12,6 @@ import {UserInMatch, UserScore} from "../../models/user";
 import {CoordinatesHelper} from "../../utilities/CoordinatesHelper";
 import {GameMap} from "../../models/GameMap";
 import {Option} from "ts-option";
-import set = Reflect.set;
 import {AuthenticationService} from "../../services/authentication.service";
 import {MatSnackBar} from "@angular/material";
 import {DateHelper} from "../../utilities/DateHelper";
@@ -39,6 +38,7 @@ export class MatchComponent implements OnInit, OnDestroy {
   shots = this.MAX_SHOTS;
   endingTime;
   printableRemainingTime;
+  team;
 
   gameMap: Option<GameMap>;
 
@@ -73,6 +73,7 @@ export class MatchComponent implements OnInit, OnDestroy {
         data.forEach(score =>{
           if(score.username === this.userInMatch.username){
             this.userInMatch.score = Number(score.score);
+            this.team = score.team;
           }
         });
       },err =>{
@@ -163,7 +164,7 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     if (!this.userInArea && wasInArea) {
       this.snackBar.open("You're out from the game area", null, {
-        duration: 2000,
+        duration: 2000
       });
     }
 
@@ -250,7 +251,7 @@ export class MatchComponent implements OnInit, OnDestroy {
       this.laserBeamTimeoutId = setTimeout(() => this.showLaserBeam = false, 1000);
 
       this.collisionDetectionService.checkCollisions(this.userInMatch.position, this.orientationAngle,
-        this.players,this.match.name,this.userInMatch.username);
+        this.players, this.match.name, this.userInMatch.username, this.teamMode, this.team);
     }
   }
 

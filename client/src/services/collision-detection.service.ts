@@ -5,6 +5,7 @@ import {CoordinatesHelper} from "../utilities/CoordinatesHelper";
 import {AngleHelper} from "../utilities/AngleHelper";
 import {HttpClient} from "@angular/common/http";
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import {Team} from "../models/team";
 
 
 @Injectable({
@@ -20,7 +21,8 @@ export class CollisionsDetectionService {
     public snackBar: MatSnackBar
   ) { }
 
-  checkCollisions(position: Point, orientationAngle: number, players: Array<UserPosition>,roomName:String,username:String) {
+  checkCollisions(position: Point, orientationAngle: number, players: Array<UserPosition>,
+                  roomName:String, username:String, teamMode: boolean, team: Team) {
 
 
     var hitPlayers = [];
@@ -38,7 +40,19 @@ export class CollisionsDetectionService {
       const verticalDistance = Math.abs(distance * Math.cos(rad));
 
       if (lateralDistance<this.maxLateralDistance && verticalDistance<this.maxVerticalDistance && deg<45) {
-        hitPlayers.push(player);
+        if (!teamMode) {
+          hitPlayers.push(player);
+        } else {
+          if (team !== player.team) {
+            hitPlayers.push(player);
+          } else {
+            const config = new MatSnackBarConfig();
+            this.snackBar.open("Friendly fire is not recommended", null, {
+              duration: 1000
+            });
+          }
+        }
+
       }
     }
 
@@ -50,7 +64,7 @@ export class CollisionsDetectionService {
       //alert(p.username);
       this.http.put('api/matches/'+roomName+'/'+username+'/score',{score:100}).subscribe(
         data=>{
-          this.http.put('api/matches/'+roomName+'/'+p.username+'/score',{score:-100}).subscribe(
+          this.http.put('api/matches/'+roomName+'/'+p.username+'/score',{score:-50}).subscribe(
             data=>{
 
             },err =>{
