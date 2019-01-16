@@ -85,7 +85,8 @@ export enum ComponentName {
   ERROR = "error",
   LOADING = "loading",
   LEADERBOARD = "leaderboard",
-  USER_PROFILE= "userProfile"
+  USER_PROFILE = "userProfile",
+  MATCH_SUMMARY = "matchSummary"
 }
 
 
@@ -105,7 +106,7 @@ const appRoutes: Routes = [
   {path: ComponentName.LOADING, component: LoadingComponent, canActivate: [AuthGuard]},
   {path: ComponentName.LEADERBOARD, component: LeaderboardComponent, canActivate: [AuthGuard]},
   {path: ComponentName.USER_PROFILE, component: UserProfileComponent, canActivate: [AuthGuard]},
-
+  {path: ComponentName.MATCH_SUMMARY, component: MatchSummaryComponent, canActivate: [AuthGuard]},
 ];
 
 

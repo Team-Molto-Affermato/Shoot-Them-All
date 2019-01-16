@@ -295,7 +295,6 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
     console.log("Stato check: ",this.match.state,this.userJoined())
     if (this.match.state === MatchState.STARTED) {
       if(this.userJoined()) {
-        alert("caaaaazzarolaaa");
         this.router.navigateByUrl("/match");
       }
     }
