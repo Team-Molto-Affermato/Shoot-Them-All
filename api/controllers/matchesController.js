@@ -130,11 +130,24 @@ exports.matchState = (req,res) =>{
                 });
         });
 }
+// function emitLeaderboard(){
+//     User
+//         .find()
+//         .sort({score: -1})
+//         .select({username:1,score:1,team:1})
+//         .exec(function(err, users){
+//             if(err){
+//             }
+//             else{
+//                 io.emit('users-leaderboard',users);
+//             }
+//         });
+// }
 function emitLeaderboard(){
     User
         .find()
         .sort({score: -1})
-        .select({username:1,score:1,team:1})
+        .select({username:1,score:1})
         .exec(function(err, users){
             if(err){
             }
@@ -252,7 +265,7 @@ function updateLeaderBoard(roomName) {
                 User.findOneAndUpdate(query, { $inc: {score: user.score} }, function (err,upUser) {
                 });
             });
-            emitLeaderboardRoom(roomName);
+            emitLeaderboard();
         }
     });
 }
