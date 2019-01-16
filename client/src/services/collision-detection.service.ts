@@ -46,7 +46,6 @@ export class CollisionsDetectionService {
           if (team !== player.team) {
             hitPlayers.push(player);
           } else {
-            const config = new MatSnackBarConfig();
             this.snackBar.open("Friendly fire is not recommended", null, {
               duration: 1000
             });
