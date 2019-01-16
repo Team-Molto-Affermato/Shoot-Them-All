@@ -28,6 +28,7 @@ export class MatchMapComponent implements OnInit {
               private homeService: HomeService,
               private dataService: DataService) {
   }
+
   ngOnInit() {
     this.http.get("../../assets/styles/earthMapStyles.json").subscribe(
       data => {
@@ -41,6 +42,7 @@ export class MatchMapComponent implements OnInit {
     this.matchesSub = this.dataService.getMatches().subscribe(matches=>this.matches = matches);
     this.updateMatches();
   }
+
   updateMatches() {
     this.homeService.getMatches().subscribe(
       (data: Array<Match>) => {
@@ -49,6 +51,7 @@ export class MatchMapComponent implements OnInit {
       // error => alert(error)
     );
   }
+
   getMatchState(state:MatchState):string{
     switch (state) {
       case MatchState.SETTING_UP : return "Setting Up";
@@ -56,24 +59,16 @@ export class MatchMapComponent implements OnInit {
       case MatchState.ENDED : return "Ended";
     }
   }
+
   getMatchAccess(access:MatchAccess):string{
     switch (access) {
       case MatchAccess.PRIVATE : return "Private";
       case MatchAccess.PUBLIC : return "Public";
     }
   }
+
   showInfo(match: Match) {
     LocalStorageHelper.setItem(StorageKey.MACTH, match);
-
-    if (this.userJoined(match)) {
-      this.router.navigateByUrl("/match");
-    } else {
-      this.router.navigateByUrl("/matchInfo");
-    }
-  }
-  userJoined(match: Match): boolean {
-    // return (match.state === MatchState.STARTED) &&
-    //   match.users.includes(this.username)
-    return false;
+    this.router.navigateByUrl("/matchInfo");
   }
 }
