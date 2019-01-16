@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import {Match, MatchAccess, MatchOrganization, MatchState} from "../../../models/match";
 import {Subscription} from "rxjs";
 import {none, Option, some} from "ts-option";
@@ -18,7 +27,7 @@ import {AbstractObserverComponent} from "../../ObserverComponent";
   templateUrl: './basic-match-info.component.html',
   styleUrls: ['./basic-match-info.component.scss']
 })
-export class BasicMatchInfoComponent extends AbstractObserverComponent implements OnInit {
+export class BasicMatchInfoComponent extends AbstractObserverComponent implements OnInit, OnDestroy {
   selectedBorderStyle = '8px solid #00d51c';
   unselectedBorderStyle = '';
   selectedSize = '175px';
@@ -177,6 +186,8 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
   ngOnDestroy() {
     this.destroy();
     clearInterval(this.countdownIntervalId);
+    this.timeoutSub.unsubscribe();
+    this.userScoreSub.unsubscribe();
     // this.dataService.leaveRoom(this.match.username);
   }
 
@@ -285,6 +296,7 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
     if (this.match.state === MatchState.STARTED) {
       console.log("Stato check dopo if: ",this.match.state,this.userJoined())
       if(this.userJoined()) {
+        alert("caaaaazzarolaaa");
         this.router.navigateByUrl("/match");
       }
     }

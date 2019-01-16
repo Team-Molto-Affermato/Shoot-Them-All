@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Match, MatchOrganization} from "../../../../models/match";
 import {LocalStorageHelper, StorageKey} from 'src/utilities/LocalStorageHelper';
@@ -14,7 +14,7 @@ import {Team} from "../../../../models/team";
   templateUrl: './players-map.component.html',
   styleUrls: ['./players-map.component.css']
 })
-export class PlayersMapComponent implements OnInit {
+export class PlayersMapComponent implements OnInit, OnDestroy {
   match: Match;
   positionOfUser;
   teamVisible:boolean = false;
@@ -68,5 +68,9 @@ export class PlayersMapComponent implements OnInit {
   }
   getTeam(team:Team):string{
     return team===Team.TEAM1?"Jedi":"Sith";
+  }
+
+  ngOnDestroy() {
+    this.usersSub.unsubscribe();
   }
 }

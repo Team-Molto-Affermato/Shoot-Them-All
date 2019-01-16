@@ -141,6 +141,10 @@ export class MatchComponent implements OnInit, OnDestroy {
     clearInterval(this.positionIntervalId);
     clearInterval(this.countdownIntervalId);
     this.dataService.leaveRoom(this.match.name);
+
+    this.timeoutSub.unsubscribe();
+    this.userScoreSub.unsubscribe();
+    this.usersSub.unsubscribe();
   }
 
   getPosition() {

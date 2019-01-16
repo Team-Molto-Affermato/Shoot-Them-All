@@ -101,6 +101,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // clearInterval(this.countdownIntervalId);
     // this.dataService.leaveRoom(this.match.username);
+
   }
 
 
