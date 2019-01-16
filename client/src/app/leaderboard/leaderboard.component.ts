@@ -76,6 +76,6 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.leaderBoardSub.unsubscribe();
+    // this.leaderBoardSub.unsubscribe();
   }
 }

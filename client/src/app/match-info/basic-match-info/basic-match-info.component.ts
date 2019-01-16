@@ -294,6 +294,7 @@ export class BasicMatchInfoComponent extends AbstractObserverComponent implement
   private checkUserInside() {
     console.log("Stato check: ",this.match.state,this.userJoined())
     if (this.match.state === MatchState.STARTED) {
+      console.log("Stato check dopo if: ",this.match.state,this.userJoined())
       if(this.userJoined()) {
         this.router.navigateByUrl("/match");
       }
